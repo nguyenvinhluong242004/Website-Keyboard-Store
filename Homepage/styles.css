@@ -16,24 +16,6 @@ body{
     flex-direction: column;
 }
 
-@media screen and (max-width: 768px){
-    .card-wrapper, .sales-card-wrapper {
-        margin: 0 10px 25px;
-    }
-
-    .card-wrapper .swiper-slide-button, .sales-card-wrapper .swiper-slide-button {
-        display: none;
-    }
-
-    .banner-wrapper {
-        margin: 0 10px 25px;
-    }
-
-    .banner-wrapper .swiper-slide-button {
-        display: none;
-    }
-}
-
 .new-product {
     width: 100%;
     display: flex;
@@ -49,18 +31,18 @@ body{
     justify-content: center;
 }
 
-.card-wrapper, .sales-card-wrapper {
+.card-wrapper, .sales-card-wrapper, .trending-products .content {
     width: 100%;
     margin: 0 60px 0px;
     padding: 20px 10px;
     overflow: hidden;
 }
 
-.card-list .card-item{
+.card-item{
     list-style: none;
 }
 
-.card-list .card-item .card-link {
+.card-item .card-link, .content .card-link {
     user-select: none;
     display: block;
     background: #fff;
@@ -72,7 +54,7 @@ body{
     transition: 0.2s ease;
 }
 
-.card-list .card-link .badge{
+.card-link .badge{
     color: #5372f0;
     padding: 8px 16px;
     font-size: 0.95rem;
@@ -83,37 +65,37 @@ body{
     border-radius: 50px;
 }
 
-.card-list .card-link .badge.Keycap{
+.card-link .badge.Keycap{
     color:#b22485;
     background: #f7dff5;
 }
-.card-list .card-link .badge.Switch{
+.card-link .badge.Switch{
     color:#b25a2b;
     background: #ffe3d2;
 }
 
-.card-list .card-item .card-link:active {
+.card-item .card-link:active {
     cursor: grabbing;
 }
 
-.card-list .card-item .card-link:hover {
+.card-item .card-link:hover {
     border-color: #5272f0;
 }
 
-.card-list .card-link .card-image{
+.card-link .card-image{
     width: 100%;
     aspect-ratio: 16/9;
     object-fit: cover;
     border-radius: 10px;
 }
 
-.card-list .card-link .card-title {
+.card-link .card-title {
     font-size: 1.19rem;
     color: #000;
     font-weight: 600;
 }
 
-.card-list .card-link .add-cart {
+.card-link .add-cart {
     height: 35px;
     width: 35px;
     color: #5372f0;
@@ -125,7 +107,7 @@ body{
     transition: 0.4s ease;
 }
 
-.card-list .card-link:hover .add-cart {
+.card-link:hover .add-cart {
     color: #fff;
     background: #5372f0;
 }
@@ -329,4 +311,115 @@ header .swiper-slide-button {
     justify-content: center;
     box-sizing: border-box;
     flex-direction: column;
+}
+
+.trending-products {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.trending-products .container {
+    background-color: #5668af;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 10px 20px;
+    position: relative;
+}
+
+.trending-products .tab-box .tab-btn {
+    font-size: 18px;
+    font-weight: 600;
+    color: #606060; 
+    background-color: #E6F0FF; 
+    border-radius: 30px;
+    padding: 16px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.trending-products .tab-box .tab-btn:hover {
+    background-color: #A4C7FF; 
+}
+
+.trending-products .tab-box .tab-btn.active {
+    color: #4B0082; 
+    background-color: #FFC0CB; 
+    transform: scale(0.95);
+}
+
+.trending-products .content {
+    display: none;
+    animation: moving .5s ease;
+}
+
+@keyframes moving {
+    from{transform: translateX(50px); opacity: 0;}
+    to{transform: translateX(0px); opacity: 1;}
+}
+
+.trending-products .content.active {
+    display: grid;
+}
+
+.trending-products .a {
+    width: 25%;
+}
+
+.card-item{
+    list-style: none;
+}
+
+.card-item .card-link {
+    user-select: none;
+    display: block;
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+}
+
+.content .card-link {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.content-box {
+    display: flex;
+    width: 100%;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28.5px;
+}
+
+@media screen and (max-width: 768px){
+    .card-wrapper, .sales-card-wrapper, .content {
+        margin: 0 10px 25px;
+    }
+
+    .card-wrapper .swiper-slide-button, .sales-card-wrapper .swiper-slide-button {
+        display: none;
+    }
+
+    .banner-wrapper {
+        margin: 0 10px 25px;
+    }
+
+    .banner-wrapper .swiper-slide-button {
+        display: none;
+    }
+
+    .content-box {
+        grid-template-columns: repeat(2, 1fr); /* 768px trở xuống: 2 cột */
+    }
 }
