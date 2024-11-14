@@ -249,16 +249,32 @@ header {
 header .swiper-buttons {
     display: flex;
     align-items: center;
-    overflow: hidden;
 }
 
 header .swiper-slide-button {
-    top: 50%; /* Căn giữa theo chiều dọc */ 
-    transform: translateY(0%); /* Giữ căn giữa */
-    z-index: 10; /* Đảm bảo nút nằm trên các nội dung khác */
-    background-color: #b22485;
+    transform: translateY(0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Bo tròn nút */
+    background-color: #2ec4b6; /* Màu xanh ngọc cho nút */
+    color: #ffffff; /* Màu biểu tượng */
     cursor: pointer;
     margin: 0 10px;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s; /* Hiệu ứng chuyển động */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); /* Hiệu ứng bóng đổ nhẹ */
+}
+
+header .swiper-slide-button:hover {
+    background-color: #198a80; /* Màu xanh đậm hơn khi hover */
+    transform: scale(1.1); /* Phóng to nhẹ khi hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Tăng bóng đổ khi hover */
+}
+
+header .swiper-slide-button i {
+    font-size: 20px; /* Kích thước biểu tượng */
 }
 
 .new-product-button-prev, .new-product-button-next, .sales-button-prev, .sales-button-next {
