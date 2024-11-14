@@ -1,0 +1,441 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(#ECEFFE, #CED6FB);
+    flex-direction: column;
+}
+
+.new-product {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+.card-wrapper, .sales-card-wrapper, .trending-products .content {
+    width: 100%;
+    margin: 0 60px 0px;
+    padding: 20px 10px;
+    overflow: hidden;
+}
+
+.card-item{
+    list-style: none;
+}
+
+.card-item .card-link, .content .card-link {
+    user-select: none;
+    display: block;
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+}
+
+.card-link .badge{
+    color: #5372f0;
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 8px 0 18px;
+    background: #DDE4FF;
+    width: fit-content;
+    border-radius: 50px;
+}
+
+.card-link .badge.Keycap{
+    color:#b22485;
+    background: #f7dff5;
+}
+.card-link .badge.Switch{
+    color:#b25a2b;
+    background: #ffe3d2;
+}
+
+.card-item .card-link:active {
+    cursor: grabbing;
+}
+
+.card-item .card-link:hover {
+    border-color: #5272f0;
+}
+
+.card-link .card-image{
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card-link .card-title {
+    font-size: 1.19rem;
+    color: #000;
+    font-weight: 600;
+}
+
+.card-link .add-cart {
+    height: 35px;
+    width: 35px;
+    color: #5372f0;
+    border-radius: 50%;
+    margin: 30px 0 5px;
+    background: none;
+    border: 2px solid #5372f0;
+    cursor: pointer;
+    transition: 0.4s ease;
+}
+
+.card-link:hover .add-cart {
+    color: #fff;
+    background: #5372f0;
+}
+
+.card-wrapper .swiper-pagination-bullet, .sales-card-wrapper .swiper-pagination-bullet {
+    height: 13px;
+    width: 13px;
+    opacity: 0.5;
+    background: #5372f0;
+}
+
+.card-wrapper .swiper-pagination-bullet-active, .sales-card-wrapper .swiper-pagination-bullet-active {
+    opacity: 1;
+}
+
+/* banner */
+.banner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    background-color: #ffe3d2;
+}
+
+.banner-container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding-left: 5px;
+}
+
+
+.banner-wrapper {
+    width: 100%;
+    max-width: 1100px;
+    margin: 5px 0;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.banner-list .banner-item{
+    list-style: none;
+}
+
+.banner-list .banner-item .banner-link {
+    user-select: none;
+    display: block;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+}
+
+.banner-list .banner-item .banner-link:active {
+    cursor: grabbing;
+}
+
+.banner-list .banner-link .banner-image{
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.banner-list .banner-link .badge.Keycap{
+    color:#b22485;
+    background: #f7dff5;
+}
+.banner-list .banner-link .badge.Switch{
+    color:#b25a2b;
+    background: #ffe3d2;
+}
+
+.banner-list .banner-link .banner-title {
+    font-size: 1.19rem;
+    color: #000;
+    font-weight: 600;
+}
+
+.banner-wrapper .swiper-pagination{
+    bottom: 20px;
+}
+
+.banner-wrapper .swiper-pagination-bullet {
+    height: 13px;
+    width: 13px;
+    opacity: 0.5;
+    background: #5372f0;
+}
+
+.banner-wrapper .swiper-pagination-bullet-active {
+    opacity: 1;
+}
+
+.banner-wrapper .swiper-slide-button {
+    color: #5372f0;
+}
+
+.banner-other {
+    width: 100%;
+    padding: 0px 10px;
+    overflow: hidden;
+    justify-content: flex-start;
+    display: flex;
+}
+
+.banner-other .banner-item {
+    padding: 6px 5px;
+}
+.banner-other .banner-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+h2 {
+    font-family: var(--heading-font);
+    color: var(--dark-color);
+    font-weight: 700;
+}
+
+header h2{
+    padding: 10px 0 10px 20px;
+}
+
+header {
+    background-color: #5668af;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Đẩy các phần tử về hai bên */
+    padding: 10px 20px;
+    position: relative;
+}
+
+header .swiper-buttons {
+    display: flex;
+    align-items: center;
+}
+
+header .swiper-slide-button {
+    transform: translateY(0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Bo tròn nút */
+    background-color: #2ec4b6; /* Màu xanh ngọc cho nút */
+    color: #ffffff; /* Màu biểu tượng */
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s; /* Hiệu ứng chuyển động */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); /* Hiệu ứng bóng đổ nhẹ */
+}
+
+header .swiper-slide-button:hover {
+    background-color: #198a80; /* Màu xanh đậm hơn khi hover */
+    transform: scale(1.1); /* Phóng to nhẹ khi hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Tăng bóng đổ khi hover */
+}
+
+header .swiper-slide-button i {
+    font-size: 20px; /* Kích thước biểu tượng */
+}
+
+.new-product-button-prev, .new-product-button-next, .sales-button-prev, .sales-button-next {
+    width: 50px; /* Đặt kích thước cho nút */
+    height: 50px;
+    background-color: #b22485; /* Màu nền của nút */
+    border-radius: 50%; /* Hình dạng tròn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%; /* Căn giữa theo chiều dọc */
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10;
+}
+
+.new-product-button-prev i, .new-product-button-next i, .sales-button-prev i, .sales-button-next i {
+    font-size: 24px; /* Kích thước biểu tượng */
+    color: #fff; /* Màu biểu tượng */
+}
+
+.card-bottom {
+    display: flex;
+    align-items: center; /* Canh giữa các phần tử theo chiều dọc */
+    justify-content: space-between; /* Tạo khoảng cách giữa `.price` và nút */
+}
+
+.price {
+    display: flex;
+    flex-direction: column; /* Xếp các phần tử con của `.price` theo chiều dọc */
+    align-items: flex-start; /* Căn lề trái cho văn bản */
+    gap: 5px; /* Khoảng cách giữa `old-price` và `current-price` */
+}
+
+/* Định dạng thêm cho các phần tử giá */
+.old-price {
+    text-decoration: line-through; /* Gạch ngang giá cũ */
+    color: #888;
+}
+
+.current-price {
+    font-weight: bold;
+    font-size: 24px;
+    color: #000; /* Đổi màu giá hiện tại */
+}
+
+.sales {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.trending-products {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-direction: column;
+}
+
+.trending-products .container {
+    background-color: #5668af;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 10px 20px;
+    position: relative;
+}
+
+.trending-products .tab-box .tab-btn {
+    font-size: 18px;
+    font-weight: 600;
+    color: #606060; 
+    background-color: #E6F0FF; 
+    border-radius: 30px;
+    padding: 16px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.trending-products .tab-box .tab-btn:hover {
+    background-color: #A4C7FF; 
+}
+
+.trending-products .tab-box .tab-btn.active {
+    color: #4B0082; 
+    background-color: #FFC0CB; 
+    transform: scale(0.95);
+}
+
+.trending-products .content {
+    display: none;
+    animation: moving .5s ease;
+}
+
+@keyframes moving {
+    from{transform: translateX(50px); opacity: 0;}
+    to{transform: translateX(0px); opacity: 1;}
+}
+
+.trending-products .content.active {
+    display: grid;
+}
+
+.trending-products .a {
+    width: 25%;
+}
+
+.card-item{
+    list-style: none;
+}
+
+.card-item .card-link {
+    user-select: none;
+    display: block;
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: 2px solid transparent;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+    transition: 0.2s ease;
+}
+
+.content .card-link {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.content-box {
+    display: flex;
+    width: 100%;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28.5px;
+}
+
+@media screen and (max-width: 768px){
+    .card-wrapper, .sales-card-wrapper, .content {
+        margin: 0 10px 25px;
+    }
+
+    .card-wrapper .swiper-slide-button, .sales-card-wrapper .swiper-slide-button {
+        display: none;
+    }
+
+    .banner-wrapper {
+        margin: 0 10px 25px;
+    }
+
+    .banner-wrapper .swiper-slide-button {
+        display: none;
+    }
+
+    .content-box {
+        grid-template-columns: repeat(2, 1fr); /* 768px trở xuống: 2 cột */
+    }
+}
