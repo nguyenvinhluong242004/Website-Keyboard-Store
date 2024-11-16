@@ -29,7 +29,7 @@ const dataTempServer = {
 module.exports = dataTempServer;
 
 // Load biến môi trường từ file .env
-require('dotenv').config({ path: './src/.env' });
+require('dotenv').config({ path: './.env' });
 const bodyParser = require('body-parser'); // Xử lý dữ liệu từ các yêu cầu HTTP
 
 const route = require('./routes');
