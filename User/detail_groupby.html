@@ -121,15 +121,21 @@
         justify-content: center;
         align-items: center;
         border: none;
+        padding: 10px 20px;
+        font-size: 16px;
       }
       .back:hover {
         background-color: #0056b3; /* Màu nền khi hover */
         transition: background-color 0.3s ease;
       }
       .flex_back {
+        position:relative;
+        bottom: 0;
+        width: 100%;
         display: flex;
         justify-content: center;
-        width: 100%;
+        background-color: #f8f9fa; /* Đặt màu nền nếu cần */
+        padding: 10px;
       }
       .grid-container {
         margin-top: 20px;
@@ -307,11 +313,14 @@
 
           <div class="money mt-4">5.583.443 đ</div>
           <div class="fw-bold mt-5">Kit</div>
-            <select id="mySelect" style="width: 200px; border: 2px solid #000000; border-radius: 5px" >
-              <option value="option1">Base</option>
-              <option value="option2" selected>Numpad</option>
-              <option value="option3">Full</option>
-            </select>
+          <select
+            id="mySelect"
+            style="width: 200px; border: 2px solid #000000; border-radius: 5px"
+          >
+            <option value="option1">Base</option>
+            <option value="option2" selected>Numpad</option>
+            <option value="option3">Full</option>
+          </select>
 
           <div class="fw-bold mt-5">Quantily</div>
           <input
@@ -330,9 +339,9 @@
           <div class="description" @click="toggleContent">
             Description
             <i
-            class="fas"
-            :class="{'fa-plus': !isContentVisible, 'fa-minus': isContentVisible}"
-          ></i>
+              class="fas"
+              :class="{'fa-plus': !isContentVisible, 'fa-minus': isContentVisible}"
+            ></i>
           </div>
           <div class="content" v-show="isContentVisible">
             Deadbeats - a collaborative project between artisans Rubrehose and
@@ -342,12 +351,9 @@
             two prominent makers.
           </div>
           <hr />
-          <div class="Specifications" @click="toggleCheck" >
+          <div class="Specifications" @click="toggleCheck">
             Specifications
-            <i
-            class="fas"
-            :class="{'fa-plus': !check, 'fa-minus': check}"
-          ></i>
+            <i class="fas" :class="{'fa-plus': !check, 'fa-minus': check}"></i>
           </div>
           <div class="content" v-show="check">
             <div>- Made in the United States by Signature Plastics</div>
@@ -369,23 +375,23 @@
         el: "#app",
         data: {
           // Đường dẫn ảnh chính ban đầu
-          mainImage: "/image/1_lon.jpg",
+          mainImage: "../image/1_lon.jpg",
           isContentVisible: false, // Biến điều khiển việc ẩn/hiện nội dung
-          check:false,
+          check: false,
           quanlity: 1,
           // Danh sách các đường dẫn ảnh nhỏ
           images: [
-            "/image/1_lon.jpg",
-            "/image/2_lon.jpg",
-            "/image/3_lon.jpg",
-            "/image/4_lon.jpg",
-            "/image/5_lon.jpg",
-            "/image/6_lon.jpg",
-            "/image/7_lon.jpg",
-            "/image/8_lon.jpg",
-            "/image/9_lon.jpg",
-            "/image/10_lon.jpg",
-            "/image/11_lon.jpg",
+            "../image/1_lon.jpg",
+            "../image/2_lon.jpg",
+            "../image/3_lon.jpg",
+            "../image/4_lon.jpg",
+            "../image/5_lon.jpg",
+            "../image/6_lon.jpg",
+            "../image/7_lon.jpg",
+            "../image/8_lon.jpg",
+            "../image/9_lon.jpg",
+            "../image/10_lon.jpg",
+            "../image/11_lon.jpg",
           ],
         },
         methods: {
@@ -402,7 +408,7 @@
           toggleContent() {
             this.isContentVisible = !this.isContentVisible; // Chuyển đổi trạng thái khi nhấn vào dấu "+"
           },
-          toggleCheck(){
+          toggleCheck() {
             this.check = !this.check;
           },
         },
