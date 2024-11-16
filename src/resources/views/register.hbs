@@ -1,0 +1,46 @@
+<!-- register.hbs -->
+<div class="card">
+    <div class="card-header text-center">Tạo tài khoản</div>
+    <div class="card-body">
+        <form id="register-form" @submit.prevent="signup">
+            <p class="text-center">Nhập email và mật khẩu của bạn</p>
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" class="form-control" id="signupEmail" v-model="signupEmail" placeholder="Email"
+                    required>
+            </div>
+            <div class="form-group position-relative">
+                <label for="signupPassword">Mật Khẩu</label>
+                <input :type="isHiddenPassword ? 'password' : 'text'" class="form-control" id="signupPassword"
+                    v-model="signupPassword" placeholder="Mật Khẩu" required>
+                <i @click.prevent="setHiddenPassword" v-if="!isHiddenPassword"
+                    class="bi bi-eye-fill position-absolute eye-icon"></i>
+                <i @click.prevent="setHiddenPassword" v-else=""
+                    class="bi bi-eye-slash-fill position-absolute eye-icon"></i>
+            </div>
+            <div class="form-group position-relative">
+                <label for="confirmPassword">Nhập lại mật khẩu</label>
+                <input :type="isHiddenPassword ? 'password' : 'text'" class="form-control" id="confirmPassword"
+                    v-model="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                <i @click.prevent="setHiddenPassword" v-if="!isHiddenPassword"
+                    class="bi bi-eye-fill position-absolute eye-icon"></i>
+                <i @click.prevent="setHiddenPassword" v-else=""
+                    class="bi bi-eye-slash-fill position-absolute eye-icon"></i>
+            </div>
+            <button type="submit" class="btn btn-custom">Đăng ký</button>
+            <p class="text-center mt-3">Đăng ký bằng:</p>
+            <div class="text-center social-icons">
+                <img src="https://img.icons8.com/fluent/48/000000/facebook-new.png" alt="Facebook">
+                <img @click.prevent="goLoginFromGG"
+                    src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="Google">
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-center text-muted">
+        This site is protected by reCAPTCHA and the Google <a href="#">Privacy Policy</a> and <a href="#">Terms
+            of Service</a> apply.
+    </div>
+    <div class="text-center mt-3">
+        <a href="#" @click.prevent="goToLogin" id="login">Đã có tài khoản? Đăng nhập</a>
+    </div>
+</div>

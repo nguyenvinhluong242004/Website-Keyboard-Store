@@ -1,0 +1,39 @@
+<!-- login.hbs -->
+<div class="card">
+    <div class="card-header text-center">Đăng nhập tài khoản</div>
+    <div class="card-body">
+        <form id="login-form" @submit.prevent="login">
+            <p class="text-center">Nhập email và mật khẩu của bạn</p>
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <!-- Input email -->
+                <input type="email" class="form-control" id="loginEmail" v-model="loginEmail" placeholder="Email"
+                    required>
+            </div>
+            <div class="form-group position-relative">
+                <label for="loginPassword">Mật Khẩu</label>
+                <input :type="isHiddenPassword ? 'password' : 'text'" class="form-control" id="loginPassword" v-model="loginPassword"
+                    placeholder="Mật Khẩu" required>
+                <i @click.prevent="setHiddenPassword" v-if="!isHiddenPassword" class="bi bi-eye-fill position-absolute eye-icon"></i>
+                <i @click.prevent="setHiddenPassword" v-else="" class="bi bi-eye-slash-fill position-absolute eye-icon"></i>
+            </div>
+
+            <button type="submit" class="btn btn-custom">Đăng Nhập</button>
+            <div class="text-center mt-3">
+                <a href="#" @click.prevent="goToRegister" id="register">Khách hàng mới? Tạo tài khoản</a><br>
+                <a href="#" @click.prevent="goToComfirmMail">Quên mật khẩu? Khôi phục mật khẩu</a>
+            </div>
+            <p class="text-center mt-3">Đăng nhập bằng:</p>
+            <div class="text-center social-icons">
+                <img @click.prevent="goLoginFromFB" src="https://img.icons8.com/fluent/48/000000/facebook-new.png"
+                    alt="Facebook">
+                <img @click.prevent="goLoginFromGG"
+                    src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="Google">
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-center text-muted">
+        This site is protected by reCAPTCHA and the Google <a href="#">Privacy Policy</a> and <a href="#">Terms
+            of Service</a> apply.
+    </div>
+</div>

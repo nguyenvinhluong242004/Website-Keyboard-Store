@@ -1,0 +1,29 @@
+<!-- forgot-password.hbs -->
+<div class="card">
+    <div class="card-header text-center">Quên mật khẩu</div>
+    <div class="card-body">
+        <form id="forgot-password-form" @submit.prevent="sendCodeToMail">
+            <p class="text-center">Nhập email để nhận mã xác thực</p>
+            <div class="form-group">
+                <label for="recoveryEmail">Email</label>
+                <!-- Input email -->
+                <input type="email" class="form-control" id="recoveryEmail" v-model="recoveryEmail" placeholder="Email"
+                    required>
+            </div>
+            <button type="submit" class="btn btn-custom">Gửi mã xác thực</button>
+            <div class="text-center mt-3">
+                <a href="#" @click.prevent="goToLogin" id="login">Trở về đăng nhập</a><br>
+                <a href="#" @click.prevent="goToRegister" id="register">Tạo tài khoản mới</a>
+            </div>
+            <p class="text-center mt-3">Đăng ký bằng:</p>
+            <div class="text-center social-icons">
+                <img src="https://img.icons8.com/fluent/48/000000/facebook-new.png" alt="Facebook">
+                <img @click.prevent="goLoginFromGG" src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="Google">
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-center text-muted">
+        This site is protected by reCAPTCHA and the Google <a href="#">Privacy Policy</a> and <a href="#">Terms
+            of Service</a> apply.
+    </div>
+</div>
