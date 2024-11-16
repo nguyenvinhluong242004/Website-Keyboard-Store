@@ -1,0 +1,84 @@
+/* style.css */
+
+.container {
+    max-width: 400px;
+    margin-top: 50px;
+}
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid black;
+}
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #8B4513;
+}
+.btn-custom {
+    background-color: #4B0082;
+    color: white;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+}
+.btn-custom:hover {
+    background-color: #3a0066;
+}
+.social-icons img {
+    width: 30px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+.text-muted {
+    font-size: 0.9rem;
+}
+a {
+    color: #4B0082;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* CSS Bổ sung */
+
+.prl-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid black;
+}
+.prl-card-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body .info-card i {
+    font-size: 1.25rem;
+    color: #6c757d;
+}
+
+.d-flex img {
+    width: 40px; /* Đặt chiều rộng */
+    height: 40px; /* Đặt chiều cao */
+}
+
+.btn-secondary {
+    background-color: #28a745;  /* Xanh lá */
+    color: white;
+}
+
+.btn-secondary-disabled {
+    background-color: #ccc;  /* Màu xám khi disabled */
+    color: #666;
+}
+
+.eye-icon {
+    right: 10px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%), translateX(-50%);
+    cursor: pointer;
+    color: #6c757d; /* Optional: adjusts color of the icon */
+    font-size: 1.25rem;
+}
