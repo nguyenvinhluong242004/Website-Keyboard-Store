@@ -27,8 +27,8 @@ class AuthLoginGGController {
 
             const result = await pool.query(`
                 SELECT * 
-                FROM AccountGoogle 
-                WHERE email = $1 AND googleId = $2`,
+                FROM AccountType 
+                WHERE email = $1 AND passwordorgoogleid = $2 AND type='Google'`,
                 [user.email, user.googleId]
             );
 
@@ -38,20 +38,20 @@ class AuthLoginGGController {
                 console.log('Chưa có dữ liệu');
                 // Thêm tài khoản mới vào cơ sở dữ liệu
                 await pool.query(`
-                    INSERT INTO AccountGoogle(email, googleId) 
-                    VALUES($1, $2)`,
-                    [user.email, user.googleId]
+                    INSERT INTO AccountType(email, passwordorgoogleid, type) 
+                    VALUES($1, $2, $3)`,
+                    [user.email, user.googleId, 'Google']
                 );
                 await pool.query(`
-                    INSERT INTO InforAccounts(email, username, sdt, address) 
-                    VALUES($1, $2, $3, $4)`,
-                    [user.email, user.displayName, "null", "null"]
+                    INSERT INTO Users(username, email, phone) 
+                    VALUES($1, $2, $3)`,
+                    [user.displayName, user.email, "null"]
                 );
             }
 
             const data_ = await pool.query(`
                 SELECT * 
-                FROM InforAccounts 
+                FROM Users 
                 WHERE email = $1`,
                 [user.email]
             );

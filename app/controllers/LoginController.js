@@ -28,7 +28,7 @@ class LoginController {
                 if (isMatch) {
                     const data_ = await pool.query(`
                         SELECT * 
-                        FROM AccountType 
+                        FROM Users 
                         WHERE email = $1`,
                         [loginEmail]);
                     dataTempServer.setDataUser(data_.rows[0]);

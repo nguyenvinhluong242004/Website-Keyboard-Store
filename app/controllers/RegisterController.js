@@ -11,7 +11,7 @@ class RegisterController {
         // Truy vấn dữ liệu từ bảng Account
         pool.query(`
             SELECT * 
-            FROM AccountNormal`,
+            FROM AccountType`,
             (err, result) => {
                 if (err) {
                     return console.error('Truy vấn thất bại!', err);
@@ -30,7 +30,7 @@ class RegisterController {
             // Kiểm tra email đã tồn tại chưa
             const existingUser = await pool.query(`
                 SELECT *
-                FROM AccountNormal 
+                FROM AccountType 
                 WHERE email = $1`,
                 [signupEmail]);
 
@@ -41,13 +41,13 @@ class RegisterController {
 
             // Thêm tài khoản mới vào cơ sở dữ liệu
             await pool.query(`
-                INSERT INTO AccountNormal(email, password) 
-                VALUES($1, $2)`,
-                [signupEmail, hashedSignupPassword]);
+                INSERT INTO AccountType(email, passwordorgoogleid, type) 
+                VALUES($1, $2, $3)`,
+                [signupEmail, hashedSignupPassword, 'Email']);
             await pool.query(`
-                INSERT INTO InforAccounts(email, username, sdt, address) 
-                VALUES($1, $2, $3, $4)`,
-                [signupEmail, "null", "null", "null"]);
+                INSERT INTO Users(username, email, phone) 
+                VALUES($1, $2, $3)`,
+                ["null", signupEmail, "null"]);
 
             res.json({ success: true, message: 'Đăng ký thành công' }); // Phản hồi đăng ký thành công
         } catch (err) {

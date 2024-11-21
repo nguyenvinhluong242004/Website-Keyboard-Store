@@ -196,9 +196,8 @@ new Vue({
             try {
                 const response = await axios.post('/account/change-info/api', {
                     username: this.dataUser.username,
-                    sdt: this.dataUser.sdt,
-                    email: this.dataUser.email,
-                    address: this.dataUser.address
+                    sdt: this.dataUser.phone,
+                    email: this.dataUser.email
                 });
                 if (response.data.success) {
                     alert(response.data.message);
@@ -207,7 +206,7 @@ new Vue({
                     alert(response.data.message);
                 }
             } catch (error) {
-                console.error('Có lỗi xảy ra khi gửi yêu cầu thay đổi mật khẩu:', error);
+                console.error('Có lỗi xảy ra khi gửi yêu cầu thay đổi thông tin:', error);
 
                 alert(response.data.message);
             }

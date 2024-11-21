@@ -16,8 +16,8 @@ class AccountController {
 
     // [POST] /account/change-info/api
     async callAPIAccountChangeInfo(req, res){
-        const { username, sdt, email, address } = req.body;
-        console.log(username, sdt, email, address); // Kiểm tra các giá trị
+        const { username, sdt, email } = req.body;
+        console.log(username, sdt, email); // Kiểm tra các giá trị
         console.log(req.body); // Kiểm tra cấu trúc của req.body
         dataTempServer.setStoredEmail(email);
 
@@ -27,7 +27,7 @@ class AccountController {
             // Kiểm tra tài khoản có tồn tại và mã xác thực đúng
             const result = await pool.query(`
                 SELECT *
-                FROM AccountNormal 
+                FROM AccountType 
                 WHERE email = $1`,
                 [storedEmail]);
 
@@ -35,19 +35,12 @@ class AccountController {
                 console.log('Tài khoản không tồn tại');
                 return res.status(404).json({ success: false, message: 'Tài khoản không tồn tại' });
             }
-
-            // Cập nhật thông tin người dùng trong cơ sở dữ liệu
+            console.log(sdt)
             await pool.query(`
-                UPDATE AccountNormal 
-                SET email = $1 
-                WHERE email = $2`,
-                [email, storedEmail]
-            );
-            await pool.query(`
-                UPDATE InforAccounts 
-                SET email = $1, username = $2, sdt = $3, address = $4 
-                WHERE email = $5`,
-                [email, username, sdt, address, storedEmail]
+                UPDATE Users 
+                SET username = $1, phone = $2 
+                WHERE email = $3`,
+                [username, sdt, storedEmail]
             );
 
             console.log('Đặt lại thông tin thành công');
@@ -55,7 +48,7 @@ class AccountController {
             storedEmail = email;
             const data_ = await pool.query(`
                 SELECT * 
-                FROM InforAccounts 
+                FROM Users 
                 WHERE email = $1`,
                 [storedEmail]);
             dataTempServer.setDataUser(data_.rows[0]);
