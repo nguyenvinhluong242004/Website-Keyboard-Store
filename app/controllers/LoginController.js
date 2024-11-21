@@ -17,16 +17,18 @@ class LoginController {
             // Kiểm tra tài khoản có tồn tại trong cơ sở dữ liệu
             const result = await pool.query(`
                 SELECT * 
-                FROM AccountNormal 
-                WHERE email = $1`,
+                FROM AccountType 
+                WHERE email = $1 AND type='Email'`,
                 [loginEmail]);
 
+
             if (result.rows.length > 0) {
-                const isMatch = await authPass.verifyPassword(loginPassword, result.rows[0].password);
+                const isMatch = await authPass.verifyPassword(loginPassword, result.rows[0].passwordorgoogleid);
+                console.log(loginPassword, result.rows[0].passwordorgoogleid)
                 if (isMatch) {
                     const data_ = await pool.query(`
                         SELECT * 
-                        FROM InforAccounts 
+                        FROM AccountType 
                         WHERE email = $1`,
                         [loginEmail]);
                     dataTempServer.setDataUser(data_.rows[0]);
