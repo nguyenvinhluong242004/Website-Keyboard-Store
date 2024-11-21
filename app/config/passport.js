@@ -7,19 +7,6 @@ const users = {};
 
 passport = new Passport;
 
-// Passport config cho Facebook
-passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: '/auth/facebook/callback'
-}, (accessToken, refreshToken, profile, cb) => {
-    const user = {
-        facebookId: profile.id,
-        displayName: profile.displayName,
-        email: profile.emails && profile.emails.length > 0 ? profile.emails[0].value : null,
-    };
-    return cb(null, user);
-}));
 
 // Passport config cho Google
 passport.use(new GoogleStrategy({
@@ -38,9 +25,9 @@ passport.use(new GoogleStrategy({
 
 // Cập nhật serializeUser và deserializeUser để làm việc với danh sách tạm này
 passport.serializeUser((user, done) => {
-    users[user.facebookId || user.googleId] = user;
+    users[user.googleId] = user;
     console.log(users[user.googleId]);
-    done(null, user.facebookId || user.googleId);
+    done(null, user.googleId);
 });
 
 passport.deserializeUser((id, done) => {
