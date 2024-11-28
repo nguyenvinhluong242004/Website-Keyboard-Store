@@ -10,6 +10,9 @@ const keCapRouter = require('./keCap.route');
 const switchRouter = require('./switch.route');
 const accessoriesRouter = require('./accessories.route');
 
+
+const serviceRouter = require('./service.route'); 
+
 function route(app){
 
     app.use('/login', loginRouter); // trang login
@@ -31,6 +34,8 @@ function route(app){
     app.use('/switch', switchRouter) // switch page
 
     app.use('/accessories', accessoriesRouter) // accessories page
+
+    app.use('/service', serviceRouter); // service page
 }
 
 module.exports = route;
