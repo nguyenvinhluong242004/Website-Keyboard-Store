@@ -12,6 +12,7 @@ const accessoriesRouter = require('./accessories.route');
 
 
 const serviceRouter = require('./service.route'); 
+const introductionRouter = require('./introduction.route');
 
 function route(app){
 
@@ -36,6 +37,8 @@ function route(app){
     app.use('/accessories', accessoriesRouter) // accessories page
 
     app.use('/service', serviceRouter); // service page
+
+    app.use('/introduction', introductionRouter); // introduction page
 }
 
 module.exports = route;
