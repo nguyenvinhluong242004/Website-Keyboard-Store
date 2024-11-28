@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="Vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
+  <!-- Liên kết CSS -->
+  <link rel="stylesheet" href="User/service.css">
+</head>
+<body>
+  <div class="image-container">
+    <img src="https://www.evetech.co.za/repository/ProductImages/steelseries-apex-pro-mini-mechanical-keyboard-1500px-v1-0001.jpg" alt="Responsive Image">
+  </div>
+
+  <div class="content">
+    <h1 class="title">Xin chào các đồng hữu phím cơ</h1>
+    <p>
+      Chắc hẳn các bạn đều muốn có cảm giác trải nghiệm tốt nhất trên con phím của mình.
+      Tuy nhiên, không phải mặc định bàn phím nào cũng cho ra cảm giác gõ như bạn mong muốn. Nhân tiện đây The Keebs Store
+      mình có các dịch vụ Mod phím, rã, hàn, lube switch, lube stab,... để giúp bạn hoàn thiện con phím theo yêu cầu.
+      Ngoài ra bên TKS cũng nhận sửa chữa các lỗi trên phím, mời bạn tham khảo.
+    </p>
+  </div>
+
+  <h2 class="table-title">Bảng giá dịch vụ</h2>
+
+  <table class="service-table">
+    <thead>
+      <tr>
+        <th>Tên dịch vụ</th>
+        <th>Loại</th>
+        <th>Giá thành</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each services}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{type}}</td>
+          <td>{{price}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="repair-service">
+    <h2 class="repair-title">Dịch vụ sửa chữa phím</h2>
+    <p>{{repairServiceText}}</p>
+
+    <p>
+      Mọi thắc mắc về dịch vụ bạn vui lòng liên hệ:
+    </p>
+
+    <ul class="contact-list">
+      <li>+ Facebook: https://www.facebook.com/Tlynx_Shop</li>
+      <li>+ Zalo (Nhắn tin): 0365562xxx</li>
+      <li>+ Website: https://www.website/Tlynx_shop.HTTPS</li>
+    </ul>
+
+    <p class="thank-you">Rất cảm ơn bạn đã ủng hộ !</p>
+  </div>
+</body>
+</html>
