@@ -4,7 +4,7 @@ class IntroductionController {
     index(req, res) {
         res.render('introduction', {
             layout: 'layout', // Layout chung cho các trang
-            title: 'Giới Thiệu Về Chúng Tôi - Tlynx Shop',
+            title: 'Giới Thiệu Về Chúng Tôi',
             customHead: `
                 <link rel="stylesheet" href="User/introduction_styles.css">
             `,
