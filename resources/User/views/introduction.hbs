@@ -1,0 +1,46 @@
+    <div class="container">
+        <header>
+            <h1>{{title}}</h1>
+        </header>
+        <section class="intro">
+            <p>{{introductionData.introductionText}}</p>
+        </section>
+        <section class="products">
+            <h2>Sản phẩm của chúng tôi</h2>
+            <ul>
+                {{#each introductionData.products}}
+                    <li><strong>{{this.name}}:</strong> {{this.description}}</li>
+                {{/each}}
+            </ul>
+        </section>
+        <section class="group-buy">
+            <h2>Điểm đặc biệt - Group Buy</h2>
+            <p>{{introductionData.specialFeature}}</p>
+        </section>
+        <section class="why-us">
+            <h2>Tại sao chọn chúng tôi?</h2>
+            <ul>
+                <li><strong>Chất lượng và sự đa dạng:</strong> Chúng tôi cung cấp các sản phẩm từ những thương hiệu uy tín và cả các sản phẩm độc quyền từ các đợt group buy.</li>
+                <li><strong>Hỗ trợ cá nhân hóa:</strong> Cho dù bạn là người mới bắt đầu hay là người chơi kỳ cựu, chúng tôi đều có những sản phẩm và phụ kiện để giúp bạn tự tay tùy chỉnh bàn phím của mình.</li>
+                <li><strong>Dịch vụ tận tâm:</strong> Với đội ngũ chuyên nghiệp, chúng tôi luôn sẵn sàng giải đáp thắc mắc và tư vấn về các sản phẩm phù hợp với nhu cầu của bạn.</li>
+                <li><strong>Cộng đồng mạnh mẽ:</strong> Không chỉ là một cửa hàng, Tlynx shop còn là nơi kết nối những người yêu thích bàn phím cơ, nơi bạn có thể tham gia vào các chương trình group buy và trao đổi kinh nghiệm.</li>
+            </ul>
+        </section>
+        <section class="commitment">
+            <h2>Cam Kết Chất Lượng</h2>
+            <p>{{introductionData.commitmentText}}</p>
+        </section>
+        <section class="customer-service">
+            <h2>Dịch Vụ Khách Hàng</h2>
+            <p>{{introductionData.customerService}}</p>
+        </section>
+        <section class="offers">
+            <h2>Chương Trình Ưu Đãi</h2>
+            <p>{{introductionData.offers}}</p>
+        </section>
+        <footer>
+            <p>Hãy để Tlynx shop đồng hành cùng bạn trong hành trình khám phá và trải nghiệm thế giới bàn phím cơ và phụ kiện độc đáo. Đến với chúng tôi, bạn sẽ tìm thấy không chỉ sản phẩm, mà còn cả niềm đam mê!</p>
+            <br>
+            <p><strong>Xin Cảm Ơn!</strong></p>
+        </footer>
+    </div>
