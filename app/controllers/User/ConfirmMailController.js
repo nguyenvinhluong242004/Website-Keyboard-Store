@@ -1,6 +1,5 @@
-const pool = require('../config/database');
 const nodemailer = require('nodemailer'); // Thư viện gửi email
-const dataTempServer = require('../../index');
+const dataTempServer = require('../../../index');
 
 // Cấu hình transporter cho nodemailer để gửi email qua Gmail
 const transporter = nodemailer.createTransport({
@@ -15,7 +14,13 @@ class ConfirmPassController {
 
     // [GET] /confirm-mail
     index(req, res) {
-        res.render('confirm-mail');
+        res.render('confirm-mail', {
+            layout: 'layout', title: 'Confirm Mail',
+            customHead: `
+            <link rel="stylesheet" href="User/LoginStyle.css">
+            <script defer type="module" src="User/Login/app.js"></script>
+            `
+        });
     }
     
     // [POST] /confirm-mail/send-code/api

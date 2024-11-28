@@ -1,13 +1,19 @@
-const pool = require('../config/database');
-const dataTempServer = require('../../index');
-const authPass = require('../models/AuthPass');
+const AccountProvider = require('../../models/User/AccountProvider');
+const dataTempServer = require('../../../index');
+const authPass = require('../../config/AuthPass');
 
 
 class ResetPassController {
 
     // [GET] /reset-password
     index(req, res) {
-        res.render('reset-password');
+        res.render('reset-password', {
+            layout: 'layout', title: 'Changge Password',
+            customHead: `
+            <link rel="stylesheet" href="User/LoginStyle.css">
+            <script defer type="module" src="User/Login/app.js"></script>
+            `
+        });
     }
     
     // [POST] /reset-password/api
@@ -16,13 +22,9 @@ class ResetPassController {
         console.log(dataTempServer.storedEmail, newPassword, confirmNewPassword, verificationCode, timeCode, dataTempServer.storedCode);
         try {
             // Kiểm tra tài khoản có tồn tại và mã xác thực đúng
-            const result = await pool.query(`
-                SELECT *
-                FROM AccountNormal 
-                WHERE email = $1`,
-                [dataTempServer.storedEmail]);
+            const existingUser = await AccountProvider.findAccountByEmail(dataTempServer.storedEmail);
 
-            if (result.rows.length === 0) {
+            if (!existingUser) {
                 console.log('Tài khoản không tồn tại');
                 return res.status(404).json({ success: false, message: 'Tài khoản không tồn tại' });
             }
@@ -47,12 +49,7 @@ class ResetPassController {
 
             const hashedNewPassword = await authPass.hashPassword(newPassword);
 
-            // Cập nhật mật khẩu mới trong cơ sở dữ liệu
-            await pool.query(`
-                UPDATE AccountNormal 
-                SET password = $1 
-                WHERE email = $2`,
-                [hashedNewPassword, dataTempServer.storedEmail]);
+            await AccountProvider.changePasswordByEmail(dataTempServer.storedEmail, hashedNewPassword);
 
             console.log('Đặt lại mật khẩu thành công');
             res.json({ success: true, message: 'Đặt lại mật khẩu thành công' });

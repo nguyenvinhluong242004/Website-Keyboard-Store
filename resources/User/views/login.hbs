@@ -1,5 +1,5 @@
 <!-- login.hbs -->
-<div class="card">
+<div id="login-control" class="login-control">
     <div class="card-header text-center">Đăng nhập tài khoản</div>
     <div class="card-body">
         <form id="login-form" @submit.prevent="login">
@@ -18,7 +18,7 @@
                 <i @click.prevent="setHiddenPassword" v-else="" class="bi bi-eye-slash-fill position-absolute eye-icon"></i>
             </div>
 
-            <button type="submit" class="btn btn-custom">Đăng Nhập</button>
+            <button type="submit" class="btn btn-custom mt-4">Đăng Nhập</button>
             <div class="text-center mt-3">
                 <a href="#" @click.prevent="goToRegister" id="register">Khách hàng mới? Tạo tài khoản</a><br>
                 <a href="#" @click.prevent="goToComfirmMail">Quên mật khẩu? Khôi phục mật khẩu</a>

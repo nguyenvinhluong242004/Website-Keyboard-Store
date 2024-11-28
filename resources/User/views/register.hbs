@@ -1,5 +1,5 @@
 <!-- register.hbs -->
-<div class="card">
+<div id="login-control" class="login-control">
     <div class="card-header text-center">Tạo tài khoản</div>
     <div class="card-body">
         <form id="register-form" @submit.prevent="signup">
@@ -27,7 +27,7 @@
                 <i @click.prevent="setHiddenPassword" v-else=""
                     class="bi bi-eye-slash-fill position-absolute eye-icon"></i>
             </div>
-            <button type="submit" class="btn btn-custom">Đăng ký</button>
+            <button type="submit" class="btn btn-custom mt-4">Đăng ký</button>
             <p class="text-center mt-3">Đăng ký bằng:</p>
             <div class="text-center social-icons">
                 <img @click.prevent="goLoginFromGG"

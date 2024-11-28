@@ -5,10 +5,10 @@ const confirmMailRouter = require('./confirmMail.route');
 const resetPassRouter = require('./resetPass.route');
 const authLoginGGRouter = require('./authLoginGG.route');
 
-const kitPhimRouter = require('./User/kitPhim.route');
-const keCapRouter = require('./User/keCap.route');
-const switchRouter = require('./User/switch.route');
-const accessoriesRouter = require('./User/accessories.route');
+const kitPhimRouter = require('./kitPhim.route');
+const keCapRouter = require('./keCap.route');
+const switchRouter = require('./switch.route');
+const accessoriesRouter = require('./accessories.route');
 
 function route(app){
 

@@ -1,6 +1,6 @@
 const express = require('express'); // Web framework cho Node.js
 const  router = express.Router();
-const loginController = require('../app/controllers/LoginController');
+const loginController = require('../../app/controllers/User/LoginController');
 
 router.post('/api', loginController.callAPILogin);
 router.get('/', loginController.index);
