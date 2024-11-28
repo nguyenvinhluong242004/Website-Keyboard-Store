@@ -44,7 +44,7 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -57,13 +57,18 @@ app.use(morgan('combined')); // Cấu hình ghi log HTTP requests
 app.use(express.json()); // Xử lý dữ liệu JSON từ yêu cầu HTTP
 
 // Cấu hình Handlebars làm template engine
-const hbs = expressHandlebars.create({
-    extname: '.hbs', // Đặt phần mở rộng file là .hbs
-});
-
-app.engine('hbs', hbs.engine);
+app.engine('hbs', expressHandlebars.engine({
+    extname: 'hbs',
+    defaultLayout: 'layout',
+    layoutsDir: __dirname + '/resources/User/views/layouts',
+    partialsDir: __dirname + '/resources/User/views/partials/',
+    helpers: {
+        eq: (a, b) => a === b
+    }
+}));
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources/views')); // Đặt thư mục views
+app.set('views', path.join(__dirname, 'resources/User/views')); // Đặt thư mục views
+
 
 
 // Kiểm tra kết nối với PostgreSQL
@@ -79,8 +84,6 @@ pool.connect((err, client, release) => {
 
 // Route init
 route(app);
-
-
 
 
 // Lắng nghe trên localhost
