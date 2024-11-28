@@ -5,6 +5,11 @@ const confirmMailRouter = require('./confirmMail.route');
 const resetPassRouter = require('./resetPass.route');
 const authLoginGGRouter = require('./authLoginGG.route');
 
+const kitPhimRouter = require('./User/kitPhim.route');
+const keCapRouter = require('./User/keCap.route');
+const switchRouter = require('./User/switch.route');
+const accessoriesRouter = require('./User/accessories.route');
+
 function route(app){
 
     app.use('/login', loginRouter); // trang login
@@ -19,6 +24,13 @@ function route(app){
     
     app.use('/auth/google', authLoginGGRouter); // trang login với google
 
+    app.use('/kitPhim', kitPhimRouter) // kit phim page
+
+    app.use('/keCap', keCapRouter) // keCap page
+
+    app.use('/switch', switchRouter) // switch page
+
+    app.use('/accessories', accessoriesRouter) // accessories page
 }
 
 module.exports = route;

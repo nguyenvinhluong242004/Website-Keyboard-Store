@@ -72,7 +72,7 @@ const app = createApp({
             //DESC
             return this.products.sort((a, b) => b.CurrentPrice - a.CurrentPrice);
         }
-    }
+    },
 });
 
 app.mount('#app');
