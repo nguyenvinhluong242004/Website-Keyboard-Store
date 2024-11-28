@@ -32,7 +32,7 @@ module.exports = dataTempServer;
 require('dotenv').config({ path: './.env' });
 const bodyParser = require('body-parser'); // Xử lý dữ liệu từ các yêu cầu HTTP
 
-const route = require('./routes');
+const route = require('./routes/User');
 const pool = require('./app/config/database');
 const passport = require('./app/config/passport');
 

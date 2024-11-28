@@ -1,7 +1,7 @@
 // app.js
 
 new Vue({
-    el: '#app',
+    el: '#login-control',
     data: {
         loginEmail: '',
         loginPassword: '',

@@ -1,12 +1,18 @@
-const pool = require('../config/database');
-const dataTempServer = require('../../index');
-const authPass = require('../models/AuthPass');
+const AccountProvider = require('../../models/User/AccountProvider');
+const dataTempServer = require('../../../index');
+const authPass = require('../../config/AuthPass');
 
 class LoginController {
 
     // [GET] /login
     index(req, res) {
-        res.render('login');
+        res.render('login', {
+            layout: 'layout', title: 'Login',
+            customHead: `
+            <link rel="stylesheet" href="User/LoginStyle.css">
+            <script defer type="module" src="User/Login/app.js"></script>
+            `
+        });
     }
 
     // [POST] /login/api
@@ -15,23 +21,15 @@ class LoginController {
 
         try {
             // Kiểm tra tài khoản có tồn tại trong cơ sở dữ liệu
-            const result = await pool.query(`
-                SELECT * 
-                FROM AccountType 
-                WHERE email = $1 AND type='Email'`,
-                [loginEmail]);
+            const existingUser = await AccountProvider.findAccountByEmail(loginEmail);
 
-
-            if (result.rows.length > 0) {
-                const isMatch = await authPass.verifyPassword(loginPassword, result.rows[0].passwordorgoogleid);
-                console.log(loginPassword, result.rows[0].passwordorgoogleid)
+            if (existingUser) {
+                const isMatch = await authPass.verifyPassword(loginPassword, existingUser.passwordorgoogleid);
+                console.log(loginPassword, existingUser.passwordorgoogleid)
                 if (isMatch) {
-                    const data_ = await pool.query(`
-                        SELECT * 
-                        FROM Users 
-                        WHERE email = $1`,
-                        [loginEmail]);
-                    dataTempServer.setDataUser(data_.rows[0]);
+                    const data_ = await AccountProvider.getInforAccountByEmail(loginEmail);
+                    
+                    dataTempServer.setDataUser(data_);
 
                     console.log('Đăng nhập thành công');
                     return res.json({ success: true, message: 'Đăng nhập thành công' });

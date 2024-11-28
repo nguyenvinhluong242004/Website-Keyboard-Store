@@ -1,5 +1,5 @@
 <!-- forgot-password.hbs -->
-<div class="card">
+<div id="login-control" class="login-control">
     <div class="card-header text-center">Quên mật khẩu</div>
     <div class="card-body">
         <form id="forgot-password-form" @submit.prevent="sendCodeToMail">
@@ -10,7 +10,7 @@
                 <input type="email" class="form-control" id="recoveryEmail" v-model="recoveryEmail" placeholder="Email"
                     required>
             </div>
-            <button type="submit" class="btn btn-custom">Gửi mã xác thực</button>
+            <button type="submit" class="btn btn-custom mt-4">Gửi mã xác thực</button>
             <div class="text-center mt-3">
                 <a href="#" @click.prevent="goToLogin" id="login">Trở về đăng nhập</a><br>
                 <a href="#" @click.prevent="goToRegister" id="register">Tạo tài khoản mới</a>
