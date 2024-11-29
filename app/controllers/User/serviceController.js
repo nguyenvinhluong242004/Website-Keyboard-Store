@@ -1,6 +1,8 @@
 class ServiceController {
     // Hàm render trang dịch vụ
     static getServicePage(req, res) {
+
+        
         const serviceData = {
             title: "Dịch Vụ Tại The Keebs Store",
             services: [
@@ -18,10 +20,16 @@ class ServiceController {
             repairServiceText: "Về dịch vụ sửa chữa phím như: phím không hoạt động, bung socket, đứt mạch, chập chờn,... và những lỗi khác bạn vui lòng liên hệ để được tư vấn và báo giá cụ thể cho từng lỗi."
         };
 
-        res.render('service', serviceData); // Render view 'service' và truyền data vào
-    }
+        res.render('service', {
+            ...serviceData, // Truyền dữ liệu tĩnh từ serviceData
+            layout: 'layout', // Layout chung
+            title: 'Service', // Tiêu đề trang
+            customHead: `
+                <link rel="stylesheet" href="User/service.css"> 
+            `
+        });
 
-    
+    }
 }
 
 // Export class
