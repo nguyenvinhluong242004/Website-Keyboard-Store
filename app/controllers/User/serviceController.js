@@ -28,7 +28,6 @@ class ServiceController {
                 <link rel="stylesheet" href="User/service.css"> 
             `
         });
-
     }
 }
 

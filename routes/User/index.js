@@ -14,7 +14,11 @@ const accessoriesRouter = require('./accessories.route');
 const serviceRouter = require('./service.route'); 
 const introductionRouter = require('./introduction.route');
 
+const homepageRouter = require('./homepage.route')
+
 function route(app){
+
+    app.use('/', homepageRouter); // home page
 
     app.use('/login', loginRouter); // trang login
     
