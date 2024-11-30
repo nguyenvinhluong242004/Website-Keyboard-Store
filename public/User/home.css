@@ -457,6 +457,10 @@ header .swiper-slide-button i {
     gap: 28.5px;
 }
 
+ul {
+    padding: 0;
+}
+
 @media screen and (max-width: 768px){
     .card-wrapper, .sales-card-wrapper, .content {
         margin: 0 10px 25px;
@@ -464,10 +468,6 @@ header .swiper-slide-button i {
 
     .card-wrapper .swiper-slide-button, .sales-card-wrapper .swiper-slide-button {
         display: none;
-    }
-
-    .banner-wrapper {
-        margin: 0 10px 25px;
     }
 
     .banner-wrapper .swiper-slide-button {
@@ -478,12 +478,9 @@ header .swiper-slide-button i {
         grid-template-columns: repeat(2, 1fr); /* 768px trở xuống: 2 cột */
     }
 
-    .banner-item {
+    .banner-other {
         display: none;
         /* flex: 1 1 100%;  Make each item take full width on smaller screens */
     }
 }
 
-ul {
-    padding: 0;
-}
