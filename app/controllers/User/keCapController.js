@@ -9,7 +9,7 @@ controller.showKeCap = (req, res) => {
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/KeCap/keCap.js"></script>
         `
-     });
+    });
 };
 
 // Get Kecap

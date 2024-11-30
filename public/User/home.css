@@ -31,6 +31,13 @@ body{
     justify-content: center;
 }
 
+.swiper-wrapper{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    list-style: none;  
+}
+
 .card-wrapper, .sales-card-wrapper, .trending-products .content {
     width: 100%;
     margin: 0 60px 0px;
@@ -40,6 +47,13 @@ body{
 
 .card-item{
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    height: auto; 
+    min-height: 300px;
 }
 
 .card-item .card-link, .content .card-link {
@@ -65,14 +79,23 @@ body{
     border-radius: 50px;
 }
 
-.card-link .badge.Keycap{
-    color:#b22485;
+.card-link .badge.Keycap {
+    color: #b22485;
     background: #f7dff5;
 }
-.card-link .badge.Switch{
-    color:#b25a2b;
+.card-link .badge.Switch {
+    color: #b25a2b;
     background: #ffe3d2;
 }
+.card-link .badge.Accessories {
+    color: #2b85b2;
+    background: #d2f4ff; 
+}
+.card-link .badge.Kit-Phim {
+    color: #6f3fb2;
+    background: #ecdfff;
+}
+
 
 .card-item .card-link:active {
     cursor: grabbing;
@@ -93,6 +116,18 @@ body{
     font-size: 1.19rem;
     color: #000;
     font-weight: 600;
+
+    font-size: 1.19rem;
+    color: #000;
+    font-weight: 600;
+
+    /* Cố định chiều cao */
+    height: 3rem; /* Điều chỉnh tùy thuộc vào thiết kế */
+    line-height: 1.5rem; /* Dòng chữ sẽ căn theo chiều cao này */
+    
+    /* Đảm bảo nội dung không tràn */
+    overflow: hidden; /* Ẩn nội dung tràn ra ngoài */
+    text-overflow: ellipsis;
 }
 
 .card-link .add-cart {
@@ -175,15 +210,6 @@ body{
     border-radius: 10px;
 }
 
-.banner-list .banner-link .badge.Keycap{
-    color:#b22485;
-    background: #f7dff5;
-}
-.banner-list .banner-link .badge.Switch{
-    color:#b25a2b;
-    background: #ffe3d2;
-}
-
 .banner-list .banner-link .banner-title {
     font-size: 1.19rem;
     color: #000;
@@ -213,12 +239,19 @@ body{
     width: 100%;
     padding: 0px 10px;
     overflow: hidden;
-    justify-content: flex-start;
+    /* justify-content: flex-start;
+    display: flex; */
+
     display: flex;
+    flex-wrap: wrap;
+    gap: 8px;  /* Adjust the gap between items */
+    justify-content: space-between;
 }
 
 .banner-other .banner-item {
     padding: 6px 5px;
+    flex: 1 1 calc(50% - 10px);  /* Take 50% width minus the gap */
+    box-sizing: border-box;
 }
 .banner-other .banner-image {
     width: 100%;
@@ -443,6 +476,11 @@ header .swiper-slide-button i {
 
     .content-box {
         grid-template-columns: repeat(2, 1fr); /* 768px trở xuống: 2 cột */
+    }
+
+    .banner-item {
+        display: none;
+        /* flex: 1 1 100%;  Make each item take full width on smaller screens */
     }
 }
 
