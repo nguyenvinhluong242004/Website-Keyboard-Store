@@ -56,6 +56,12 @@ export default {
             this.products = data.dataAccessories;
             this.product.quantity = data.totalProducts;
         },
+        async fetchGroupByProduct() {
+            const response = await axios.get(`/group-by-product/api/get-group-by-product?visibleCount=${this.visibleCount}`); // Get data from the server
+            const data = response.data;
+            this.products = data.dataGroupByProduct;
+            this.product.quantity = data.totalProducts
+        },
         addToCart(product) {
             alert(`${product.ProductName} đã được thêm vào giỏ hàng!`);
         },
@@ -72,6 +78,9 @@ export default {
             }
             else if (this.product.type === 'Accessories') {
                 this.fetchAccessories();
+            }
+            else if (this.product.type === 'GroupBy Product') {
+                this.fetchGroupByProduct();
             }
         },
         filterProducts(type) {
@@ -104,6 +113,10 @@ export default {
         }
         else if (this.product.type === 'Accessories') {
             this.fetchAccessories();
+        }
+        else if (this.product.type === 'GroupBy Product') {
+            console.log('GroupBy Product');
+            this.fetchGroupByProduct();
         }
     },
     template: `

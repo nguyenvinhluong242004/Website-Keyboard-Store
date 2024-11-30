@@ -9,12 +9,13 @@ const kitPhimRouter = require('./kitPhim.route');
 const keCapRouter = require('./keCap.route');
 const switchRouter = require('./switch.route');
 const accessoriesRouter = require('./accessories.route');
-
+const groupByRouter = require('./groupby.route');
 
 const serviceRouter = require('./service.route'); 
 const introductionRouter = require('./introduction.route');
 
 const homepageRouter = require('./homepage.route')
+
 
 function route(app){
 
@@ -39,6 +40,8 @@ function route(app){
     app.use('/switch', switchRouter) // switch page
 
     app.use('/accessories', accessoriesRouter) // accessories page
+
+    app.use('/group-by-product', groupByRouter) // group by product page
 
     app.use('/service', serviceRouter); // service page
 
