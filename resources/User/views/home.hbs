@@ -31,31 +31,13 @@
             </div>
         </div>
         <div class="banner-other">
-            <div class="banner-col">
-                <div class="banner-kit banner-item">
-                    <a href="#" class="banner-link">
-                        <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Banner Kit Image" class="banner-image">
-                    </a>
-                </div>
-                <div class="banner-keycap banner-item">
-                    <a href="#" class="banner-link">
-                        <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Banner Keycap Image" class="banner-image">
-                    </a>
-                </div>
+            {{#each poster.data}}
+            <div class="banner-kit banner-item">
+                <a href="#" class="banner-link">
+                    <img src="{{this.imagepath}}" alt="Banner Kit Image" class="banner-image">
+                </a>
             </div>
-            <div class="banner-col">
-                <div>
-                <div class="banner-kit banner-item">
-                    <a href="#" class="banner-link">
-                        <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Banner Kit Image" class="banner-image">
-                    </a>
-                </div>
-                <div class="banner-keycap banner-item">
-                    <a href="#" class="banner-link">
-                        <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Banner Keycap Image" class="banner-image">
-                    </a>
-                </div>
-            </div>
+            {{/each}}
         </div>
         <!-- / Banner Blocks -->
     </section>
@@ -76,185 +58,48 @@
         <div class="container-home swiper">
             <div class="card-wrapper">
                 <ul class="card-list swiper-wrapper">
+                    {{#each topNewProduct}}
                     <li class="card-item swiper-slide">
                         <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
+                            <img src="{{this.imagepath}}/1.jpg" alt="Card Image" class="card-image">
+                            <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                            <h2 class="card-title">{{this.description}}</h2>
                             <div class="card-bottom">
                                 <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
+                                    <span class="old-price">${{this.oldprice}}</span>
+                                    <span class="current-price">${{this.currentprice}}</span>
                                 </div>
                                 <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
                             </div>
                         </a>
                     </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg" alt="Card Image" class="card-image">
-                            <p class="badge Keycap">Keycap</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://th.bing.com/th/id/R.5e67ab55cddf7a394db3926beff284ca?rik=g4opCZ9FmWuhqw&pid=ImgRaw&r=0" alt="Card Image" class="card-image">
-                            <p class="badge Switch">Switch</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg" alt="Card Image" class="card-image">
-                            <p class="badge Keycap">Keycap</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
+                    {{/each}}
                 </ul>                
             </div>
         </div>
         <div class="container-home swiper">
             <div class="card-wrapper">
                 <ul class="card-list swiper-wrapper">
+                    {{#each bottomNewProduct}}
                     <li class="card-item swiper-slide">
                         <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
+                            <img src="{{this.imagepath}}/1.jpg" alt="Card Image" class="card-image">
+                            <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                            <h2 class="card-title">{{this.description}}</h2>
                             <div class="card-bottom">
                                 <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
+                                    <span class="old-price">${{this.oldprice}}</span>
+                                    <span class="current-price">${{this.currentprice}}</span>
                                 </div>
                                 <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
                             </div>
                         </a>
                     </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg" alt="Card Image" class="card-image">
-                            <p class="badge Keycap">Keycap</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://th.bing.com/th/id/R.5e67ab55cddf7a394db3926beff284ca?rik=g4opCZ9FmWuhqw&pid=ImgRaw&r=0" alt="Card Image" class="card-image">
-                            <p class="badge Switch">Switch</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg" alt="Card Image" class="card-image">
-                            <p class="badge Keycap">Keycap</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
+                    {{/each}}
                 </ul>                
             </div>
         </div>
     </section>
-
     
     <section class="sales">
         <header>
@@ -271,180 +116,44 @@
         <div class="container-home swiper">
             <div class="sales-card-wrapper">
                 <ul class="card-list swiper-wrapper">
+                    {{#each topSalesProduct}}
                     <li class="card-item swiper-slide">
                         <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
+                            <img src="{{this.imagepath}}/1.jpg" alt="Card Image" class="card-image">
+                            <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                            <h2 class="card-title">{{this.description}}</h2>
                             <div class="card-bottom">
                                 <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
+                                    <span class="old-price">${{this.oldprice}}</span>
+                                    <span class="current-price">${{this.currentprice}}</span>
                                 </div>
                                 <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
                             </div>
                         </a>
                     </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg" alt="Card Image" class="card-image">
-                            <p class="badge Keycap">Keycap</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://th.bing.com/th/id/R.5e67ab55cddf7a394db3926beff284ca?rik=g4opCZ9FmWuhqw&pid=ImgRaw&r=0" alt="Card Image" class="card-image">
-                            <p class="badge Switch">Switch</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg" alt="Card Image" class="card-image">
-                            <p class="badge Keycap">Keycap</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
+                    {{/each}}
                 </ul>                
             </div>
         </div>
         <div class="container-home swiper">
             <div class="sales-card-wrapper">
                 <ul class="card-list swiper-wrapper">
+                    {{#each bottomSalesProduct}}
                     <li class="card-item swiper-slide">
                         <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
+                            <img src="{{this.imagepath}}/1.jpg" alt="Card Image" class="card-image">
+                            <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                            <h2 class="card-title">{{this.description}}</h2>
                             <div class="card-bottom">
                                 <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
+                                    <span class="old-price">${{this.oldprice}}</span>
+                                    <span class="current-price">${{this.currentprice}}</span>
                                 </div>
                                 <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
                             </div>
                         </a>
                     </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg" alt="Card Image" class="card-image">
-                            <p class="badge Keycap">Keycap</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://th.bing.com/th/id/R.5e67ab55cddf7a394db3926beff284ca?rik=g4opCZ9FmWuhqw&pid=ImgRaw&r=0" alt="Card Image" class="card-image">
-                            <p class="badge Switch">Switch</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg" alt="Card Image" class="card-image">
-                            <p class="badge Keycap">Keycap</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="card-item swiper-slide">
-                        <a href="#" class="card-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                            <p class="badge kit">Kit Set</p>
-                            <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                            <div class="card-bottom">
-                                <div class="price">
-                                    <span class="old-price">$25.00</span>
-                                    <span class="current-price">$18.00</span>
-                                </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                            </div>
-                        </a>
-                    </li>
+                    {{/each}}
                 </ul>                
             </div>
         </div>
@@ -525,202 +234,52 @@
                 </a>              
             </div>
             <div class="content">
+                {{#each kitProducts}}
                 <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
+                    <img src="{{this.imagepath}}/1.jpg" alt="Card Image" class="card-image">
+                    <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                    <h2 class="card-title">{{this.description}}</h2>
                     <div class="card-bottom">
                         <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
+                            <span class="old-price">${{this.oldprice}}</span>
+                            <span class="current-price">${{this.currentprice}}</span>
                         </div>
                         <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>               
+                {{/each}}               
             </div>
             <div class="content">
+                {{#each keycapProducts}}
                 <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
+                    <img src="{{this.imagepath}}/1.jpg" alt="Card Image" class="card-image">
+                    <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                    <h2 class="card-title">{{this.description}}</h2>
                     <div class="card-bottom">
                         <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
+                            <span class="old-price">${{this.oldprice}}</span>
+                            <span class="current-price">${{this.currentprice}}</span>
                         </div>
                         <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>              
+                {{/each}}              
             </div>
             <div class="content">
+                {{#each switchProducts}}
                 <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
+                    <img src="{{this.imagepath}}/1.jpg" alt="Card Image" class="card-image">
+                    <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                    <h2 class="card-title">{{this.description}}</h2>
                     <div class="card-bottom">
                         <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
+                            <span class="old-price">${{this.oldprice}}</span>
+                            <span class="current-price">${{this.currentprice}}</span>
                         </div>
                         <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>      
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899" alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>            
+                {{/each}}            
             </div>
         </div>
     </section>
