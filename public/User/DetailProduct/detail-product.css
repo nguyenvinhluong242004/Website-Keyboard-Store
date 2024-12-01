@@ -1,0 +1,91 @@
+.container {
+    width: 100%;
+    height: 100%;
+  }
+  .name {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: aliceblue;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    height: 50px;
+    align-items: center;
+  }
+  .flex_image {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+  }
+  .detail {
+    background-color: antiquewhite;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  .money {
+    color: red;
+    font-weight: bold;
+  }
+  .flex {
+    display: flex;
+  }
+  .flex_money {
+    display: flex;
+    justify-content: space-between;
+  }
+  .cart {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(6, 136, 250);
+    border: 2px solid black;
+    color: white;
+    font-weight: bold;
+    width: 200px;
+    border-radius: 5px;
+  }
+  .buy {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(6, 136, 250);
+    border: 2px solid black;
+    color: white;
+    font-weight: bold;
+    width: 200px;
+    border-radius: 5px;
+  }
+  .image {
+    display: flex;
+    justify-content: center;
+  }
+  .customer {
+    width: 1000px;
+    border: 2px solid black;
+  }
+  .customer_review {
+    font-weight: bold;
+  }
+  .cancel_review {
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    font-weight: bold;
+    background-color: antiquewhite;
+    cursor: pointer;
+    width: 150px; /* thêm kích thước cố định nếu cần */
+    height: 40px; /* thêm chiều cao cố định nếu cần */
+  }
+  .submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: #569fff;
+    border-radius: 5px;
+    border: none;
+  }

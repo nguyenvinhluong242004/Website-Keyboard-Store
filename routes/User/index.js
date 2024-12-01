@@ -16,6 +16,9 @@ const introductionRouter = require('./introduction.route');
 
 const homepageRouter = require('./homepage.route')
 
+const detailGroupbyRouter = require('./detailGroupby.route')
+const detailProductRouter = require('./detailProduct.route')
+
 
 function route(app){
 
@@ -46,6 +49,10 @@ function route(app){
     app.use('/service', serviceRouter); // service page
 
     app.use('/introduction', introductionRouter); // introduction page
+
+    app.use('/detail-group-by', detailGroupbyRouter); // detail groupby page
+
+    app.use('/detail-product', detailProductRouter); // detail product page
 }
 
 module.exports = route;

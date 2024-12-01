@@ -1,0 +1,152 @@
+.card-title-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+  }
+  .name {
+    font-size: 30px;
+    font-weight: bold;
+  }
+  .img-margin-top {
+    margin-top: 200px;
+  }
+  .flex {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .money {
+    color: red;
+    font-weight: bold;
+    font-size: 30px;
+  }
+  .group_by {
+    font-weight: bolder;
+    color: rgb(53, 142, 244);
+    font-size: 20px;
+    border: 2px solid #007bff;
+    width: 110px;
+  }
+  .time {
+    font-weight: bold;
+  }
+  .thick-border {
+    border-width: 10px;
+    border: 2px solid #000000;
+    height: 50px;
+  }
+  .flex_kit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .flex_quan {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .quanlity {
+    width: 60px;
+    border: 2px solid #000000;
+  }
+  .time_arrival {
+    width: 250px;
+    border: 2px solid #000000;
+  }
+
+  .cart {
+    background-color: #449efe;
+    display: flex;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+  }
+  .cart:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+    transition: background-color 0.3s ease;
+  }
+  .description {
+    margin-top: 100px;
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    border-radius: 5px;
+  }
+  .content {
+    margin-top: 10px;
+    background-color: aliceblue;
+    width: 400px;
+    border-radius: 5px;
+  }
+  .Specifications {
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    border-radius: 5px;
+  }
+  .back {
+    background-color: #5cabff;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    width: 500px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  .back:hover {
+    background-color: #0056b3; /* Màu nền khi hover */
+    transition: background-color 0.3s ease;
+  }
+  .flex_back {
+    position:relative;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #f8f9fa; /* Đặt màu nền nếu cần */
+    padding: 10px;
+  }
+  .grid-container {
+    margin-top: 20px;
+    display: grid; /* Sử dụng grid layout */
+    grid-template-columns: 150px 150px 150px 150px; /* 3 cột với kích thước đều nhau */
+    grid-template-rows: repeat(
+      3,
+      100px
+    ); /* 3 hàng với kích thước đều nhau */
+    gap: 49px; /* Khoảng cách giữa các ô */
+    width: 450px; /* Chiều rộng của lưới */
+    height: 300px; /* Chiều cao của lưới */
+  }
+
+  .grid-item {
+    width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của ô */
+    height: 100%; /* Ảnh chiếm toàn bộ chiều cao của ô */
+    object-fit: cover; /* Giữ tỷ lệ ảnh, cắt bớt nếu cần */
+  }
+  .row_height {
+    height: 200px;
+  }
+  .col_height {
+    height: 300px;
+  }
+  .mt {
+    margin-top: -180px;
+  }
+  .container {
+    width: 100%;
+  }
+  .flex_image {
+    display: flex;
+    justify-content: space-between;
+  }
