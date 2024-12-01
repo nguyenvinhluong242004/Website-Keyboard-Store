@@ -5,7 +5,7 @@ const morgan = require('morgan'); // Module ghi log
 const expressHandlebars = require('express-handlebars'); // Template engine
 const session = require('express-session');
 const app = express();
-const port = 3000; // Cổng để chạy server
+const port = 4000; // Cổng để chạy server
 
 // Object để lưu trữ các biến cần chia sẻ
 const dataTempServer = {
