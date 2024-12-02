@@ -25,14 +25,18 @@
     </div>
 
     <div class="col-md-4">
-      <div class="name">DCS Deadbeats</div>
+      <div class="name" v-text="getDB.productname"></div>
 
       <div>
         <div class="card-body group_by rounded">GROUP BY</div>
         <div class="time">End:10/10/2024 at 10pm</div>
       </div>
 
-      <div class="money mt-4">5.583.443 đ</div>
+      <div class="price">
+        <div class="money" v-text="getDB.currentprice"></div>
+        <div class="symbol">$</div>
+      </div>
+
       <div class="fw-bold mt-5">Kit</div>
       <select
         id="mySelect"
@@ -77,13 +81,7 @@
         <i class="fas" :class="{'fa-plus': !check, 'fa-minus': check}"></i>
       </div>
       <div class="content" v-show="check">
-        <div>- Made in the United States by Signature Plastics</div>
-        <div>- DCS profile (1-1-2-3-4-4)</div>
-        <div>- Compatible with MX style switches</div>
-        <div>- PBT Plastic, except the Spacebars which are ABS</div>
-        <div>- Designed by Rubrehose and Hello?</div>
-        <div>- Compatible with MX style switches</div>
-        <div>- Packaged in bags, not trays!</div>
+        <div v-html="formattedDescription"></div>
       </div>
     </div>
 
@@ -91,4 +89,9 @@
   <div class="flex_back">
     <button class="back" @click="showMess">BACK</button>
   </div>
+
 </div>
+
+<script>
+  window.data = JSON.parse('{{{data}}}');
+</script>
