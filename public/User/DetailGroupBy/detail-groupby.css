@@ -62,6 +62,7 @@
     justify-content: center;
     align-items: center;
     height: 50px;
+    border-radius: 5px;
   }
   .cart:hover {
     background-color: #0056b3; /* Màu nền khi hover */
@@ -102,18 +103,17 @@
     border: none;
     padding: 10px 20px;
     font-size: 16px;
+    border-radius: 5px;
   }
   .back:hover {
     background-color: #0056b3; /* Màu nền khi hover */
     transition: background-color 0.3s ease;
   }
   .flex_back {
-    position:relative;
-    bottom: 0;
+    margin-top:100px;
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: #f8f9fa; /* Đặt màu nền nếu cần */
     padding: 10px;
   }
   .grid-container {
@@ -124,7 +124,7 @@
       3,
       100px
     ); /* 3 hàng với kích thước đều nhau */
-    gap: 49px; /* Khoảng cách giữa các ô */
+    gap: 30px; /* Khoảng cách giữa các ô */
     width: 450px; /* Chiều rộng của lưới */
     height: 300px; /* Chiều cao của lưới */
   }
@@ -140,13 +140,15 @@
   .col_height {
     height: 300px;
   }
-  .mt {
-    margin-top: -180px;
-  }
   .container {
     width: 100%;
+    height: 100%;
   }
   .flex_image {
     display: flex;
     justify-content: space-between;
+  }
+  .row{
+
+    height: 100%;
   }
