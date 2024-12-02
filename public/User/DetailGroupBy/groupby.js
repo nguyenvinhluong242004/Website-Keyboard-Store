@@ -1,42 +1,39 @@
-new Vue({
-  el: "#app",
-  data: {
-    // Đường dẫn ảnh chính ban đầu
-    mainImage: "../image/1_lon.jpg",
-    isContentVisible: false, // Biến điều khiển việc ẩn/hiện nội dung
-    check: false,
-    quanlity: 1,
-    // Danh sách các đường dẫn ảnh nhỏ
-    images: [
-      "../image/1_lon.jpg",
-      "../image/2_lon.jpg",
-      "../image/3_lon.jpg",
-      "../image/4_lon.jpg",
-      "../image/5_lon.jpg",
-      "../image/6_lon.jpg",
-      "../image/7_lon.jpg",
-      "../image/8_lon.jpg",
-      "../image/9_lon.jpg",
-      "../image/10_lon.jpg",
-      "../image/11_lon.jpg",
-    ],
-  },
-  methods: {
-    // Phương thức để thay đổi ảnh chính khi click vào ảnh nhỏ
-    changeMainImage(image) {
-      this.mainImage = image;
+document.addEventListener("DOMContentLoaded", function() {
+  new Vue({
+    el: "#app",
+    data: {
+      mainImage: "/image/detail_groupby/1.jpg",
+      isContentVisible: false,
+      check: false,
+      quanlity: 1,
+      images: [
+        "/image/detail_groupby/1.jpg","/image/detail_groupby/2.jpg",
+        "/image/detail_groupby/3.jpg","/image/detail_groupby/4.jpg",
+        "/image/detail_groupby/5.jpg","/image/detail_groupby/6.jpg",
+        "/image/detail_groupby/7.jpg","/image/detail_groupby/8.jpg",
+        "/image/detail_groupby/9.jpg","/image/detail_groupby/10.jpg",
+        "/image/detail_groupby/11.jpg","/image/detail_groupby/12.jpg"
+      ],
     },
-    showMess() {
-      alert("Quay lại");
+    methods: {
+      changeMainImage(image) {
+        this.mainImage = image;
+      },
+      showMess() {
+        alert("Quay lại");
+      },
+      addCart() {
+        alert("Đã thêm vào giỏ hàng");
+      },
+      toggleContent() {
+        this.isContentVisible = !this.isContentVisible;
+      },
+      toggleCheck() {
+        this.check = !this.check;
+      },
     },
-    addCart() {
-      alert("Đã thêm vào giỏ hàng");
-    },
-    toggleContent() {
-      this.isContentVisible = !this.isContentVisible; // Chuyển đổi trạng thái khi nhấn vào dấu "+"
-    },
-    toggleCheck() {
-      this.check = !this.check;
-    },
-  },
+    mounted() {
+      console.log("Vue instance has been mounted and script is loaded.");
+    }
+  });
 });

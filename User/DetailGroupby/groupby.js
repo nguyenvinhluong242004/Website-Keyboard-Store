@@ -2,7 +2,7 @@ new Vue({
   el: "#app",
   data: {
     // Đường dẫn ảnh chính ban đầu
-    mainImage: "../image/1_lon.jpg",
+    mainImage: "/image/detail_groupby/main.jpg",
     isContentVisible: false, // Biến điều khiển việc ẩn/hiện nội dung
     check: false,
     quanlity: 1,
