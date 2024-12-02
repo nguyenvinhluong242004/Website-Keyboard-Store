@@ -152,3 +152,16 @@
 
     height: 100%;
   }
+  .price{
+    display: flex;
+    width: 100px;
+    height: 100px;
+    justify-content: center;
+    align-items: center;
+    gap:5px;
+  }
+  .symbol{
+    color: #797979;
+    font-weight: bold;
+    font-size: 25px;
+  }
