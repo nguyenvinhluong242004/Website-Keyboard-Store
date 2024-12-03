@@ -15,7 +15,7 @@ class GetApiImageController {
       res.json(images); // Trả về danh sách ảnh
     } catch (error) {
       console.error("Error fetching images:", error);
-      res.status(500).json({ error: "minh123Failed to retrieve images" });
+      res.status(500).json({ error: "Failed to retrieve images" });
     }
   }
 }

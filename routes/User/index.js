@@ -18,7 +18,7 @@ const homepageRouter = require('./homepage.route')
 
 const detailGroupbyRouter = require('./detailGroupby.route')
 const detailProductRouter = require('./detailProduct.route')
-const apiImageRouter = require('./apiImageRouter.route')
+
 
 
 function route(app){
@@ -54,8 +54,6 @@ function route(app){
     app.use('/detail-group-by', detailGroupbyRouter); // detail groupby page
 
     app.use('/detail-product', detailProductRouter); // detail product page
-
-    app.use('/minh', apiImageRouter); // detail product page
 
 }
 

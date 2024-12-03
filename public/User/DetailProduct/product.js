@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     methods: {
       async fetchImages() {
         // Gửi đường dẫn thư mục qua tham số query
-        fetch('/minh?directory=public/image/detail_product')
+        fetch('/detail-product/image/api?directory=public/image/detail_product')
           .then(response => response.json())
           .then(data => {
             this.poster = data;
@@ -81,9 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
       formattedSpec() {
         return this.getDB.specification.replace(/\n/g, '<br>');
       },
-      // formattedDesc(){
-      //   return this.getDB.decscription.replace(/\n/g, '<br>');
-      // }
     },
     
     mounted() {
