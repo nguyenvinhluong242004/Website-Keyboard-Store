@@ -16,6 +16,7 @@ controller.showDetailProduct = async (req, res) => {
       customHead: `
                 <link rel="stylesheet" href="User/DetailProduct/detail-product.css">
                 <script defer src="User/DetailProduct/product.js"></script>
+                <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
             `,
       data: JSON.stringify(data), // Chuyển dữ liệu sang JSON để Vue.js sử dụng
     });
