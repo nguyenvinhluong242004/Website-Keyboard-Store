@@ -1,209 +1,174 @@
- <div id="app" class="container">
-      <div class="name">Mode New SixtyFive (Mode65)</div>
-      <div class="flex_image">
-        <img src="/image/mau1.jpg" alt="Mô tả ảnh" />
-        <div class="col-md-5">
-          <div class="detail">
-            <div>Detail:</div>
-            <div>
-              - Case: Aluminum case/PC case - Structure: Silicone gasket mount
-            </div>
-            <div>
-              -Weight bar: Patina finished brass weight bar with clear coating
-              protection for Aluminum case/ Copper brass weijght bar for PC case
-            </div>
-            <div>
-              - PCB Mode: 1.6mm non-flex cut hotswap PCB, wired version only,
-              support QMK/VIA
-            </div>
-            <div>- Per-key RGB: Yes - Mute silicone: Yes</div>
-            <div>
-              - Plate: Three options (FR4/Aluminum/Polycarbonate plate);Non-flex
-              cut
-            </div>
-            <div>
-              - USB interface: USB-C - Typing angle: 6 degree - Weight: around
-              1.6kg after assembly - The case is compatible with KBD67 Lite.
-            </div>
-            <div>- Designer: Wei</div>
-          </div>
-          <div class="flex_money">
-            <div class="flex">
-              <div>Giá tiền:</div>
-              <div class="money">500.000đ</div>
-            </div>
-            <div class="flex">
-              <div>Số Lượng :</div>
-              <input
-                type="number"
-                v-model="quanlity"
-                min="1"
-                style="
-                  width: 40px;
-                  border: 2px solid #000000;
-                  border-radius: 5px;
-                "
-              />
-            </div>
-          </div>
-          <div class="flex_money">
-            <div class="cart">Thêm vào giỏ hàng</div>
-            <div class="buy">Mua Ngay</div>
-          </div>
+<div id="app" class="container">
+  <div class="name" v-html="getDB.productname"></div>
+  <div class="flex_image">
+    <img :src="img" alt="Product" width="600px" height="400px" />
+    <div class="col-md-5">
+      <div class="spec" v-html="formattedDescription">
+      </div>
+      <div class="flex_money">
+        <div class="flex">
+          <div>Giá tiền:</div>
+          <div class="money" v-html="getDB.currentprice"></div>
+          <div>$</div>
+        </div>
+        <div class="flex">
+          <div>Số Lượng :</div>
+          <input type="number" v-model="quanlity" min="1" class="style_input" />
         </div>
       </div>
-      <div
-        style="
-          display: flex;
-          justify-content: center;
-          font-weight: bold;
-          font-size: 25px;
-          width: 100%;
-          background-color: #2f9aff;
-        "
-      >
-        GIỚI THIỆU SẢN PHẨM
+      <div class="flex_money">
+        <div class="cart">Thêm vào giỏ hàng</div>
+        <div class="buy">Mua Ngay</div>
       </div>
-      <div class="image">
-        <img src="/image/main.png" width="100%" alt="ảnh chính" />
-      </div>
-      <div
-        style="
+    </div>
+  </div>
+  <div class="intro">
+    GIỚI THIỆU SẢN PHẨM
+  </div>
+  <div class="image">
+    <img :src="img_detail_1" width="100%" alt="ảnh chính" />
+  </div>
+  <div
+    style="
           display: flex;
           justify-content: center;
           font-size: 20px;
           font-weight: bold;
         "
-      >
-        Thông số:
+  >
+    Thông số:
+  </div>
+  <div>▪️ Measurements:</div>
+  <div>
+    - Typing Angle: 5.5 độ | Cạnh trước: 19.5mm | Dài: 313mm | Rộng: 114mm
+  </div>
+  <div>- Cân nặng: 1.36kg - 3.4kg</div>
+  <div>▪️ PCB: 1.6mm | Hotswap hoặc Solder | QMK - VIA Supported</div>
+  <div>▪️ PCB: 1.6mm | Hotswap hoặc Solder | QMK - VIA Supported</div>
+  <div>▪️ PCB: 1.6mm | Hotswap hoặc Solder | QMK - VIA Supported</div>
+  <div>▪️ PCB: 1.6mm | Hotswap hoặc Solder | QMK - VIA Supported</div>
+  <div>▪️ Material:</div>
+  <div>- Case: Aluminum, Polycarbonate</div>
+  <div>- Accent: Aluminum, Steel, Brass, Wood</div>
+  <div>- Weight: Alu, Copper, Brass</div>
+  <div>
+    - Plate: POM, FR4, Aluminum, Carbon Fiber, Copper, Polycarbonate,
+    Polypropylene, Nylon
+  </div>
+  <div>
+    ▪️ Bộ sản phẩm: Case, PCB + DTB, Plate, Feet & Mounting blocks, Tools, Bag
+  </div>
+  <img :src="img_detail_2" alt="detail" />
+  <div>
+    Mode SixtyFive 2024 cho phép người dùng tối đa hóa sự tùy biến cá nhân, với
+    rất nhiều lựa chọn cho các bộ phận cấu thành bàn phím như: Top case, Bot
+    case, Accent, Weight, Weight Insert, PCB, Plate.
+  </div>
+  <div>Các điểm nhấn mới mẻ so với sản phẩm tiền nhiệm:</div>
+  <div>
+    - Về chất liệu: Thêm nhiều màu sắc và tùy chọn mới như Black Mirror, Crema,
+    Blue Gray, New Dawn, Hard Maple, Fluted Copper (Copper với các đường rãnh
+    hoa văn tinh xảo)
+  </div>
+  <div>
+    - Tạ trong có nhiều option thoải mái tùy biến theo sở thích của người dùng
+  </div>
+  <div>- PCB có led gầm, phù hợp chơi case PC</div>
+  <div>
+    - Bổ sung nhiều tùy chọn plate, hỗ trợ cả Top Mount và Lactice Mount
+  </div>
+  <div>Magnetizing Design, Snap-on Simplicity</div>
+  <div>
+    Accent được ghép vào case bởi nam châm tiện dụng nhưng không kém phần chắc
+    chắn. Người chơi có thể thay thế dễ dàng để tùy biến theo ý thíchd
+  </div>
+  <img :src="img_detail_3" alt="detail3" />
+  <div class="customer">
+    <div style="display: flex; justify-content: space-between">
+      <div class="customer_review">Customer Reviews</div>
+      <button @click="cancelReview" class="cancel_review">
+        {{reviewButtonText}}
+      </button>
+    </div>
+    <hr />
+    <!-- Sử dụng thẻ form để tạo form đăng comment -->
+    <form @submit.prevent="submitForm" v-show="isComment">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input
+          type="text"
+          id="name"
+          v-model="name"
+          placeholder="Enter your name (public)"
+          class="form-control"
+        />
       </div>
-      <div>▪️ Measurements:</div>
-      <div>
-        - Typing Angle: 5.5 độ | Cạnh trước: 19.5mm | Dài: 313mm | Rộng: 114mm
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          v-model="email"
+          placeholder="Enter your email (private)"
+          class="form-control"
+        />
       </div>
-      <div>- Cân nặng: 1.36kg - 3.4kg</div>
-      <div>▪️ PCB: 1.6mm | Hotswap hoặc Solder | QMK - VIA Supported</div>
-      <div>▪️ PCB: 1.6mm | Hotswap hoặc Solder | QMK - VIA Supported</div>
-      <div>▪️ PCB: 1.6mm | Hotswap hoặc Solder | QMK - VIA Supported</div>
-      <div>▪️ PCB: 1.6mm | Hotswap hoặc Solder | QMK - VIA Supported</div>
-      <div>▪️ Material:</div>
-      <div>- Case: Aluminum, Polycarbonate</div>
-      <div>- Accent: Aluminum, Steel, Brass, Wood</div>
-      <div>- Weight: Alu, Copper, Brass</div>
-      <div>
-        - Plate: POM, FR4, Aluminum, Carbon Fiber, Copper, Polycarbonate,
-        Polypropylene, Nylon
+
+      <div class="mb-3">
+        <label for="reviewTitle" class="form-label">Review title</label>
+        <input
+          type="text"
+          id="reviewTitle"
+          v-model="reviewTitle"
+          placeholder="Give your review a title"
+          class="form-control"
+        />
       </div>
-      <div>
-        ▪️ Bộ sản phẩm: Case, PCB + DTB, Plate, Feet & Mounting blocks, Tools,
-        Bag
+
+      <div class="mb-3">
+        <label for="reviewContent" class="form-label">Review</label>
+        <textarea
+          id="reviewContent"
+          v-model="reviewContent"
+          placeholder="Write your comments here"
+          class="form-control"
+        ></textarea>
       </div>
-      <img src="/image/detail1.jpg" alt="detail" />
-      <div>
-        Mode SixtyFive 2024 cho phép người dùng tối đa hóa sự tùy biến cá nhân,
-        với rất nhiều lựa chọn cho các bộ phận cấu thành bàn phím như: Top case,
-        Bot case, Accent, Weight, Weight Insert, PCB, Plate.
+
+      <div class="mb-3">
+        <label for="imageUpload" class="form-label">Upload Image</label>
+        <input
+          type="file"
+          id="imageUpload"
+          @change="handleFileUpload"
+          class="form-control"
+        />
       </div>
-      <div>Các điểm nhấn mới mẻ so với sản phẩm tiền nhiệm:</div>
-      <div>
-        - Về chất liệu: Thêm nhiều màu sắc và tùy chọn mới như Black Mirror,
-        Crema, Blue Gray, New Dawn, Hard Maple, Fluted Copper (Copper với các
-        đường rãnh hoa văn tinh xảo)
-      </div>
-      <div>
-        - Tạ trong có nhiều option thoải mái tùy biến theo sở thích của người
-        dùng
-      </div>
-      <div>- PCB có led gầm, phù hợp chơi case PC</div>
-      <div>
-        - Bổ sung nhiều tùy chọn plate, hỗ trợ cả Top Mount và Lactice Mount
-      </div>
-      <div>Magnetizing Design, Snap-on Simplicity</div>
-      <div>
-        Accent được ghép vào case bởi nam châm tiện dụng nhưng không kém phần
-        chắc chắn. Người chơi có thể thay thế dễ dàng để tùy biến theo ý thíchd
-      </div>
-      <img src="/image/detail3.jpg" alt="detail3" />
-      <div class="customer">
-        <div style="display: flex; justify-content: space-between">
-          <div class="customer_review">Customer Reviews</div>
-          <button @click="cancelReview" class="cancel_review">
-            {{reviewButtonText}}
-          </button>
+
+      <button @ click="" type="submit" class="submit">SUBMIT REVIEW</button>
+    </form>
+
+    <hr />
+    <div v-if="submitted">
+      <div v-for="(review, index) in submittedReviews" :key="index">
+        <div><strong>Name:</strong> {{review.name}}</div>
+        <div><strong>Email:</strong> {{review.email}}</div>
+        <div><strong>Review Title:</strong> {{review.reviewTitle}}</div>
+        <div>
+          <strong>Review Content:</strong>
+          {{review.reviewContent}}
+        </div>
+        <div v-if="review.imageName">
+          <strong>Uploaded Image:</strong>
+          {{review.imageName}}
         </div>
         <hr />
-        <!-- Sử dụng thẻ form để tạo form đăng comment -->
-        <form @submit.prevent="submitForm" v-show="isComment">
-          <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input
-              type="text"
-              id="name"
-              v-model="name"
-              placeholder="Enter your name (public)"
-              class="form-control"
-            />
-          </div>
-
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              id="email"
-              v-model="email"
-              placeholder="Enter your email (private)"
-              class="form-control"
-            />
-          </div>
-
-          <div class="mb-3">
-            <label for="reviewTitle" class="form-label">Review title</label>
-            <input
-              type="text"
-              id="reviewTitle"
-              v-model="reviewTitle"
-              placeholder="Give your review a title"
-              class="form-control"
-            />
-          </div>
-
-          <div class="mb-3">
-            <label for="reviewContent" class="form-label">Review</label>
-            <textarea
-              id="reviewContent"
-              v-model="reviewContent"
-              placeholder="Write your comments here"
-              class="form-control"
-            ></textarea>
-          </div>
-
-          <div class="mb-3">
-            <label for="imageUpload" class="form-label">Upload Image</label>
-            <input
-              type="file"
-              id="imageUpload"
-              @change="handleFileUpload"
-              class="form-control"
-            />
-          </div>
-
-          <button @ click="" type="submit" class="submit">SUBMIT REVIEW</button>
-        </form>
-
-        <hr />
-        <div v-if="submitted">
-          <div v-for="(review, index) in submittedReviews" :key="index">
-            <div><strong>Name:</strong> {{ review.name }}</div>
-            <div><strong>Email:</strong> {{ review.email }}</div>
-            <div><strong>Review Title:</strong> {{ review.reviewTitle }}</div>
-            <div>
-              <strong>Review Content:</strong> {{ review.reviewContent }}
-            </div>
-            <div v-if="review.imageName">
-              <strong>Uploaded Image:</strong> {{ review.imageName }}
-            </div>
-            <hr />
-          </div>
-        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<script>
+  window.data = JSON.parse('{{{data}}}');
+</script>
