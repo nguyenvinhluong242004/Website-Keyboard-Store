@@ -81,6 +81,9 @@ document.addEventListener("DOMContentLoaded", function () {
       formattedSpec() {
         return this.getDB.specification.replace(/\n/g, '<br>');
       },
+      formattedDesc() {
+        return this.getDB.description.replace(/\n/g, '<br>');
+      },
     },
     
     mounted() {
