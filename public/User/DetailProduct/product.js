@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("Initial window.data:", window.data);
   new Vue({
     el: "#app",
     data: {
+      poster:[],
+      currentIndex: 0,
+      imagePath: 'public/image/detail_product',
+      
       img: "/image/detail_product/1.jpg",
       img_detail_1:"/image/detail_product/2.jpg",
       img_detail_2:"/image/detail_product/3.jpg",
@@ -27,6 +30,23 @@ document.addEventListener("DOMContentLoaded", function () {
       getDB: window.data.dataProduct[0],
     },
     methods: {
+      async fetchImages() {
+        // Gửi đường dẫn thư mục qua tham số query
+        fetch('/minh?directory=public/image/detail_product')
+          .then(response => response.json())
+          .then(data => {
+            this.poster = data;
+           
+          })
+          .catch(error => console.error('Error fetching images:', error));
+      },
+      nextSlide() {
+        this.currentIndex = (this.currentIndex + 1) % this.poster.length;
+      },
+      prevSlide() {
+        this.currentIndex =
+          (this.currentIndex - 1 + this.poster.length) % this.poster.length;
+      },
       submitForm() {
         // Thêm dữ liệu bình luận vào mảng submittedReviews
         this.submittedReviews.push({
@@ -58,13 +78,16 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     },
     computed: {
-      formattedDescription() {
+      formattedSpec() {
         return this.getDB.specification.replace(/\n/g, '<br>');
       },
+      // formattedDesc(){
+      //   return this.getDB.decscription.replace(/\n/g, '<br>');
+      // }
     },
+    
     mounted() {
-      console.log("Vue instance has been mounted and script is loaded.");
-      console.log("Data from server (window.data):", this.getDB);
+      this.fetchImages(); 
     },
   });
 });
