@@ -124,7 +124,7 @@
       3,
       100px
     ); /* 3 hàng với kích thước đều nhau */
-    gap: 30px; /* Khoảng cách giữa các ô */
+    gap: 49px; /* Khoảng cách giữa các ô */
     width: 450px; /* Chiều rộng của lưới */
     height: 300px; /* Chiều cao của lưới */
   }
