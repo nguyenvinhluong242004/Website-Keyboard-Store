@@ -1,16 +1,16 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Customer List</h4>
+        <h4>Customer Information</h4>
         <button class="btn btn-primary">Export File</button>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="table-light">
                 <tr>
-                    <th style="background-color: rgb(133, 133, 133);">Customer ID</th>
-                    <th style="background-color: rgb(133, 133, 133);">Username</th>
-                    <th style="background-color: rgb(133, 133, 133);">Phone Number</th>
-                    <th style="background-color: rgb(133, 133, 133);">Actions</th>
+                    <th style="background-color: #E0E0E0B0;">Customer ID</th>
+                    <th style="background-color: #E0E0E0B0;">Username</th>
+                    <th style="background-color: #E0E0E0B0;">Phone Number</th>
+                    <th style="background-color: #E0E0E0B0;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,8 +20,8 @@
                     <td>{{this.username}}</td>
                     <td>{{this.phone}}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary" id="view-detail" data-bs-toggle="modal"
-                            data-bs-target="#customerDetailsModal">View Details</button>
+                        <button class="btn btn-sm btn-primary view-details" data-id="{{this.userid}}">View Details</button>
+                        <button class="btn btn-sm btn-danger delete-customer" data-id="{{this.userid}}">Delete</button>
                     </td>
                 </tr>
                 {{/each}}
@@ -32,19 +32,19 @@
             <ul class="pagination justify-content-center">
                 <!-- Previous page button -->
                 <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
-                    <a class="page-link" href="?page={{add page -1}}">«</a>
+                    <a class="page-link" href="javascript:void(0);" data-page="{{add page -1}}">«</a>
                 </li>
 
                 <!-- Pagination buttons -->
                 {{#each (range 1 total_pages) as |pg|}}
                 <li class="page-item {{#if (eq pg ../page)}}active{{/if}}">
-                    <a class="page-link" href="?page={{pg}}">{{pg}}</a>
+                    <a class="page-link" href="javascript:void(0);" data-page="{{pg}}">{{pg}}</a>
                 </li>
                 {{/each}}
 
                 <!-- Next page button -->
                 <li class="page-item {{#if (eq page total_pages)}}disabled{{/if}}">
-                    <a class="page-link" href="?page={{add page 1}}">»</a>
+                    <a class="page-link" href="javascript:void(0);" data-page="{{add page 1}}">»</a>
                 </li>
             </ul>
         </nav>
@@ -73,41 +73,105 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('[data-bs-toggle="modal"]').on('click', function () {
-            var customerId = $(this).closest('tr').find('td').first().text();  // Lấy Customer ID từ cột đầu tiên
-            $.ajax({
-                url: 'customer-list/detail',  // Endpoint xử lý yêu cầu POST
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ id: customerId }),  // Gửi thông tin Customer ID qua body
-                success: function (response) {
-                    // Cập nhật nội dung trong modal
-                    console.log(response)
-                    var addressHTML = `
-                        <p><strong>Province:</strong> ${response.address.province}</p>
-                        <p><strong>District:</strong> ${response.address.district}</p>
-                        <p><strong>Ward:</strong> ${response.address.ward}</p>
-                        <p><strong>Street:</strong> ${response.address.street}</p>
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault(); // Ngừng hành động mặc định của thẻ a
+
+        const page = $(this).data('page'); // Lấy số trang từ data-page
+        loadPage(page); // Gọi hàm load dữ liệu cho trang mới
+    });
+
+    // Hàm để tải dữ liệu trang mới
+    function loadPage(page) {
+        $.ajax({
+            url: 'customer-list/load-customers', // API để lấy danh sách khách hàng mới
+            type: 'GET',
+            data: { page: page },
+            success: function (response) {
+                // Thay đổi nội dung bảng thông tin khách hàng
+                $('tbody').html(response.customersHtml); // Cập nhật bảng thông tin khách hàng
+
+                // Cập nhật phân trang
+                $('.pagination').html(response.paginationHtml); // Cập nhật phân trang
+            },
+            error: function () {
+                alert('Không thể tải dữ liệu trang mới.');
+            }
+        });
+    }
+
+    $(document).on('click', '.view-details', function () {
+        const customerId = $(this).data('id'); // Lấy Order ID từ nút
+        console.log('fdhggdgfh' + customerId)
+        $.ajax({
+            url: 'customer-list/detail',  // Endpoint xử lý yêu cầu POST
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: customerId }),  // Gửi thông tin Customer ID qua body
+            success: function (response) {
+                // Cập nhật nội dung trong modal
+                console.log(response)
+                var addressHTML = `
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Street</th>
+                                <th>Ward</th>
+                                <th>District</th>
+                                <th>Province</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>${response.address.street}</td>
+                            <td>${response.address.ward}</td>
+                            <td>${response.address.district}</td>
+                            <td>${response.address.province}</td>
+                        </tbody>
+                    <tbody>
+                        
                     `;
 
-                    // Cập nhật nội dung modal
-                    $('#customerDetailsModal .modal-body').html(`
+                // Cập nhật nội dung modal
+                $('#customerDetailsModal .modal-body').html(`
                         <p><strong>Customer ID:</strong> ${response.userID}</p>
-                        <p><strong>Email:</strong> ${response.name}</p>
+                        <p><strong>Name:</strong> ${response.username}</p>
                         <p><strong>Email:</strong> ${response.email}</p>
                         <p><strong>Phone Number:</strong> ${response.phone}</p>
+                        <p><strong>Address</strong></p>
                         ${addressHTML}
                     `);
 
-                    // Mở modal
-                    $('#customerDetailsModal').modal('show');
-                },
-                error: function () {
-                    alert('Không thể tải thông tin khách hàng.');
-                }
-            });
+                // Mở modal
+                $('#customerDetailsModal').modal('show');
+            },
+            error: function () {
+                alert('Không thể tải thông tin khách hàng.');
+            }
         });
     });
+
+     $(document).on('click', '.delete-customer', function () {
+        const customerId = $(this).data('id'); // Lấy Order ID từ nút
+
+        if (confirm('Bạn có chắc chắn muốn xóa khách hàng này?')) {
+            $.ajax({
+                url: 'customer-list/delete-customer', // API xóa khách hàng
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ id: customerId }),
+                success: function (response) {
+                    if (response.success) {
+                        alert('Khách hàng đã được xóa thành công.');
+                        loadPage(1); // Tải lại trang hiện tại sau khi xóa
+                    } else {
+                        alert('Xóa khách hàng thất bại.');
+                    }
+                },
+                error: function () {
+                    alert('Không thể xóa khách hàng.');
+                }
+            });
+        }
+    });
+
 
 </script>

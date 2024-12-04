@@ -1,5 +1,4 @@
 const customerModel = require('../../models/Admin/customerModel');
-const authPass = require('../../config/AuthPass');
 
 class CustomerListController {
 
@@ -23,10 +22,63 @@ class CustomerListController {
             total_pages: totalPages, // Tổng số trang
             per_page: perPage, // Số khách hàng mỗi trang
             customHead: `
-            <link rel="stylesheet" href="Login/style.css">
+            <link rel="stylesheet" href="/Admin/Login/style.css">
         `
         });
     }
+
+    // [GET] /load-customers
+    async loadCustomers(req, res) {
+        const { page = 1 } = req.query;
+        const perPage = 5; // Số lượng khách hàng mỗi trang
+        const offset = (page - 1) * perPage; // Tính toán offset
+
+        try {
+            // Lấy danh sách khách hàng và tổng số khách hàng từ mô hình
+            const { users, totalCustomer } = await customerModel.getListCustomer(offset, perPage);
+            const totalPages = Math.ceil(totalCustomer / perPage); // Tính tổng số trang
+
+            // Tạo HTML cho danh sách khách hàng
+            const customersHtml = users.map(customer => { // Đổi từ 'customers' thành 'users'
+                return `
+                <tr>
+                    <td>${customer.userid}</td>
+                    <td>${customer.username}</td>
+                    <td>${customer.phone}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary view-details" data-id="${customer.userid}">View Details</button>
+                        <button class="btn btn-sm btn-danger delete-customer" data-id="${customer.userid}">Delete</button>
+                    </td>
+                </tr>
+            `;
+            }).join('');
+
+            // Tạo HTML cho phân trang
+            const paginationHtml = `
+            <li class="page-item ${page == 1 ? 'disabled' : ''}">
+                <a class="page-link" href="javascript:void(0);" data-page="${Number(page) - 1}">«</a>
+            </li>
+            ${Array.from({ length: totalPages }, (_, i) => i + 1).map(pg => {
+                return `
+                    <li class="page-item ${pg == page ? 'active' : ''}">
+                        <a class="page-link" href="javascript:void(0);" data-page="${pg}">${pg}</a>
+                    </li>
+                `;
+            }).join('')}
+            <li class="page-item ${page == totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="javascript:void(0);" data-page="${Number(page) + 1}">»</a>
+            </li>
+        `;
+
+            // Trả về HTML cho khách hàng và phân trang
+            res.json({ customersHtml, paginationHtml });
+        } catch (err) {
+            console.error('Lỗi khi lấy danh sách khách hàng:', err);
+            res.status(500).send('Không thể tải danh sách khách hàng.');
+        }
+    }
+
+
 
     // [POST] /detail
     async customerDetails(req, res) {
