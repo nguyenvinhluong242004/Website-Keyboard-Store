@@ -6,12 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <title>{{title}}</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-chartjs@3"></script>
+
+    <link rel="stylesheet" href="/Admin/style.css">
     {{{customHead}}}
 </head>
 
@@ -20,7 +26,7 @@
         <!-- Sidebar -->
         <nav class="col-md-2 sidebar d-flex flex-column bg-dark">
             <h4 class="text-center text-white py-3">Mechanical</h4>
-            <a href="#" class="text-white py-2 px-3">Dashboard</a>
+            <a href="/admin" class="text-white py-2 px-3">Dashboard</a>
             <!-- Dropdown Menu -->
             <div class="dropdown d-block">
                 <a class="dropdown-toggle text-white py-2 px-3 d-block" href="#" id="dropdownMenuLink"
@@ -28,8 +34,8 @@
                     Customers
                 </a>
                 <div id="Customers" class="collapse">
-                    <a href="customer-list" class="text-white py-2 ps-5 d-block">Customer Information</a>
-                    <a href="purchase-history" class="text-white py-2 ps-5 d-block">Purchase History</a>
+                    <a href="/admin/customer-list" class="text-white py-2 ps-5 d-block">Customer Information</a>
+                    <a href="/admin/purchase-history" class="text-white py-2 ps-5 d-block">Purchase History</a>
                 </div>
             </div>
             <div class="dropdown d-block">
@@ -58,9 +64,9 @@
                     Sales
                 </a>
                 <div id="Sales" class="collapse">
-                    <a href="#" class="text-white py-2 ps-5 d-block">Overview</a>
-                    <a href="#" class="text-white py-2 ps-5 d-block">Daily Sales</a>
-                    <a href="#" class="text-white py-2 ps-5 d-block">Monthly Sales</a>
+                    <a href="/admin/overview" class="text-white py-2 ps-5 d-block">Overview</a>
+                    <a href="/admin/daily-sales" class="text-white py-2 ps-5 d-block">Daily Sales</a>
+                    <a href="/admin/monthly-sales" class="text-white py-2 ps-5 d-block">Monthly Sales</a>
                 </div>
             </div>
             <div class="dropdown d-block">
@@ -125,18 +131,36 @@
 
     <script>
         $(document).ready(function() {
-            // Kiểm tra trang hiện tại và mở dropdown tương ứng
-            var currentPage = window.location.pathname;
+            // Save the state of the navigation bar to local storage
+            function saveNavState() {
+                const navState = {};
+                $('.dropdown .collapse').each(function() {
+                    const id = $(this).attr('id');
+                    navState[id] = $(this).hasClass('show');
+                });
+                localStorage.setItem('navState', JSON.stringify(navState));
+            }
 
-            // Giữ cho dropdown của "Customers" mở khi ở trang Customer Information
-            if (currentPage.includes("/customer-list")) {
-                $('#Customers').addClass('show');  // Mở dropdown
-                $('#Customers a[href="customer-list"]').addClass('active'); // Đánh dấu mục là active
+            // Load the state of the navigation bar from local storage
+            function loadNavState() {
+                const navState = JSON.parse(localStorage.getItem('navState'));
+                if (navState) {
+                    for (const id in navState) {
+                        if (navState[id]) {
+                            $('#' + id).addClass('show');
+                        }
+                    }
+                }
             }
-            if (currentPage.includes("/purchase-history")) {
-                $('#Purchase-History').addClass('show');  // Mở dropdown
-                $('#Purchase-History a[href="purchase-history"]').addClass('active'); // Đánh dấu mục là active
-            }
+
+            // Save the state when a dropdown is toggled
+            $('.dropdown .collapse').on('shown.bs.collapse hidden.bs.collapse', function() {
+                saveNavState();
+            });
+
+            // Load the state on page load
+            loadNavState();
+
         });
     </script>
 </body>
