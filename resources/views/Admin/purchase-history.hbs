@@ -1,0 +1,163 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Purchase History</h4>
+        <button class="btn btn-primary">Export File</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th style="background-color: #E0E0E0B0;">Order ID</th>
+                    <th style="background-color: #E0E0E0B0;">Order Date</th>
+                    <th style="background-color: #E0E0E0B0;">Total Amount</th>
+                    <th style="background-color: #E0E0E0B0;">Payment Method</th>
+                    <th style="background-color: #E0E0E0B0;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    <td>{{this.orderid}}</td>
+                    <td>{{this.orderdate}}</td>
+                    <td>{{this.totalamount}}</td>
+                    <td>{{this.paymentmethod}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary view-details" data-id="{{this.orderid}}">View
+                            Details</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <!-- Previous page button -->
+                <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
+                    <a class="page-link" href="javascript:void(0);" data-page="{{add page -1}}">«</a>
+                </li>
+
+                <!-- Pagination buttons -->
+                {{#each (range 1 total_pages) as |pg|}}
+                <li class="page-item {{#if (eq pg ../page)}}active{{/if}}">
+                    <a class="page-link" href="javascript:void(0);" data-page="{{pg}}">{{pg}}</a>
+                </li>
+                {{/each}}
+
+                <!-- Next page button -->
+                <li class="page-item {{#if (eq page total_pages)}}disabled{{/if}}">
+                    <a class="page-link" href="javascript:void(0);" data-page="{{add page 1}}">»</a>
+                </li>
+            </ul>
+        </nav>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
+            aria-hidden="true" style="color: black;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderDetailsModalLabel">Customer Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="color: black;">
+                        <!-- Detail -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).on('click', '.view-details', function () {
+        const orderId = $(this).data('id'); // Lấy Order ID từ nút
+        $.ajax({
+            url: 'purchase-history/detail',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: orderId }),
+            success: function (response) {
+                const order = response.order;
+                const details = response.details;
+
+                let detailsTable = `
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>STT</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+
+                details.forEach((item, index) => {
+                    detailsTable += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><strong>${item.productname}</strong></td>
+                    <td><strong>${item.quantity}</strong></td>
+                    <td><strong>${item.unitprice}</strong></td>
+                </tr>`;
+                });
+
+                detailsTable += `
+                </tbody>
+            </table>`;
+
+                $('#orderDetailsModal .modal-body').html(`
+                <p><strong>Order ID:</strong> ${order.id}</p>
+                <p><strong>Order Date:</strong> ${order.date}</p>
+                <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+                <p><strong>Customer Name:</strong> ${order.customerName}</p>
+                <h5>Product Details:</h5>
+                ${detailsTable}
+
+                <div class="text-end"><strong>Total Amount:</strong> ${order.totalAmount}</div>
+            `);
+
+
+                $('#orderDetailsModal').modal('show');
+            },
+            error: function () {
+                alert('Không thể tải chi tiết đơn hàng.');
+            }
+        });
+    });
+
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault(); // Ngừng hành động mặc định của thẻ a
+        const page = $(this).data('page'); // Lấy số trang từ data attribute
+        loadPage(page); // Gọi hàm load dữ liệu cho trang mới
+    });
+
+    function loadPage(page) {
+        $.ajax({
+            url: 'purchase-history/load-orders', // Gọi API để lấy danh sách đơn hàng
+            type: 'GET',
+            data: { page: page },
+            success: function (response) {
+                // Thay đổi nội dung bảng đơn hàng
+                $('tbody').html(response.ordersHtml); // Cập nhật bảng đơn hàng với dữ liệu mới
+
+                // Cập nhật phân trang
+                $('.pagination').html(response.paginationHtml); // Cập nhật phân trang
+            },
+            error: function () {
+                alert('Không thể tải dữ liệu trang mới.');
+            }
+        });
+    }
+
+
+</script>

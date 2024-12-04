@@ -1,0 +1,90 @@
+<div class="container mt-4">
+    <h2 class="mb-3">Admin Dashboard</h2>
+    <!-- Hiển thị thống kê -->
+    <h4>Profile Statistics</h4>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h6 class="card-title">Total Users</h6>
+                    <p class="card-text">{{stats.total_users}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h6 class="card-title">Total Revenue</h6>
+                    <p class="card-text">${{stats.total_revenue}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <h6 class="card-title">Total Products Sold</h6>
+                    <p class="card-text">{{stats.total_products_sold}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ doanh thu -->
+    <div class="mt-3">
+        <h4>Revenue Growth</h4>
+        <canvas id="revenueChart"></canvas>
+    </div>
+
+        
+
+    <div class="row mt-4">
+        <!-- Biểu đồ sản phẩm bán theo danh mục -->
+        <div class="col-md-6 mt-4" style="margin-bottom: 100px;">
+            <h4>Products Sold by Category</h4>
+            <canvas id="productChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Dữ liệu từ server (được render dưới dạng JSON)
+        const revenueLabels = {{{ revenueLabels }}};
+        const revenueData = {{{ revenueData }}};
+        const productLabels = {{{ productLabels }}};
+        const productData = {{{ productData }}};
+
+
+        console.log('Revenue Labels:', revenueLabels);
+        console.log('Revenue Data:', revenueData);
+        console.log('Product Labels:', productLabels);
+        console.log('Product Data:', productData);
+
+        // Biểu đồ doanh thu
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: revenueLabels, // Dữ liệu đã được render chính xác
+                datasets: [{
+                    label: 'Revenue',
+                    data: revenueData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                }]
+            }
+        });
+
+        // Biểu đồ sản phẩm bán theo danh mục
+        const productCtx = document.getElementById('productChart').getContext('2d');
+        const productChart = new Chart(productCtx, {
+            type: 'doughnut',
+            data: {
+                labels: productLabels,
+                datasets: [{
+                    data: productData,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                }]
+            }
+        });
+    });
+</script>

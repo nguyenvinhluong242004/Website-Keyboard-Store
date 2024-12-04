@@ -38,3 +38,23 @@ body {
 .active {
     background-color: #454749b7;
 }
+
+/* Initial state of sidebar */
+.sidebar {
+    transition: transform 1s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sidebar hidden state */
+.sidebar.hidden {
+    transform: translateX(-100%);
+    display: none;
+}
+
+.main-expanded {
+    margin-left: 0 !important; /* Loại bỏ khoảng trống bên trái */
+    width: 100% !important;    /* Chiếm toàn bộ chiều rộng */
+    transition: margin-left 0.3s;
+}
+

@@ -3,6 +3,8 @@ const router = express.Router();
 
 const loginRouter = require('./login.route');
 const customerListRouter = require('./customerList.route');
+const purchaseHistoryRouter = require('./purchaseHistory.route');
+const dashboardRouter = require('./dashboard.route');
 const overview = require('./overview.route');
 const dailySales = require('./dailySales.route');
 const monthlySales = require('./monthlySales.route');
@@ -10,6 +12,8 @@ const monthlySales = require('./monthlySales.route');
 
 //------------------------------------------
 
+router.use('/dashboard', dashboardRouter);
+router.use('/purchase-history', purchaseHistoryRouter);
 router.use('/customer-list', customerListRouter);
 router.use('/', loginRouter); // Trang login admin
 router.use('/overview', overview);

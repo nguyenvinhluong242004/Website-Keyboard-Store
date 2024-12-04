@@ -8,7 +8,7 @@ class LoginController {
         res.render('Admin/login', {
             layout: 'layoutAdmin', title: 'Login',
             customHead: `
-            <link rel="stylesheet" href="Login/style.css">
+            <link rel="stylesheet" href="/Admin/Login/style.css">
             `
         });
     }
