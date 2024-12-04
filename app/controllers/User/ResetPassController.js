@@ -1,4 +1,4 @@
-const AccountProvider = require('../../models/User/AccountProvider');
+const AccountModel = require('../../models/User/accountModel');
 const dataTempServer = require('../../../index');
 const authPass = require('../../config/AuthPass');
 
@@ -7,8 +7,8 @@ class ResetPassController {
 
     // [GET] /reset-password
     index(req, res) {
-        res.render('reset-password', {
-            layout: 'layout', title: 'Changge Password',
+        res.render('User/reset-password', {
+            layout: 'layoutUser', title: 'Changge Password',
             customHead: `
             <link rel="stylesheet" href="User/LoginStyle.css">
             <script defer type="module" src="User/Login/app.js"></script>
@@ -22,7 +22,7 @@ class ResetPassController {
         console.log(dataTempServer.storedEmail, newPassword, confirmNewPassword, verificationCode, timeCode, dataTempServer.storedCode);
         try {
             // Kiểm tra tài khoản có tồn tại và mã xác thực đúng
-            const existingUser = await AccountProvider.findAccountByEmail(dataTempServer.storedEmail);
+            const existingUser = await AccountModel.findAccountByEmail(dataTempServer.storedEmail);
 
             if (!existingUser) {
                 console.log('Tài khoản không tồn tại');
@@ -49,7 +49,7 @@ class ResetPassController {
 
             const hashedNewPassword = await authPass.hashPassword(newPassword);
 
-            await AccountProvider.changePasswordByEmail(dataTempServer.storedEmail, hashedNewPassword);
+            await AccountModel.changePasswordByEmail(dataTempServer.storedEmail, hashedNewPassword);
 
             console.log('Đặt lại mật khẩu thành công');
             res.json({ success: true, message: 'Đặt lại mật khẩu thành công' });

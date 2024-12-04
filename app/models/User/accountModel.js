@@ -1,6 +1,6 @@
 const pool = require('../../config/database'); // Kết nối đến cơ sở dữ liệu
 
-class AccountProvider {
+class accountModel {
     /**
      * Kiểm tra thông tin tài khoản dựa trên email
      * @param {string} email - Email đăng nhập
@@ -145,4 +145,4 @@ class AccountProvider {
 
 }
 
-module.exports = AccountProvider;
+module.exports = accountModel;

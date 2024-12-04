@@ -4,7 +4,7 @@ const controller ={}
 
 //Render Switch
 controller.showSwitch = (req, res) => {
-    res.render('ProductPage', {layout: 'layout', title: 'Switch',
+    res.render('User/ProductPage', {layout: 'layoutUser', title: 'Switch',
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/Switch/switch.js"></script>

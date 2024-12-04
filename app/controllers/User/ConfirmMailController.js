@@ -14,8 +14,8 @@ class ConfirmPassController {
 
     // [GET] /confirm-mail
     index(req, res) {
-        res.render('confirm-mail', {
-            layout: 'layout', title: 'Confirm Mail',
+        res.render('User/confirm-mail', {
+            layout: 'layoutUser', title: 'Confirm Mail',
             customHead: `
             <link rel="stylesheet" href="User/LoginStyle.css">
             <script defer type="module" src="User/Login/app.js"></script>
