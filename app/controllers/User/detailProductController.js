@@ -10,8 +10,8 @@ controller.showDetailProduct = async (req, res) => {
     
 
     // Render view với dữ liệu
-    res.render("detail-product", {
-      layout: "layout",
+    res.render("User/detail-product", {
+      layout: "layoutUser",
       title: "DetailGroupby",
       customHead: `
                 <link rel="stylesheet" href="User/DetailProduct/detail-product.css">

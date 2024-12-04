@@ -1,4 +1,4 @@
-const AccountProvider = require('../../models/User/AccountProvider');
+const AccountModel = require('../../models/User/accountModel');
 const passport = require('../../config/passport');
 const dataTempServer = require('../../../index');
 
@@ -25,17 +25,17 @@ class AuthLoginGGController {
             // Xử lý khi đã đăng nhập thành công
             console.log('Thông tin tài khoản Google:', user);
 
-            const result = await AccountProvider.findAccountByEmailAndGoogleID(user.email, user.googleId);
+            const result = await AccountModel.findAccountByEmailAndGoogleID(user.email, user.googleId);
 
             if (result) {
                 console.log('Đăng nhập lại thành công');
             } else {
                 console.log('Chưa có dữ liệu');
                 // Thêm tài khoản mới vào cơ sở dữ liệu
-                await AccountProvider.addUserIntoDataBase(user.displayName, user.email, user.googleId, 'Google');
+                await AccountModel.addUserIntoDataBase(user.displayName, user.email, user.googleId, 'Google');
             }
 
-            const data_ = await AccountProvider.getInforAccountByEmail(user.email);
+            const data_ = await AccountModel.getInforAccountByEmail(user.email);
             dataTempServer.setDataUser(data_);
 
             res.redirect('/account'); // Chuyển hướng sau khi đăng nhập thành công

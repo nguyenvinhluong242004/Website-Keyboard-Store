@@ -8,8 +8,8 @@ controller.showDetailGroupby = async (req, res) => {
         const data = await getGroupByProduct(req, res);
 
         // Render view với dữ liệu
-        res.render('detail-groupby', {
-            layout: 'layout',
+        res.render('User/detail-groupby', {
+            layout: 'layoutUser',
             title: 'DetailGroupby',
             customHead: `
                 <link rel="stylesheet" href="User/DetailGroupBy/detail-groupby.css">

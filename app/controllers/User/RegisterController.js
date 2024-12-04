@@ -1,12 +1,12 @@
-const AccountProvider = require('../../models/User/AccountProvider');
+const AccountModel = require('../../models/User/accountModel');
 const authPass = require('../../config/AuthPass');
 
 class RegisterController {
 
     // [GET] /register
     index(req, res){
-        res.render('register', {
-            layout: 'layout', title: 'Register',
+        res.render('User/register', {
+            layout: 'layoutUser', title: 'Register',
             customHead: `
             <link rel="stylesheet" href="User/LoginStyle.css">
             <script defer type="module" src="User/Login/app.js"></script>
@@ -22,7 +22,7 @@ class RegisterController {
 
         try {
             // Kiểm tra email đã tồn tại chưa
-            const existingUser = await AccountProvider.findAccountByEmail(signupEmail);
+            const existingUser = await AccountModel.findAccountByEmail(signupEmail);
 
             if (existingUser) {
                 // Nếu email đã tồn tại, trả về lỗi
@@ -30,7 +30,7 @@ class RegisterController {
             }
 
             // Thêm tài khoản mới vào cơ sở dữ liệu
-            await AccountProvider.addUserIntoDataBase('null', signupEmail, hashedSignupPassword, 'Email');
+            await AccountModel.addUserIntoDataBase('null', signupEmail, hashedSignupPassword, 'Email');
 
             res.json({ success: true, message: 'Đăng ký thành công' }); // Phản hồi đăng ký thành công
         } catch (err) {

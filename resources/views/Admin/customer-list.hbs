@@ -1,0 +1,113 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Customer List</h4>
+        <button class="btn btn-primary">Export File</button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th style="background-color: rgb(133, 133, 133);">Customer ID</th>
+                    <th style="background-color: rgb(133, 133, 133);">Username</th>
+                    <th style="background-color: rgb(133, 133, 133);">Phone Number</th>
+                    <th style="background-color: rgb(133, 133, 133);">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each data}}
+                <tr>
+                    <td>{{this.userid}}</td>
+                    <td>{{this.username}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" id="view-detail" data-bs-toggle="modal"
+                            data-bs-target="#customerDetailsModal">View Details</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <nav>
+            <ul class="pagination justify-content-center">
+                <!-- Previous page button -->
+                <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
+                    <a class="page-link" href="?page={{add page -1}}">«</a>
+                </li>
+
+                <!-- Pagination buttons -->
+                {{#each (range 1 total_pages) as |pg|}}
+                <li class="page-item {{#if (eq pg ../page)}}active{{/if}}">
+                    <a class="page-link" href="?page={{pg}}">{{pg}}</a>
+                </li>
+                {{/each}}
+
+                <!-- Next page button -->
+                <li class="page-item {{#if (eq page total_pages)}}disabled{{/if}}">
+                    <a class="page-link" href="?page={{add page 1}}">»</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Modal -->
+        <div class="modal fade" id="customerDetailsModal" tabindex="-1" aria-labelledby="customerDetailsModalLabel"
+            aria-hidden="true" style="color: black;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="color: black;">
+                        <!-- Detail -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('[data-bs-toggle="modal"]').on('click', function () {
+            var customerId = $(this).closest('tr').find('td').first().text();  // Lấy Customer ID từ cột đầu tiên
+            $.ajax({
+                url: 'customer-list/detail',  // Endpoint xử lý yêu cầu POST
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ id: customerId }),  // Gửi thông tin Customer ID qua body
+                success: function (response) {
+                    // Cập nhật nội dung trong modal
+                    console.log(response)
+                    var addressHTML = `
+                        <p><strong>Province:</strong> ${response.address.province}</p>
+                        <p><strong>District:</strong> ${response.address.district}</p>
+                        <p><strong>Ward:</strong> ${response.address.ward}</p>
+                        <p><strong>Street:</strong> ${response.address.street}</p>
+                    `;
+
+                    // Cập nhật nội dung modal
+                    $('#customerDetailsModal .modal-body').html(`
+                        <p><strong>Customer ID:</strong> ${response.userID}</p>
+                        <p><strong>Email:</strong> ${response.name}</p>
+                        <p><strong>Email:</strong> ${response.email}</p>
+                        <p><strong>Phone Number:</strong> ${response.phone}</p>
+                        ${addressHTML}
+                    `);
+
+                    // Mở modal
+                    $('#customerDetailsModal').modal('show');
+                },
+                error: function () {
+                    alert('Không thể tải thông tin khách hàng.');
+                }
+            });
+        });
+    });
+
+</script>

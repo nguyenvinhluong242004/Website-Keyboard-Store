@@ -32,7 +32,7 @@ module.exports = dataTempServer;
 require('dotenv').config({ path: './.env' });
 const bodyParser = require('body-parser'); // Xử lý dữ liệu từ các yêu cầu HTTP
 
-const route = require('./routes/User');
+const route = require('./routes/app.routes');
 const pool = require('./app/config/database');
 const passport = require('./app/config/passport');
 
@@ -59,15 +59,23 @@ app.use(express.json()); // Xử lý dữ liệu JSON từ yêu cầu HTTP
 // Cấu hình Handlebars làm template engine
 app.engine('hbs', expressHandlebars.engine({
     extname: 'hbs',
-    defaultLayout: 'layout',
-    layoutsDir: __dirname + '/resources/User/views/layouts',
-    partialsDir: __dirname + '/resources/User/views/partials/',
+    defaultLayout: 'layoutUser',
+    layoutsDir: __dirname + '/resources/views/layouts',
+    partialsDir: __dirname + '/resources/views/partials/',
     helpers: {
-        eq: (a, b) => a === b
+        eq: (a, b) => a === b,
+        add: (a, b) => a + b,
+        range: (start, end) => {
+            const result = [];
+            for (let i = start; i <= end; i++) {
+                result.push(i);
+            }
+            return result;
+        } 
     }
 }));
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources/User/views')); // Đặt thư mục views
+app.set('views', path.join(__dirname, 'resources/views')); // Đặt thư mục views
 
 
 

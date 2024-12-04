@@ -4,7 +4,7 @@ const controller ={}
 
 //Render groupBy page
 controller.showGroupByProduct = (req, res) => {
-    res.render('ProductPage', {layout: 'layout', title: 'GroupBy',
+    res.render('User/ProductPage', {layout: 'layoutUser', title: 'GroupBy',
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/GroupBy/GroupBy.js"></script>

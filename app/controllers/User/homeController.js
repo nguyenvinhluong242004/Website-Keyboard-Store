@@ -21,8 +21,8 @@ const homeController = {
             const bottomSalesProduct = salesProduct.data.slice(10, 20);
 
             const poster = await getPosters();
-            res.render("home", {
-                layout: 'layout',
+            res.render("User/home", {
+                layout: 'layoutUser',
                 title: 'Home',
                 customHead: `
                     <link rel="stylesheet" href="User/home.css">

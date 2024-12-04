@@ -4,7 +4,7 @@ const controller ={}
 
 //Render Accessories
 controller.showAccessories = (req, res) => {
-    res.render('ProductPage', {layout: 'layout', title: 'Accessories',
+    res.render('User/ProductPage', {layout: 'layoutUser', title: 'Accessories',
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/Accessories/accessories.js"></script>

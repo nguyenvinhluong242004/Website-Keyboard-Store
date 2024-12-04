@@ -1,16 +1,14 @@
-const AccountModel = require('../../models/User/accountModel');
-const dataTempServer = require('../../../index');
+const AccountProvider = require('../../models/User/accountModel');
 const authPass = require('../../config/AuthPass');
 
 class LoginController {
 
     // [GET] /login
     index(req, res) {
-        res.render('User/login', {
-            layout: 'layoutUser', title: 'Login',
+        res.render('Admin/login', {
+            layout: 'layoutAdmin', title: 'Login',
             customHead: `
-            <link rel="stylesheet" href="User/LoginStyle.css">
-            <script defer type="module" src="User/Login/app.js"></script>
+            <link rel="stylesheet" href="Login/style.css">
             `
         });
     }
@@ -21,13 +19,13 @@ class LoginController {
 
         try {
             // Kiểm tra tài khoản có tồn tại trong cơ sở dữ liệu
-            const existingUser = await AccountModel.findAccountByEmail(loginEmail);
+            const existingUser = await AccountProvider.findAccountByEmail(loginEmail);
 
             if (existingUser) {
                 const isMatch = await authPass.verifyPassword(loginPassword, existingUser.passwordorgoogleid);
                 console.log(loginPassword, existingUser.passwordorgoogleid)
                 if (isMatch) {
-                    const data_ = await AccountModel.getInforAccountByEmail(loginEmail);
+                    const data_ = await AccountProvider.getInforAccountByEmail(loginEmail);
                     
                     dataTempServer.setDataUser(data_);
 

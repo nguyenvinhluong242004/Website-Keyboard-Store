@@ -1,12 +1,12 @@
-const AccountProvider = require('../../models/User/AccountProvider');
+const AccountModel = require('../../models/User/accountModel');
 const dataTempServer = require('../../../index');
 
 class AccountController {
 
     // [GET] /account
     index(req, res) {
-        res.render('account', {
-            layout: 'layout', title: 'Account',
+        res.render('User/account', {
+            layout: 'layoutUser', title: 'Account',
             customHead: `
             <link rel="stylesheet" href="User/LoginStyle.css">
             <script defer type="module" src="User/Login/app.js"></script>
@@ -32,7 +32,7 @@ class AccountController {
         try {
             // Kiểm tra tài khoản có tồn tại và mã xác thực đúng
             console.log(storedEmail)
-            const existingUser = await AccountProvider.findAccountByEmail(storedEmail);
+            const existingUser = await AccountModel.findAccountByEmail(storedEmail);
             console.log(existingUser)
             if (!existingUser) {
                 console.log('Tài khoản không tồn tại');
@@ -40,13 +40,13 @@ class AccountController {
             }
             console.log(sdt)
 
-            await AccountProvider.changeInfoByEmail(storedEmail, username, sdt)
+            await AccountModel.changeInfoByEmail(storedEmail, username, sdt)
 
             console.log('Đặt lại thông tin thành công');
             dataTempServer.setStoredEmail(email);
             storedEmail = email;
 
-            const data_ = await AccountProvider.getInforAccountByEmail(storedEmail);
+            const data_ = await AccountModel.getInforAccountByEmail(storedEmail);
 
             dataTempServer.setDataUser(data_);
 

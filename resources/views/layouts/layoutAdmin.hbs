@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <title>{{title}}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    {{{customHead}}}
+</head>
+
+<body>
+    <div class="row h-100 gx-0">
+        <!-- Sidebar -->
+        <nav class="col-md-2 sidebar d-flex flex-column bg-dark">
+            <h4 class="text-center text-white py-3">Mechanical</h4>
+            <a href="#" class="text-white py-2 px-3">Dashboard</a>
+            <!-- Dropdown Menu -->
+            <div class="dropdown d-block">
+                <a class="dropdown-toggle text-white py-2 px-3 d-block" href="#" id="dropdownMenuLink"
+                    data-bs-toggle="collapse" data-bs-target="#Customers" aria-expanded="false">
+                    Customers
+                </a>
+                <div id="Customers" class="collapse">
+                    <a href="customer-list" class="text-white py-2 ps-5 d-block">Customer Information</a>
+                    <a href="purchase-history" class="text-white py-2 ps-5 d-block">Purchase History</a>
+                </div>
+            </div>
+            <div class="dropdown d-block">
+                <a class="dropdown-toggle text-white py-2 px-3 d-block" href="#" id="dropdownMenuLink"
+                    data-bs-toggle="collapse" data-bs-target="#Events" aria-expanded="false">
+                    Events
+                </a>
+                <div id="Events" class="collapse">
+                    <a href="#" class="text-white py-2 ps-5 d-block">Events Details</a>
+                    <a href="#" class="text-white py-2 ps-5 d-block">Events Promotion</a>
+                </div>
+            </div>
+            <div class="dropdown d-block">
+                <a class="dropdown-toggle text-white py-2 px-3 d-block" href="#" id="dropdownMenuLink"
+                    data-bs-toggle="collapse" data-bs-target="#Group-Order" aria-expanded="false">
+                    Group Order
+                </a>
+                <div id="Group-Order" class="collapse">
+                    <a href="#" class="text-white py-2 ps-5 d-block">Order Items</a>
+                    <a href="#" class="text-white py-2 ps-5 d-block">Participants</a>
+                </div>
+            </div>
+            <div class="dropdown d-block">
+                <a class="dropdown-toggle text-white py-2 px-3 d-block" href="#" id="dropdownMenuLink"
+                    data-bs-toggle="collapse" data-bs-target="#Sales" aria-expanded="false">
+                    Sales
+                </a>
+                <div id="Sales" class="collapse">
+                    <a href="#" class="text-white py-2 ps-5 d-block">Overview</a>
+                    <a href="#" class="text-white py-2 ps-5 d-block">Daily Sales</a>
+                    <a href="#" class="text-white py-2 ps-5 d-block">Monthly Sales</a>
+                </div>
+            </div>
+            <div class="dropdown d-block">
+                <a class="dropdown-toggle text-white py-2 px-3 d-block" href="#" id="dropdownMenuLink"
+                    data-bs-toggle="collapse" data-bs-target="#Products" aria-expanded="false">
+                    Products
+                </a>
+                <div id="Products" class="collapse">
+                    <a href="#" class="text-white py-2 ps-5 d-block">Product List</a>
+                    <a href="#" class="text-white py-2 ps-5 d-block">Stock Management </a>
+                </div>
+            </div>
+            <div class="dropdown d-block">
+                <a class="dropdown-toggle text-white py-2 px-3 d-block" href="#" id="dropdownMenuLink"
+                    data-bs-toggle="collapse" data-bs-target="#Others" aria-expanded="false">
+                    Others
+                </a>
+                <div id="Others" class="collapse">
+                    <a href="#" class="text-white py-2 ps-5 d-block">Poster</a>
+                    <a href="#" class="text-white py-2 ps-5 d-block">Announcements</a>
+                    <a href="#" class="text-white py-2 ps-5 d-block">About</a>
+                </div>
+            </div>
+
+        </nav>
+
+
+        <!-- Main content -->
+        <main class="col-md-10">
+            <!-- Header -->
+            <header class="header d-flex justify-content-between align-items-center">
+                <span class="title">HomePage</span>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-bell mx-3" style="font-size: 1.5rem;"></i>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle " type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+
+                            <i class="bi bi-person-circle"></i> Name
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content">
+                {{{body}}}
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Kiểm tra trang hiện tại và mở dropdown tương ứng
+            var currentPage = window.location.pathname;
+
+            // Giữ cho dropdown của "Customers" mở khi ở trang Customer Information
+            if (currentPage.includes("/customer-list")) {
+                $('#Customers').addClass('show');  // Mở dropdown
+                $('#Customers a[href="customer-list"]').addClass('active'); // Đánh dấu mục là active
+            }
+            if (currentPage.includes("/purchase-history")) {
+                $('#Purchase-History').addClass('show');  // Mở dropdown
+                $('#Purchase-History a[href="purchase-history"]').addClass('active'); // Đánh dấu mục là active
+            }
+        });
+    </script>
+</body>
+
+</html>

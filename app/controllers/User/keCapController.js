@@ -4,7 +4,7 @@ const controller ={}
 
 // Render Kecap
 controller.showKeCap = (req, res) => {
-    res.render('ProductPage', {layout: 'layout', title: 'KeCap',
+    res.render('User/ProductPage', {layout: 'layoutUser', title: 'KeCap',
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/KeCap/keCap.js"></script>
