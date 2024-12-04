@@ -1,0 +1,45 @@
+<div id="app">
+    <header class="admin-header">
+        <div class="row m-2 rounded font-weight-bold border border-bold">
+            <p class="text-primary text-center fw-bold">Bussines impact</p>
+            <div class="row d-flex justify-content-center">
+                <div class="card col-5 m-2 bg-primary-subtle">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Users</h5>
+                        <p class="card-text">[[totalUsers]]</p>
+                    </div>
+                </div>
+                <div class="card col-5 m-2 bg-primary-subtle">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Revenue</h5>
+                        <p class="card-text">[[ totalRevenue ]]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-2 rounded font-weight-bold border border-bold p-2">
+            <p class="text-dark fw-bold ">Top 10 selling-products for today</p>
+            <table class="table">
+                <thead class = "table-secondary">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Product Price</th>
+                        <th scope="col">Quantity Sold</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(product, index) in topSellingProducts" :key="product.productid">
+                        <th scope="row">[[ index + 1 ]]</th>
+                        <td>[[ product.productname ]]</td>
+                        <td>[[ product.price ]]</td>
+                        <td>[[ product.quantity ]]</td>
+                        <td>[[ product.value ]]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </header>
+    
+</div>

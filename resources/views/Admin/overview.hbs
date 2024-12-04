@@ -1,0 +1,26 @@
+<div id="app">
+    <header class="admin-header">
+        <div class="row m-2 rounded font-weight-bold border">
+            <p class="text-primary text-center fw-bold">Bussines impact</p>
+            <div class="row d-flex justify-content-center">
+                <div class="card col-5 m-2 bg-primary-subtle">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Users</h5>
+                        <p class="card-text">[[totalUsers]]</p>
+                    </div>
+                </div>
+                <div class="card col-5 m-2 bg-primary-subtle">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Revenue</h5>
+                        <p class="card-text">[[ totalRevenue ]]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="row d-flex justify-content-center">
+        <div class="col-10">
+            <chart-component :data="chartData" :options="chartOptions" style="height: 400px;"></chart-component>
+        </div>
+    </div>
+</div>
