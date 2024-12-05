@@ -1,0 +1,142 @@
+.container{
+    width: 100%;
+    height: 100%;   
+}
+.col-md-1{
+    position: relative;
+}
+.col-md-12{
+    position: relative;
+    background-color: rgb(178, 178, 178);
+    padding:10px;
+    border-radius: 10px;
+}
+.tab-name{
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.tab-body{
+    border-radius: 10px;
+    background-color:rgb(187, 187, 187);
+    width: 100%;
+    height: 2000px;
+    padding:10px;
+}
+.images{
+    position:absolute;
+    font-weight: bold;
+    width: 100%;
+    margin-left: 5px;
+}
+.name{
+    position:absolute;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top:220px;
+}
+.price{
+    position:absolute;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top:330px;
+}
+.close{
+    position:absolute;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top:390px;
+}
+.expected{
+    position:absolute;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top:450px;
+}
+.type{
+    position:absolute;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top:500px;
+}
+.quanlity{
+    position:absolute;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top:530px;
+}
+.brand{
+    position:absolute;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top:570px;
+}
+.describe{
+    position:absolute;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top:600px;
+}
+.input-images{
+    width: 100%;
+    height: 200px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+}
+.input-name{
+    width:100%;
+    height:100px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.input-price{
+    width: 20%;
+    height: 50px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.input-close{
+    width: 20%;
+    height: 50px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.input-expected{
+    width: 20%;
+    height:40px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.input-type{
+    width: 20%;
+    height:20px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.input-quanlity{
+    width: 20%;
+    height: 30px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.input-brand{
+    width: 100%;
+    height: 20px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.input-describe{
+    width: 100%;
+    height: 100px;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    margin-top: 10px;
+}
+

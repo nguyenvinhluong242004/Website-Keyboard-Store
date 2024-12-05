@@ -8,7 +8,7 @@ const dashboardRouter = require('./dashboard.route');
 const overview = require('./overview.route');
 const dailySales = require('./dailySales.route');
 const monthlySales = require('./monthlySales.route');
-
+const orderItem = require('./orderItem.route');
 
 //------------------------------------------
 
@@ -19,5 +19,6 @@ router.use('/', loginRouter); // Trang login admin
 router.use('/overview', overview);
 router.use('/daily-sales', dailySales);
 router.use('/monthly-sales', monthlySales);
+router.use('/order',orderItem)
 
 module.exports = router;
