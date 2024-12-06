@@ -1,66 +1,197 @@
-<div class="container">
+<div id="app" class="container">
   <div class="tab-name">Order item</div>
   <div class="col-md-12">
     <div class="row">
-        <div class="col-md-1">
-            <div class="images">
-                Images:
-            </div>
-            <div class="name">
-                Name:
-            </div>
-            <div class="price">
-                Price:
-            </div>
-            <div class="close">
-                Close:
-            </div>
-            <div class="expected">
-                Expected delivery:
-            </div>
-            <div class="type">
-                Type:
-            </div>
-            <div class="quanlity">
-                Quanlity:
-            </div>
-            <div class="brand">
-                Brand:
-            </div>
-            <div class="describe">
-                Describe:
-            </div>
+      <div class="col-md-1">
+        <div class="images">
+          Images:
+        </div>
+        <div class="name">
+          Name:
+        </div>
+        <div class="price">
+          Price:
+        </div>
+        <div class="close">
+          Close:
+        </div>
+        <div class="expected">
+          Expected delivery:
+        </div>
+        <div class="type">
+          Type:
+        </div>
+        <div class="quanlity">
+          Quanlity:
+        </div>
+        <div class="brand">
+          Brand:
+        </div>
+        <div class="describe">
+          Describe:
+        </div>
+      </div>
+
+      <div class="col-md-11">
+        <div class="input-images">
+          <!-- Nút + để chọn ảnh -->
+          <div class="add-image-btn" @click="triggerFileInput">
+            <i class="fas fa-plus"></i>
+          </div>
+          <!-- Ẩn ô nhập ảnh -->
+          <input
+            type="file"
+            ref="fileInput"
+            @change="onFileChange"
+            accept="image/*"
+            style="display:none;"
+          />
+
+          <!-- Hiển thị ảnh đã chọn -->
+          <div v-if="imageUrl" class="image-preview">
+            <img :src="imageUrl" alt="Selected Image" />
+          </div>
+
+
+          <!-- Nút + để chọn ảnh -->
+          <div class="add-image-btn" @click="triggerFileInput_2">
+            <i class="fas fa-plus"></i>
+          </div>
+          <!-- Ẩn ô nhập ảnh -->
+          <input
+            type="file"
+            ref="fileInput_2"
+            @change="onFileChange_2"
+            accept="image/*"
+            style="display:none;"
+          />
+
+          <!-- Hiển thị ảnh đã chọn -->
+          <div v-if="imageUrl_2" class="image-preview">
+            <img :src="imageUrl_2" alt="Selected Image" />
+          </div>
+          
+          <!-- Nút + để chọn ảnh -->
+          <div class="add-image-btn" @click="triggerFileInput_3">
+            <i class="fas fa-plus"></i>
+          </div>
+          <!-- Ẩn ô nhập ảnh -->
+          <input
+            type="file"
+            ref="fileInput_3"
+            @change="onFileChange_3"
+            accept="image/*"
+            style="display:none;"
+          />
+
+          <!-- Hiển thị ảnh đã chọn -->
+          <div v-if="imageUrl_3" class="image-preview">
+            <img :src="imageUrl_3" alt="Selected Image" />
+          </div>
+
+          <!-- Nút + để chọn ảnh -->
+          <div class="add-image-btn" @click="triggerFileInput_4">
+            <i class="fas fa-plus"></i>
+          </div>
+          <!-- Ẩn ô nhập ảnh -->
+          <input
+            type="file"
+            ref="fileInput_4"
+            @change="onFileChange_4"
+            accept="image/*"
+            style="display:none;"
+          />
+
+          <!-- Hiển thị ảnh đã chọn -->
+          <div v-if="imageUrl_4" class="image-preview">
+            <img :src="imageUrl_4" alt="Selected Image" />
+          </div>
         </div>
 
-        <div class="col-md-11">
-            <div class="input-images">
-                
-            </div>
-            <div class="input-name">
+        <input
+          class="input-name"
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Name..."
+          v-model="form.name"
+        />
 
-            </div>
-            <div class="input-price">
+        <input
+          class="input-price"
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Price..."
+          v-model="form.price"
+        />
 
-            </div>
-            <div class="input-close">
-
-            </div>
-            <div class="input-expected">
-
-            </div>
-            <div class="input-type">
-
-            </div>
-            <div class="input-quanlity">
-              
-            </div>
-            <div class="input-brand">
-
-            </div>
-            <div class="input-describe">
-
-            </div>
+        <div>
+          <input
+            class="input-close"
+            type="date"
+            name="ngay_thang"
+            id="ngay_thang"
+            v-model="form.close"
+          />
         </div>
+
+        <div>
+          <input
+            class="input-expected"
+            type="date"
+            name="ngay_thang"
+            id="ngay_thang"
+            v-model="form.expected"
+          />
+        </div>
+
+        <select
+          id="menu_lua_chon"
+          name="menu_lua_chon"
+          class="input-type"
+          v-model="form.type"
+        >
+          <option value="lua_chon_1">Kit</option>
+          <option value="lua_chon_2">Numpad</option>
+          <option value="lua_chon_3">Keycap</option>
+          <option value="lua_chon_4">Switch</option>
+        </select>
+
+        <div>
+          <input
+            class="input-quanlity"
+            type="number"
+            id="name"
+            name="name"
+            placeholder="Quanlity..."
+            v-model="form.quanlity"
+          />
+        </div>
+
+        <input
+          class="input-brand"
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Brand..."
+          v-model="form.brand"
+        />
+
+        <input
+          class="input-describe"
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Describe..."
+          v-model="form.describe"
+        />
+
+      </div>
     </div>
+  </div>
+  <div class="button mt-5">
+    <div class="btn-reset" @click="resetForm">Reset</div>
+    <div class="btn-create">Create</div>
   </div>
 </div>
