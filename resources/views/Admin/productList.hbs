@@ -1,0 +1,91 @@
+<div class="product-listing">
+    <!-- Search and filters -->
+    <div class="search-bar">
+        <input id="search" type="search" placeholder="search..." class="search-input">
+        <button id="sort-button" class="search-button">Search</button>
+    </div>
+    <div class="search-filters">
+        <div class="filters">
+            <select id="availability" class="filter-select">
+                <option value="">Availability</option>
+                <option value="in-stock">In Stock</option>
+                <option value="out-of-stock">Out of Stock</option>
+            </select>
+
+            <select id="category" class="filter-select">
+                <option value="">Type</option>
+                {{#each categories}}
+                    <option value="{{this.categoryname}}">{{this.categoryname}}</option>
+                {{/each}}
+            </select>
+
+            <select id="brand" class="filter-select">
+                <option value="">Brand</option>
+                {{#each brands}}
+                    <option value="{{this.brandname}}">{{this.brandname}}</option>
+                {{/each}}
+            </select>
+
+            <select id="price" class="filter-select">
+                <option value="">Price</option>
+                <option value="under-1000000">Under 1,000,000</option>
+                <option value="1000000-5000000">1,000,000 - 5,000,000</option>
+                <option value="over-5000000">Over 5,000,000</option>
+            </select>
+
+            <select id="sort" class="filter-select">
+                <option value="">Sort by</option>
+                <option value="price-low-high">Price, low to high</option>
+                <option value="price-high-low">Price, high to low</option>
+            </select>
+        </div>
+        <button id="sort-button2" class="sort-button">Sort</button>
+    </div>
+
+    <!-- Product listings -->
+    <div class="product-list" id="product-list">
+        {{#each allProducts.data}}
+        <div class="product-card">
+            <img src="{{this.imagepath}}/1.jpg" alt="{{this.productname}}" class="product-image">
+
+            <div class="product-details">
+                <p class="product-name">[ {{this.status}} ] {{this.productname}}</p>
+                <div class="product-info">
+                    <div class="price-row">
+                        <span class="price-label">Type:</span>
+                        <span>{{this.categoryname}}</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Listed price:</span>
+                        <span>{{this.oldprice}}</span>                        
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Brand:</span>
+                        <span>{{this.brandname}}</span>
+                    </div>
+                    <div class="price-row">
+                        <span class="price-label">Adjusted price:</span>
+                        <span>{{this.currentprice}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="share-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="share-icon">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+            </button>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="pagination" id="pagination">
+        
+    </div>
+</div>
