@@ -4,6 +4,7 @@ const express = require('express'); // Web framework cho Node.js
 const morgan = require('morgan'); // Module ghi log
 const expressHandlebars = require('express-handlebars'); // Template engine
 const session = require('express-session');
+const Handlebars = require('handlebars');
 const app = express();
 const port = 4000; // Cổng để chạy server
 
@@ -76,6 +77,24 @@ app.engine('hbs', expressHandlebars.engine({
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views')); // Đặt thư mục views
+
+
+// // Helper handlebars paging
+// Handlebars.registerHelper('gt', function (a, b) {
+//     return a > b;
+// });
+
+// Handlebars.registerHelper('lt', function (a, b) {
+//     return a < b;
+// });
+
+// Handlebars.registerHelper('inc', function (a) {
+//     return a + 1;
+// });
+
+// Handlebars.registerHelper('dec', function (a) {
+//     return a - 1;
+// });
 
 
 
