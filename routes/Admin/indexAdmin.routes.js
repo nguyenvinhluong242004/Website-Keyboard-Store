@@ -10,6 +10,7 @@ const dailySales = require('./dailySales.route');
 const monthlySales = require('./monthlySales.route');
 const orderItem = require('./orderItem.route');
 const product = require('./product.route');
+const detailParticiparts = require('./detailParticipants.route');
 
 //------------------------------------------
 
@@ -22,5 +23,6 @@ router.use('/daily-sales', dailySales);
 router.use('/monthly-sales', monthlySales);
 router.use('/order', orderItem)
 router.use('/product', product)
+router.use ('/d',detailParticiparts)
 
 module.exports = router;
