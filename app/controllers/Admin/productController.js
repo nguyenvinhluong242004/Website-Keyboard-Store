@@ -1,4 +1,4 @@
-const { getAllProducts, getBrands, getCategories, getFilteredProducts } = require('../../models/Admin/productModel');
+const { getAllProducts, getBrands, getCategories, getFilteredProducts, isProductExist, addProduct } = require('../../models/Admin/productModel');
 
 const productController = {
     productList: async (req, res) => {
@@ -62,18 +62,56 @@ const productController = {
         }
     },
 
-    addProduct: async (req, res) => {
+    productAdd: async (req, res) => {
         try {
-            res.render("Admin/addProduct", {
+            const brands = await getBrands();
+            const categories = await getCategories();
+
+            res.render("Admin/productAdd", {
                 layout: 'layoutAdmin', 
                 title: 'Add Product',
                 customHead: `
-                    <link rel="stylesheet" href="/Admin/Product/addProduct.css">
+                    <link rel="stylesheet" href="/Admin/Product/productAdd.css">
+                    <script defer type="module" src="/Admin/Product/productAdd.js"></script>
                 `,
+                categories,
+                brands,
             });
         } catch (error) {
             console.error("Error rendering add product page:", error);
             res.status(500).send("Internal Server Error");
+        }
+    },
+
+    addProduct: async (req, res) => {
+        try {
+            console.log(req.body);
+            const { name, listedPrice, adjustedPrice, type, quantity, brand, specification, description, images } = req.body;
+    
+            // Kiểm tra xem sản phẩm đã tồn tại chưa
+            const isExist = await isProductExist(name);
+            if (isExist) {
+                return res.status(400).json({ message: 'Product already exists' });
+            }
+    
+            // Thêm sản phẩm mới
+            const { productId } = await addProduct({
+                name,
+                listedPrice,
+                adjustedPrice,
+                type,
+                quantity,
+                brand,
+                specification,
+                description,
+                images,
+            });
+    
+            res.status(201).json({ message: 'Product added successfully', productId });
+            // res.status(201).json({ message: 'Product added successfully'});
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Server error' });
         }
     },
 };
