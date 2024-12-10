@@ -6,7 +6,7 @@ const expressHandlebars = require('express-handlebars'); // Template engine
 const session = require('express-session');
 const Handlebars = require('handlebars');
 const app = express();
-const port = 4000; // Cổng để chạy server
+const port = 4001; // Cổng để chạy server
 
 // Object để lưu trữ các biến cần chia sẻ
 const dataTempServer = {
