@@ -1,0 +1,74 @@
+<form class="product-form">
+    <label for="image-slot">Image slots</label>
+    <div class="image-upload-section">
+        {{#each imageSlots}}
+        <div class="image-slot">
+            <input type="file" accept="image/*" class="image-input" data-slot-id="{{this.id}}">
+            <div class="image-placeholder">
+                {{#if this.url}}
+                <img src="{{this.url}}" alt="Product image {{this.id}}" class="preview-image">
+                {{else}}
+                <div class="placeholder-icon">+</div>
+                {{/if}}
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="form-fields">
+        <div class="form-group">
+            <label for="name" for="name">Name</label>
+            <input type="text" id="name" placeholder="Product name">
+        </div>
+
+        <div class="price-group">
+            <div class="form-group">
+                <label for="listed-price">Listed price</label>
+                <input type="number" id="listed-price" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label for="adjusted-price">Adjusted price</label>
+                <input type="number" id="adjusted-price" placeholder="0">
+            </div>
+        </div>
+
+        <div class="select-group">
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select id="type">
+                    {{#each categories}}
+                    <option value="{{this.categoryname}}">{{this.categoryname}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" placeholder="0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="brand">Brand</label>
+            <select id="brand">
+                {{#each brands}}
+                    <option value="{{this.brandname}}">{{this.brandname}}</option>
+                {{/each}}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="specification">Specification</label>
+            <input type="text" id="specification" placeholder="Product specification">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" placeholder="Product description"></textarea>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="button" class="reset-button">Reset</button>
+        <button type="submit" class="submit-button">ADD</button>
+    </div>
+</form>
