@@ -58,7 +58,11 @@ const getListRegister = async (page, perPage, id) => {
 
     // Lấy tổng số dòng trong bảng để tính số trang
     const totalRegister = await list.query(
-      "SELECT COUNT(*) FROM public.groupbyproduct"
+      `SELECT COUNT(distinct orderid) FROM public.orderdetail
+      WHERE groupbyid = $1
+      `,
+      [id]
+      
     );
 
     // Lấy dữ liệu phân trang
