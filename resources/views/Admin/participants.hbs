@@ -11,9 +11,10 @@
           <div
             v-for="(item, index) in participants"
             :key="index"
-            class="participant-item"
+      
+           
           >
-            <div class="product" @click="detailProductGroupBy(item)">
+            <div class="product"  :class="{ 'selected-tab': selectedIndex === index }" @click="detailProductGroupBy(item,index)">
              
                 <p><img :src="item.imagepath +'/1.jpg'" class="par-style-img"  alt="Product Image" /></p>
                 
@@ -56,6 +57,9 @@
           <div class="par-body-quantity">
             Quantity:
           </div>
+          <div class="par-body-type">
+            Type:
+          </div>
 
           <div class="par-body-brand">
            Brand:
@@ -71,7 +75,7 @@
 
           <div v-if="detailProduct" >
             <div class="par-img">
-              <img :src="detailProduct.images +'/1.jpg'" class="par-detail-img" alt="Không lấy hình ảnh được">
+              <div class="retangle"> <img :src="detailProduct.images +'/1.jpg'" class="par-detail-img" alt="Không lấy hình ảnh được"></div>
               <div class="retangle"></div>
               <div class="retangle"></div>
               <div class="retangle"></div>
@@ -93,11 +97,11 @@
               <div class="col_2">
                 <div class="col_3">
                   <div class="par-close">
-                    Close
+                    Close :
                   </div>
 
                   <div class="expect">
-                    Expected <br>delivery
+                    Expected <br>delivery :
                   </div>
                 </div>
 
@@ -127,8 +131,8 @@
           </div>
 
           <div class="par-btn">
-            <button>Delete form</button>
-            <button>Close form</button>
+            <button class="delete-form">Delete form</button>
+            <button class="close-form">Close form</button>
           </div>
 
         </div>
@@ -140,7 +144,7 @@
     <div class="par-register">
       <div class="par-head-register">
         <h2>List of Customers Register</h2>
-        <button>Export File</button>
+        <button class="export-file">Export File</button>
       </div>
       <input class="par-search" type="text">
 
@@ -165,11 +169,12 @@
       </div>
 
       <div v-if="register.length">
+
         <div v-for="(item, index) in register"
         :key="index"
-        class="register-item" @click="fetchDetailRegister(item.orderid)" >
-
-          
+         @click="fetchDetailRegister(item.orderid,index)" 
+        >
+          <div class="register-item" :class="{ 'selected-tab-register': selectedIndexRegister === index }">
             <div class="col-2">
               <span v-text="item.orderid"></span>
             </div>
@@ -184,35 +189,136 @@
 
             <div class="col-4">
               <span v-text="item.paymentmethod"></span>
+            </div>  
+          </div>
+         
+          <hr>
+        </div>
+      </div>
+
+      <div  class="bot-pagi">
+        <div class="par-pagi">
+          <div class="pagination">
+            <button class="btn-pre" @click="changePageRegister(pageRegister - 1)" :disabled="pageRegister === 1">Previous</button>
+            <span>Page <span v-text="pageRegister"></span> of <span v-text="totalPagesRegister"></span>
+            <button class="btn-nex" @click="changePageRegister(pageRegister + 1)" :disabled="pageRegister === totalPages">Next</button>
+          </div> 
+        </div>
+      </div>
+      
+
+    </div>
+
+    <div class="par-detail-register">
+
+      <div class="par-tag-name-detail-register">
+        Register detail
+      </div>
+      <hr>
+
+      <div class="par-register-detail-body">
+        <div class="par-detail-col-1">
+          <div class="par-name-detail">
+            <div class="par-orderID">
+              Order ID :
             </div>
-             
+            <div class="par-customerID">
+              Customer ID :
+            </div>
+            <div class="par-orderStatus">
+              Order Status :
+            </div>
+          </div>
+
+          <div class="par-register-data" v-for="(item, index) in detaiRegister":key="index">
+            <div v-text="item.orderid"></div>
+            <div v-text="item.userid"></div>
+            <div v-text="item.orderstatus"></div>
+          </div>
+
+        
+
+        </div>
+
+        <div class="par-detail-col-2">
+
+           <div class="par-name-detail">
+              <div class="par-orderID">
+                Purchase Date :
+              </div>
+              <div class="par-customerID">
+                Delivery Date :
+              </div>
+              <div class="par-orderStatus">
+                Payment Method :
+              </div>
+          </div>
+
+          <div class="par-register-data" v-for="(item, index) in detaiRegister":key="index">
+            <div v-text="item.orderdate"></div>
+            <div v-text="item.estimatearrive"></div>
+            <div v-text="item.paymentmethod"></div>
+          </div>
+
+
         </div>
         
       </div>
+      <hr>
+      <div class="par-head-hd">
+        <div class="col-hd">
+          Product Name
+        </div>
 
+        <div class="col-hd">
+          Product Price
+        </div>
+
+        <div class="col-hd">
+          Quatity
+        </div>
+
+        <div class="col-hd">
+          Value
+        </div>
+      </div>
+
+      <div  v-for="(item, index) in calculatedProducts"
+      :key="index">
+        <div class="par-body-hd">
+          <div class="col-hd" v-text="item.productname"></div>
+          <div class="col-hd" v-text="item.quantity"></div>
+          <div class="col-hd" v-text="item.unitprice"></div>
+          <div class="col-hd" v-text="item.totalPrice"></div>
+        </div>
+      </div>
+      <hr>
+
+      <div class="par-row-price">
+        <div class="par-note">
+          <div class="order-note">Order Note :</div>
+          <div class="content-note"> </div>
+        </div>
+
+        <div class="par-body-footer">
+          <div class="col-ship-name">
+            <div>Subtotal:</div>
+            <div style="margin-top: 15px">Shipping:</div>
+            <div style="margin-top: 35px">Total:</div>
+          </div>
+
+          <div class="col-ship-price">
+            <div v-text="totalSum"></div>
+            <div style="margin-top: 15px">[[shipPrice]]</div>
+            <hr>
+            <div style="margin-top: 15px" v-text="totalWithShip">
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      
     </div>
-
-   
-    
-    <div v-for="(item, index) in detaiRegister"
-        :key="index"
-        >
-        
-        <span v-text="item.orderid"></span>
-        <span v-text="item.userid"></span>
-        <span v-text="item.orderstatus"></span>
-        <span v-text="item.orderdate"></span>
-        <span v-text="item.estimatearrive"></span>
-        <span v-text="item.paymentmethod"></span>
-
-    </div>
-
-    <div  v-for="(item, index) in allProductRegiser"
-        :key="index">
-        <span v-text="item.productname"></span>
-        <span v-text="item.quantity"></span>
-        <span v-text="item.unitprice"></span>
-    </div>
-
   </div>
 </div>
