@@ -26,7 +26,7 @@ controller.showParticipants = async (req, res) => {
 controller.getGroupBy = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; 
-    const perPage = parseInt(req.query.perPage) || 5; 
+    const perPage = parseInt(req.query.perPage) || 3; 
 
     const participantsData = await moduleParticipants.getListGroupBy( page, perPage );
 
@@ -50,14 +50,14 @@ controller.getRegister = async (req, res) => {
   try {
  
     const page = parseInt(req.query.page) || 1; 
-    const perPage = parseInt(req.query.perPage) || 5; 
+    const perPage = parseInt(req.query.perPage) || 3; 
     const id = parseInt(req.query.id) || 1;
 
     const listRegister = await moduleParticipants.getListRegister(page, perPage, id);
 
     res.json({
       allRegister: listRegister.allRegister,
-      totalPages: Math.ceil(listRegister.allRegister / perPage),
+      totalPages: Math.ceil(listRegister.totalRegister / perPage),
     });
 
   } catch {
