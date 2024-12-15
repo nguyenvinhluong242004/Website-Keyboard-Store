@@ -1,15 +1,24 @@
 new Vue({
   el: "#app",
   data: {
+    productID:0,
     form: {
-      name: "",
-      price: "",
-      close: "",
-      expected: "",
-      type: "lua_chon_1",
-      brand: "",
-      describe: "",
+      name: '1',
+      price: 1,
+      describe: '1',
+      quantity: 1,
+      
+      // type: '',
+    
+      // brand: '',
+     
     },
+    table_groupbyProduct:{
+      close: '',
+      expected: '',
+      productid:0,
+    },
+
     imageUrl: null,
     imageUrl_2: null,
     imageUrl_3: null,
@@ -77,18 +86,97 @@ new Vue({
     resetForm() {
       // Đặt lại tất cả giá trị của các trường về rỗng
       this.form = {
-        name: "",
-        price: "",
-        close: "",
-        expected: "",
-        type: "lua_chon_1",
-        brand: "",
-        describe: "",
+        name: '',
+        price: 0,
+        close: '',
+        expected: '',
+        type: '',
+        quantity: 0,
+        //brand: '',
+        describe: '',
       };
       this.imageUrl= null;
       this.imageUrl_2= null;
       this.imageUrl_3= null;
       this.imageUrl_4= null;
     },
+    async submitForm() {
+      // Đảm bảo typeName đã được điền vào form
+      if (!this.form.type) {
+        alert('Please select a type.');
+        return;
+      }
+    
+      try {
+        const typeResponse = await fetch(`/admin/order/type?typeName=${this.form.type}`);
+        const typeData = await typeResponse.json();
+    
+        if (!typeData.success) {
+          console.error('Error fetching category ID:', typeData.error);
+          alert('dit me no.');
+          return;
+        }
+    
+        // Lấy typeid từ dữ liệu trả về
+        const typeid = typeData.typeid;
+    
+        const formData = {
+          description: this.form.describe,
+          productname: this.form.name,
+          currentprice: parseInt(this.form.price, 10),
+          quantity: parseInt(this.form.quantity, 10),
+          categoryid: parseInt(typeid, 10),
+        };
+    
+        const response = await fetch('/admin/order/insert', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),  // Đảm bảo dữ liệu đúng định dạng
+        });
+    
+        const responseData = await response.json();
+    
+        if (responseData.success) {
+          this.productID = responseData.productid;
+          this.resetForm();
+          const formGroupBy = {
+            enddate: this.table_groupbyProduct.close,
+            estimatearrive: this.table_groupbyProduct.expected,
+            productid: this.productID,
+          };
+    
+          try {
+            const response = await fetch('/admin/order/insert-groupbyproduct', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formGroupBy),
+            });
+    
+            const responseData = await response.json();
+    
+            if (responseData.success) {
+              alert('Insert groupbyProduct success!');
+              this.resetForm();
+            } else {
+              console.error('Error:', responseData.error);
+              alert('Failed to create groupBy order.');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred.');
+          }
+        } else {
+          console.error('Error:', responseData.error);
+          alert('Failed to create order.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred.');
+      }
+    }
   },
 });
