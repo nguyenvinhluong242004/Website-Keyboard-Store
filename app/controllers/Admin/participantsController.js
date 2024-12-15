@@ -66,6 +66,25 @@ controller.getRegister = async (req, res) => {
   }
 };
 
+controller.getRegisterExport = async (req, res) => {
+  try {
+ 
+    const page = parseInt(req.query.page) || 1; 
+    const perPage = parseInt(req.query.perPage) || 3; 
+    const id = parseInt(req.query.id) || 1;
+
+    const listRegister = await moduleParticipants.getListRegister(page, perPage, id);
+
+    res.json({
+      export: listRegister.exportRegister,
+    });
+
+  } catch {
+    console.error("Error fetching participants data:", error);
+    res.status(500).send("Error fetching participants data.");
+  }
+};
+
 
 controller.getDetailRegister = async (req, res) => {
   try {
