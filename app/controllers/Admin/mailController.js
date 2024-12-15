@@ -1,6 +1,4 @@
-const { getAllEmail } = require('../../models/Admin/mailModel');
-const nodemailer = require('nodemailer');
-require('dotenv').config();
+const { getAllEmail, sendEmails } = require('../../models/Admin/mailModel');
 
 const productController = {
     sendMail: async (req, res) => {
@@ -25,37 +23,18 @@ const productController = {
     handleSendMail: async (req, res) => {
         try {
             const { emails, subject, message } = req.body;
-    
-            // Kiểm tra dữ liệu gửi từ client
+
             if (!emails || emails.length === 0) {
-                return res.status(400).json({ error: "No emails selected." });
+                return res.status(400).json({ error: "No emails selected." }); // Đảm bảo phản hồi là JSON
             }
-    
-            // Cấu hình Nodemailer
-            const transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: process.env.EMAIL_USER,
-                    pass: process.env.EMAIL_PASS,
-                },
-            });
-    
-            // Gửi email cho từng người
-            const mailPromises = emails.map(email =>
-                transporter.sendMail({
-                    from: process.env.EMAIL_USER,
-                    to: "nguyenvo122005@gmail.com", // không test nữa thì thay lại bằng "to: email,"
-                    subject: subject || "No Subject",
-                    text: message || "No Message",
-                })
-            );
-    
-            await Promise.all(mailPromises);
-    
-            return res.status(200).json({ message: "Emails sent successfully." });
+
+            // Gọi hàm từ model để gửi email
+            const sendResult = await sendEmails(emails, subject, message);
+
+            return res.status(200).json({ message: "Emails sent successfully", result: sendResult });
         } catch (error) {
             console.error("Error sending emails:", error);
-            return res.status(500).json({ error: "Failed to send emails." });
+        res.status(500).json({ error: "Internal Server Error", details: error.message }); // Trả về lỗi JSON
         }
     },    
 };
