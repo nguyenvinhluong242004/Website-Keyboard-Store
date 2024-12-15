@@ -33,7 +33,7 @@
       </div>
 
       <div class="col-md-11">
-        <div class="input-images">
+        {{!-- <div class="input-images">
           <!-- Nút + để chọn ảnh -->
           <div class="add-image-btn" @click="triggerFileInput">
             <i class="fas fa-plus"></i>
@@ -106,7 +106,7 @@
           <div v-if="imageUrl_4" class="image-preview">
             <img :src="imageUrl_4" alt="Selected Image" />
           </div>
-        </div>
+        </div> --}}
 
         <input
           class="input-name"
@@ -132,7 +132,7 @@
             type="date"
             name="ngay_thang"
             id="ngay_thang"
-            v-model="form.close"
+            v-model="table_groupbyProduct.close"
           />
         </div>
 
@@ -142,7 +142,7 @@
             type="date"
             name="ngay_thang"
             id="ngay_thang"
-            v-model="form.expected"
+            v-model="table_groupbyProduct.expected"
           />
         </div>
 
@@ -152,10 +152,10 @@
           class="input-type"
           v-model="form.type"
         >
-          <option value="lua_chon_1">Kit</option>
-          <option value="lua_chon_2">Numpad</option>
-          <option value="lua_chon_3">Keycap</option>
-          <option value="lua_chon_4">Switch</option>
+          <option value="Kit Phim">Kit Phim</option>
+          <option value="Numpad">Numpad</option>
+          <option value="kecap">Kecap</option>
+          <option value="Switch">Switch</option>
         </select>
 
         <div>
@@ -165,10 +165,10 @@
             id="name"
             name="name"
             placeholder="Quanlity..."
-            v-model="form.quanlity"
+            v-model="form.quantity"
           />
         </div>
-
+{{!-- 
         <input
           class="input-brand"
           type="text"
@@ -176,7 +176,7 @@
           name="name"
           placeholder="Brand..."
           v-model="form.brand"
-        />
+        /> --}}
 
         <input
           class="input-describe"
@@ -192,6 +192,6 @@
   </div>
   <div class="button mt-5">
     <div class="btn-reset" @click="resetForm">Reset</div>
-    <div class="btn-create">Create</div>
+    <div class="btn-create"  @click="submitForm">Create</div>
   </div>
 </div>
