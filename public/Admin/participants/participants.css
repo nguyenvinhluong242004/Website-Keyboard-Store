@@ -17,11 +17,11 @@
   cursor: pointer;
 }
 .sort-by{
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: bold;
   display: flex;
   background-color: #767676;
-  width: 5%;
+  width: 10%;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -70,11 +70,18 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  height: 30px;
 }
 .btn-pre,
 .btn-nex {
+  width: 30%;
   border: 1px, black, solid;
   border-radius: 5px;
+  font-size: 70%;
+}
+.l{
+ 
+  font-size: 70%;
 }
 
 .btn-pre:hover,
@@ -84,8 +91,8 @@
 }
 
 .par-style-img {
-  width: 120px;
-  height: 80px;
+  width: 50%;
+  height: 20%;
   border-radius: 10px;
   margin-left: 10px;
   border: 1px, black, solid;
@@ -97,14 +104,19 @@
   justify-content: center;
   gap: 50px;
   padding: 20px;
+  width: 100%;
+}
+.x{
+  width: 200px;
 }
 .product {
   display: flex;
   align-items: center;
   background-color: rgb(197, 197, 197);
   border-radius: 5px;
-  height: 110px;
-  gap: 50px;
+  height: 100%;
+  width: 100%;
+  
 }
 .product:hover {
   background-color: #767676;
@@ -119,14 +131,19 @@
 }
 .pagination {
   display: flex;
+  align-items: center;
   gap: 5px;
+  width: 100%;
+  height: 30px;
+  justify-content: space-between;
 }
+
 .par-body {
   background-color: #f6f6f6;
   border-radius: 10px;
   display: flex;
-  gap: 50px;
   height: 90%;
+  width: 70%;
 }
 .par-top-layout {
   display: flex;
@@ -135,7 +152,7 @@
 }
 .par-body-tag {
   position: relative;
-  width: 5%;
+  width: 13%;
   height: 80%;
   margin-left: 10px;
   margin-top: 20px;
@@ -187,7 +204,7 @@
 }
 .par-body-detail {
   margin-top: 20px;
-  width: 95%;
+  width: 87%;
 }
 .par-img {
   height: 150px;
@@ -245,7 +262,7 @@
   top: 110px;
 }
 .col_4 {
-  width: 85%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -259,13 +276,13 @@
 }
 .col_2 {
   display: flex;
-  width: 55%;
+  width: 60%;
   justify-content: space-between;
 }
 
 .col_3 {
   position: relative;
-  width: 15%;
+  width: 20%;
 }
 .par-type {
   width: 40%;
@@ -361,6 +378,9 @@ hr {
   width: 20%;
   font-weight: bold;
 }
+.par-orderID,.par-customerID,.par-orderStatus{
+  font-size: 60%;
+}
 .par-register-detail-body {
   display: flex;
 }
@@ -402,14 +422,15 @@ hr {
   font-weight: bold;
 }
 .content-note {
-  width: 600px;
+  width: 30%;
   height: 200px;
   background-color: #c2c2c2;
   border-radius: 5px;
 }
 .order-note {
   font-weight: bold;
-  font-size: 20px;
+  width: 20%;
+  font-size: 1rem;
 }
 .par-note {
   width: 60%;
@@ -422,11 +443,12 @@ hr {
 }
 .bot-pagi {
   left: 50%;
-  width: 98%;
+  width: 20%;
   position: absolute;
   bottom: 10px;
   transform: translateX(-50%);
 }
+
 .selected-tab-register {
   background-color: #c2c2c2;
   border-radius: 5px;
