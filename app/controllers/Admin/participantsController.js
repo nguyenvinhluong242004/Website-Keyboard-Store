@@ -67,6 +67,29 @@ controller.getRegister = async (req, res) => {
   }
 };
 
+
+controller.getRegisterSearch = async (req, res) => {
+  try {
+ 
+    const page = parseInt(req.query.page) || 1; 
+    const perPage = parseInt(req.query.perPage) || 3; 
+    const id = parseInt(req.query.id) || 1;
+    const query = req.query.q || 'Pay In Cash';
+
+    const listRegister = await moduleParticipants.searchRegister(page, perPage, id, query);
+
+    res.json({
+      result: listRegister.resultSearch,
+      totalPagesSearch: Math.ceil(listRegister.totalSearch / perPage),
+    });
+
+  } catch {
+    console.error("Error fetching participants data:", error);
+    res.status(500).send("Error fetching participants data.");
+  }
+};
+
+
 controller.getRegisterExport = async (req, res) => {
   try {
  
@@ -109,5 +132,6 @@ controller.getDetailRegister = async (req, res) => {
     res.status(500).send("Error fetching participants data.");
   }
 };
+
 
 module.exports = controller;
