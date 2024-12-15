@@ -3,6 +3,8 @@ new Vue({
   delimiters: ['[[', ']]'],
   data() {
     return {  
+      check:false,
+      searchQuery:'',
       sort:'enddate',
       exportRegister:[],
       idGroupby:null,
@@ -14,7 +16,7 @@ new Vue({
       page: 1, 
       pageRegister: 1, 
       perPage: 3,
-      perPageRegister: 3,
+      perPageRegister: 2,
       totalPages: 1, 
       totalPagesRegister: 1, 
       totalPagesDetailRegister:1,
@@ -56,34 +58,82 @@ new Vue({
   },
   
   mounted() {
-
     this.initializeData();
   },
   
   methods: {
+    async searchV2(){
+      this.pageRegister = 1;
+      this.search();
+    },
+    async search() {
+
+      if (this.searchQuery.trim() === '') {
+        return; 
+      }
+
+      return new Promise((resolve, reject) => {
+        fetch(`/admin/d/api/searchRegister?q=${encodeURIComponent(this.searchQuery)}&page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
+          .then((response) => {
+            if (!response.ok) {
+              return reject("Failed to fetch data");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            this.register = data.result;
+            this.totalPagesRegister = data.totalPagesSearch;
+    
+            if (this.register.length >= 1) {
+              this.orderIdRegister = this.register[0].orderid;
+            } else {
+              this.orderIdRegister = null;
+              console.log("register does not have enough elements.");
+            }
+            
+            //console.log("orderIdRegister:", this.orderIdRegister);
+            this.fetchDetailRegister();
+            
+            resolve(data); 
+          })
+          .catch((error) => {
+            console.error("Error fetching participants:", error);
+            reject(error); 
+          });
+      });
+    },
+
     time(){
       this.sort ='enddate';
       this. initializeData();
       this.selectedIndex = 0;
       this.selectedIndexRegister=0
+      this.searchQuery = '';
+      this.pageRegister = 1;
     },
     type(){
       this.sort ='categoryname';
       this. initializeData();
       this.selectedIndex = 0;
       this.selectedIndexRegister=0
+      this.searchQuery = '';
+      this.pageRegister = 1;
     },
     brand(){
       this.sort ='brandname';
       this. initializeData();
       this.selectedIndex = 0,
       this.selectedIndexRegister=0
+      this.searchQuery = '';
+      this.pageRegister = 1;
     },
     price(){
       this.sort ='currentprice';
       this. initializeData();
       this.selectedIndex = 0;
       this.selectedIndexRegister=0
+      this.searchQuery = '';
+      this.pageRegister = 1;
     },
     async promptFileName() {
 
@@ -255,23 +305,32 @@ new Vue({
       if (newPage >= 1 && newPage <= this.totalPagesRegister) {
         this.pageRegister = newPage;
 
-        await this.fetchRegister();
-        this.selectedIndexRegister = 0;
-
-        if (this.orderIdRegister != null){
-          await this.fetchDetailRegister();
-          await this.fetchDetailRegister();
+        if(this.searchQuery != ''){
+          await this.search();
+          this.selectedIndexRegister = 0;
         }
         else{
-          console.log('khong goi');
-          this.detaiRegister=[],
-          this.allProductRegiser=[]
-        } 
+
+          await this.fetchRegister();
+          this.selectedIndexRegister = 0;
+  
+          if (this.orderIdRegister != null){
+            await this.fetchDetailRegister();
+          }
+          else{
+            console.log('khong goi');
+            this.detaiRegister=[],
+            this.allProductRegiser=[]
+          } 
+
+        }
       }
     },
   
    async detailProductGroupBy(item,index) {
+        this.searchQuery = '';
         this.pageRegister =1;
+        this.pageRegister = 1;
 
         this.detailProduct.images=item.imagepath;
         this.detailProduct.name=item.productname;
@@ -291,7 +350,6 @@ new Vue({
         if (this.orderIdRegister != null){
           await this.fetchDetailRegister();
 
-          this.fetchDetailRegister();
         }
         else{
           console.log('khong goi');
