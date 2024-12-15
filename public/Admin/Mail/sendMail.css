@@ -1,0 +1,107 @@
+.container {
+    display: flex;
+    padding: 20px;
+    background-color: #eeefef;
+    min-height: 100vh;
+}
+
+.list-mail {
+    width: 25%;
+    border: 2px;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: white;
+    flex-wrap: wrap;
+    margin-right: 10px;
+}
+
+.content {
+    flex: 1;
+    border: 2px;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: white;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.mail-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.mail-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+
+.mail-item label {
+    font-size: 14px;
+    color: #212529;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #e9ecef;
+}
+
+.form-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    resize: vertical;
+    background-color: #e9ecef;
+}
+
+.send-button {
+    float: right;
+    padding: 10px 25px;
+    background-color: #007BFF; /* Màu xanh dương sáng */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: #0056b3; /* Xanh đậm hơn khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+    color: #f0f0f0; /* Màu chữ sáng hơn */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Thêm bóng đổ mềm */
+}
+
+.send-button:active {
+    transform: scale(0.95); /* Thu nhỏ nhẹ khi bấm */
+    background-color: #003d7a; /* Màu tối hơn khi bấm */
+}
+
