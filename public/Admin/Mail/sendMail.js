@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // const sendMailForm = document.getElementById('sendMailForm');
     const emailCheckboxes = document.getElementsByName('selectedEmails');
     const BccInput = document.querySelector('.form-group input.form-input'); // Trường BCC input
     const subjectInput = document.getElementById('subject'); // Trường nhập tiêu đề
@@ -25,25 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault(); // Ngăn chặn reload trang mặc định
 
         // Thu thập dữ liệu từ form
-        const selectedEmails = Array.from(BccInput.value.split(',')).map(email => email.trim());
-        const subject = subjectInput.value;
-        const message = messageInput.value;
+        const selectedEmails = Array.from(emailCheckboxes) // Chuyển NodeList thành Array
+            .filter(checkbox => checkbox.checked) // Lọc checkbox được chọn
+            .map(checkbox => checkbox.value); // Lấy giá trị email từ checkbox
+        const subject = subjectInput.value.trim();
+        const message = messageInput.value.trim();
 
-        // Kiểm tra dữ liệu đầu vào
+        // Kiểm tra ràng buộc
         if (selectedEmails.length === 0) {
-            alert('Vui lòng chọn ít nhất một email!');
-            return;
-        }
-        if (!subject) {
-            alert('Vui lòng nhập tiêu đề!');
-            return;
-        }
-        if (!message) {
-            alert('Vui lòng nhập nội dung email!');
-            return;
+            alert("Please select at least one email before sending.");
+            return; // Ngừng gửi nếu không có email nào được chọn
         }
 
-        // Chuẩn bị dữ liệu gửi
+        if (!subject || !message) {
+            alert("Please fill in both the subject and message fields.");
+            return; // Ngừng gửi nếu không nhập tiêu đề hoặc nội dung
+        }
+
+        // Chuẩn bị dữ liệu để gửi
         const requestData = {
             emails: selectedEmails,
             subject: subject,
@@ -51,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
+            // Gửi request đến server
             const response = await fetch('/admin/mail/send-mail', {
                 method: 'POST',
                 headers: {
@@ -59,17 +58,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(requestData),
             });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                alert(`Error: ${errorData.error}`);
-                return;
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message || "Emails sent successfully!");
+            } else {
+                const error = await response.json();
+                alert(error.error || "Failed to send emails.");
             }
-
-            const result = await response.json();
-            alert(result.message);
-        } catch (error) {
-            console.error('Error sending email:', error);
-            alert('Gửi email thất bại! Vui lòng thử lại.');
+        } catch (err) {
+            console.error("Error sending emails:", err);
+            alert("An error occurred while sending emails. Please try again.");
         }
     });
 });
