@@ -16,11 +16,41 @@
   transform: scale(1, 1.1);
   cursor: pointer;
 }
+.sort-by{
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  background-color: #767676;
+  width: 5%;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+}
 .par-fill {
   width: 100%;
   height: 50px;
-  background-color: rgb(184, 184, 184);
+  background-color: rgb(79, 79, 79);
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 10px;  
+  justify-content: space-around;
+
+}
+.sort-by-time,.sort-by-type,.sort-by-brand,.sort-by-price{
+  background-color: #767676;
+  color: white;
+  width: 20%;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+.sort-by-time:hover,.sort-by-type:hover,.sort-by-brand:hover,.sort-by-price:hover{
+ scale:1.1;
+ color:black;
 }
 .par-list-gb {
   background-color: #f6f6f6;
