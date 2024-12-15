@@ -64,7 +64,6 @@ const getListRegister = async (page, perPage, id) => {
       WHERE groupbyid = $1
       `,
       [id]
-      
     );
 
     // Lấy dữ liệu phân trang
@@ -152,9 +151,52 @@ const getDetailRegister = async (page, perPage, orderid) => {
   }
 };
 
+const searchRegister = async (page, perPage,id,query) => {
+  const list = await pool.connect();
+  try {
+    // Tính toán offset (bắt đầu từ đâu trong bảng)
+    const offset = (page - 1) * perPage;
+
+
+    const totalRegisterSearch = await list.query(
+      `
+      SELECT COUNT( DISTINCT o.orderid)
+      FROM  public.orders o 
+      JOIN public.orderdetail d on d.orderid=o.orderid 
+      WHERE groupbyid = $1 and LOWER(o.paymentmethod) = LOWER($2)
+      `,
+      [id,query]
+    );
+
+     const registerSearch = await list.query(
+      `
+      SELECT DISTINCT o.orderid, o.orderdate, o.userpaid, o.paymentmethod, o.userid, o.orderstatus
+      FROM  public.orders o 
+      JOIN public.orderdetail d on d.orderid=o.orderid 
+      WHERE groupbyid = $3 and LOWER(o.paymentmethod) = LOWER($4)
+      LIMIT $1 OFFSET $2
+    `,
+      [perPage, offset, id,query]
+    );
+
+
+    return {
+      totalSearch: parseInt(totalRegisterSearch.rows[0].count, 10),
+      resultSearch: registerSearch.rows, 
+    };
+  } catch (error) {
+    console.error("Lỗi truy vấn tất cả group by:", error);
+    throw error;
+  } finally {
+    list.release();
+  }
+};
+
+
 module.exports = 
 { 
   getListGroupBy, 
   getListRegister,
-  getDetailRegister 
+  getDetailRegister,
+  searchRegister
 };
