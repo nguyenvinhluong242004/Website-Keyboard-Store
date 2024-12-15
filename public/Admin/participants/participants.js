@@ -178,7 +178,7 @@ new Vue({
             this.register = data.allRegister;
             this.totalPagesRegister = data.totalPages;
     
-            if (this.register.length > 1) {
+            if (this.register.length >= 1) {
               this.orderIdRegister = this.register[0].orderid;
             } else {
               this.orderIdRegister = null;
@@ -247,19 +247,32 @@ new Vue({
     changePage(newPage) {
       if (newPage >= 1 && newPage <= this.totalPages) {
         this.page = newPage;
-        this.fetchParticipants();
-        this.selectedIndex = null;
+        this.initializeData();
+        this.selectedIndex = 0;
       }
     },
-    changePageRegister(newPage) {
+    async changePageRegister(newPage) {
       if (newPage >= 1 && newPage <= this.totalPagesRegister) {
         this.pageRegister = newPage;
-        this.fetchRegister();
-        this.selectedIndexRegister = null;
+
+        await this.fetchRegister();
+        this.selectedIndexRegister = 0;
+
+        if (this.orderIdRegister != null){
+          await this.fetchDetailRegister();
+          await this.fetchDetailRegister();
+        }
+        else{
+          console.log('khong goi');
+          this.detaiRegister=[],
+          this.allProductRegiser=[]
+        } 
       }
     },
   
    async detailProductGroupBy(item,index) {
+        this.pageRegister =1;
+
         this.detailProduct.images=item.imagepath;
         this.detailProduct.name=item.productname;
         this.detailProduct.price=item.currentprice;
@@ -285,8 +298,6 @@ new Vue({
           this.detaiRegister=[],
           this.allProductRegiser=[]
         } 
-
-       
     },
   },
 });
