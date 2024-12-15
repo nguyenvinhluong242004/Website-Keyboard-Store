@@ -77,9 +77,20 @@ const getListRegister = async (page, perPage, id) => {
       [perPage, offset, id]
     );
 
+    const getAllRegister = await list.query(
+      `
+      SELECT DISTINCT o.orderid, o.orderdate, o.userpaid, o.paymentmethod, o.userid, o.orderstatus
+      FROM  public.orders o 
+      JOIN public.orderdetail d on d.orderid=o.orderid 
+      WHERE groupbyid = $1
+    `,
+      [id]
+    );
+
     return {
       totalRegister: parseInt(totalRegister.rows[0].count, 10), // Tổng số nhóm sản phẩm
       allRegister:register.rows, // Dữ liệu sản phẩm theo trang
+      exportRegister:getAllRegister.rows,
     };
   } catch (error) {
     console.error("Lỗi truy vấn tất cả Register:", error);
