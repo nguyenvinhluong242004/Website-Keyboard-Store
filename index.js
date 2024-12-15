@@ -1,10 +1,13 @@
+// Load biến môi trường từ file .env
+require('dotenv').config();
+
 // Import các module cần thiết
 const path = require('path'); // Xử lý đường dẫn tệp
 const express = require('express'); // Web framework cho Node.js
 const morgan = require('morgan'); // Module ghi log
 const expressHandlebars = require('express-handlebars'); // Template engine
 const session = require('express-session');
-const Handlebars = require('handlebars');
+
 const app = express();
 const port = 4001; // Cổng để chạy server
 
