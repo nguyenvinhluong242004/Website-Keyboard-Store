@@ -161,7 +161,9 @@
         <h2>List of Customers Register</h2>
         <button class="export-file"  @click="promptFileName">Export File</button>
       </div>
-      <input class="par-search" type="text">
+
+        <input class="par-search" type="text" v-model="searchQuery" @keydown.enter="searchV2" placeholder="Search Payment Method..."
+    />
 
       <div class="par-name-register">
 
@@ -332,7 +334,6 @@
           
         </div>
       </div>
-      
       
     </div>
   </div>
