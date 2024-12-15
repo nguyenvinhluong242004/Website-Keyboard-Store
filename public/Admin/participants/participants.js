@@ -2,9 +2,10 @@ new Vue({
   el: "#app",
   delimiters: ['[[', ']]'],
   data() {
-    return {
+    return {  
+      sort:'enddate',
       exportRegister:[],
-      idGroupby:1,
+      idGroupby:null,
       orderIdRegister:null,
       selectedIndex: 0,
       selectedIndexRegister:0,
@@ -60,6 +61,30 @@ new Vue({
   },
   
   methods: {
+    time(){
+      this.sort ='enddate';
+      this. initializeData();
+      this.selectedIndex = 0;
+      this.selectedIndexRegister=0
+    },
+    type(){
+      this.sort ='categoryname';
+      this. initializeData();
+      this.selectedIndex = 0;
+      this.selectedIndexRegister=0
+    },
+    brand(){
+      this.sort ='brandname';
+      this. initializeData();
+      this.selectedIndex = 0,
+      this.selectedIndexRegister=0
+    },
+    price(){
+      this.sort ='currentprice';
+      this. initializeData();
+      this.selectedIndex = 0;
+      this.selectedIndexRegister=0
+    },
     async promptFileName() {
 
       await this.fetchAllRegister();
@@ -84,7 +109,7 @@ new Vue({
     },
     async initializeData() {
       try {
-        await this.fetchParticipants(); // Đợi fetchParticipants hoàn tất
+        await this.fetchParticipants();
         if (this.participants.length > 0) {
           this.detailProduct = {
             name: this.participants[0].productname,
@@ -100,11 +125,18 @@ new Vue({
           };
         }
         
-        // Chờ fetchRegister hoàn tất trước khi tiếp tục
+        this.idGroupby = this.participants[0].groupbyid;
+
         await this.fetchRegister(); 
-  
-        // Nếu cần, có thể gọi fetchDetailRegister sau fetchRegister
-        await this.fetchDetailRegister();
+
+        if (this.orderIdRegister != null){
+          await this.fetchDetailRegister();
+        }
+        else{
+          console.log('khong goi');
+          this.detaiRegister=[],
+          this.allProductRegiser=[]
+        } 
   
       } catch (error) {
         console.error("Error in mounted:", error);
@@ -113,7 +145,7 @@ new Vue({
 
     fetchParticipants() {
       return new Promise((resolve, reject) => {
-        fetch(`/admin/d/api?page=${this.page}&perPage=${this.perPage}`)
+        fetch(`/admin/d/api?page=${this.page}&perPage=${this.perPage}&orderby=${this.sort}`)
           .then((response) => {
             if (!response.ok) {
               reject("Failed to fetch data");
@@ -123,11 +155,11 @@ new Vue({
           .then((data) => {
             this.participants = data.allProductGroupBy;
             this.totalPages = data.totalPages;
-            resolve(data); // Resolve với dữ liệu nhận được
+            resolve(data); 
           })
           .catch((error) => {
             console.error("Error fetching participants:", error);
-            reject(error); // Reject nếu có lỗi
+            reject(error); 
           });
       });
     },
@@ -149,11 +181,12 @@ new Vue({
             if (this.register.length > 1) {
               this.orderIdRegister = this.register[0].orderid;
             } else {
+              this.orderIdRegister = null;
               console.log("register does not have enough elements.");
             }
             console.log("orderIdRegister:", this.orderIdRegister);
     
-            resolve(data); // Resolve Promise với dữ liệu nhận được
+            resolve(data); 
           })
           .catch((error) => {
             console.error("Error fetching participants:", error);
@@ -187,7 +220,7 @@ new Vue({
 
     fetchDetailRegister(orderid, index) {
       let orderID = orderid || this.orderIdRegister;
-      console.log(this.orderIdRegister);
+
       this.selectedIndexRegister = index ||0;
       return new Promise((resolve, reject) => {
         fetch(`/admin/d/api/detailRegister?page=${this.page}&perPage=${this.perPage}&id=${orderID}`)
@@ -200,11 +233,11 @@ new Vue({
           .then((data) => {
             this.detaiRegister = data.allRegister;
             this.allProductRegiser = data.allProduct;
-            resolve(data); // Resolve Promise với dữ liệu nhận được
+            resolve(data); 
           })
           .catch((error) => {
             console.error("Error fetching participants:", error);
-            reject(error); // Reject Promise nếu có lỗi
+            reject(error); 
           });
       });
     },
@@ -226,7 +259,7 @@ new Vue({
       }
     },
   
-    detailProductGroupBy(item,index) {
+   async detailProductGroupBy(item,index) {
         this.detailProduct.images=item.imagepath;
         this.detailProduct.name=item.productname;
         this.detailProduct.price=item.currentprice;
@@ -240,8 +273,20 @@ new Vue({
 
         this.selectedIndex = index;
 
-        this.fetchRegister();
-    
+        await this.fetchRegister();
+
+        if (this.orderIdRegister != null){
+          await this.fetchDetailRegister();
+
+          this.fetchDetailRegister();
+        }
+        else{
+          console.log('khong goi');
+          this.detaiRegister=[],
+          this.allProductRegiser=[]
+        } 
+
+       
     },
   },
 });
