@@ -1,6 +1,6 @@
 const pool = require("../../config/database");
 
-const getListGroupBy = async (page, perPage) => {
+const getListGroupBy = async (page, perPage,orderby) => {
   const list = await pool.connect();
   try {
     // Tính toán offset (bắt đầu từ đâu trong bảng)
@@ -33,7 +33,9 @@ const getListGroupBy = async (page, perPage) => {
 
       JOIN public.brand b on b.brandid = p.brandid
 
+      ORDER BY ${orderby}
       LIMIT $1 OFFSET $2
+     
     `,
       [perPage, offset]
     );
