@@ -3,6 +3,7 @@ new Vue({
   delimiters: ['[[', ']]'],
   data() {
     return {
+      exportRegister:[],
       idGroupby:1,
       orderIdRegister:null,
       selectedIndex: 0,
@@ -59,6 +60,28 @@ new Vue({
   },
   
   methods: {
+    async promptFileName() {
+
+      await this.fetchAllRegister();
+
+      const fileName = prompt("Nhập tên file (không cần thêm đuôi):", "MyData");
+      if (fileName) {
+        this.exportToExcel(this.exportRegister, fileName);
+      } else {
+        alert("Tên file không được để trống!");
+      }
+    },
+    exportToExcel(data, fileName) {
+        // 1. Chuyển dữ liệu JSON thành worksheet
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        
+        // 2. Tạo workbook và thêm worksheet
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        
+        // 3. Xuất file Excel
+        XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    },
     async initializeData() {
       try {
         await this.fetchParticipants(); // Đợi fetchParticipants hoàn tất
@@ -130,6 +153,28 @@ new Vue({
             }
             console.log("orderIdRegister:", this.orderIdRegister);
     
+            resolve(data); // Resolve Promise với dữ liệu nhận được
+          })
+          .catch((error) => {
+            console.error("Error fetching participants:", error);
+            reject(error); // Reject Promise nếu có lỗi
+          });
+      });
+    },
+
+    fetchAllRegister() {
+      return new Promise((resolve, reject) => {
+        fetch(`/admin/d/api/exportRegister?page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
+          .then((response) => {
+            if (!response.ok) {
+              return reject("Failed to fetch data");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            this.exportRegister = data.export;
+            console.log(this.exportRegister);
+
             resolve(data); // Resolve Promise với dữ liệu nhận được
           })
           .catch((error) => {
