@@ -27,8 +27,9 @@ controller.getGroupBy = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; 
     const perPage = parseInt(req.query.perPage) || 3; 
+    const orderby = req.query.orderby || 'enddate';
 
-    const participantsData = await moduleParticipants.getListGroupBy( page, perPage );
+    const participantsData = await moduleParticipants.getListGroupBy( page, perPage, orderby);
 
     participantsData.allProductGroupBy.forEach((item) => {
       item.enddate = moment(item.enddate).format("YYYY-MM-DD");
