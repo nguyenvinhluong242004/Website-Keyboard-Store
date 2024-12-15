@@ -1,7 +1,22 @@
 <div id="app">
   <div class="par-container">
+
+    <div class="sort-by">
+      Sort by
+    </div>
     <div class="par-fill mt-5">
-      time product type brand price ...
+      <div class="sort-by-time"  @click="time">
+        Time
+      </div>
+      <div class="sort-by-type" @click="type">
+        Product Type
+      </div>
+      <div class="sort-by-brand" @click="brand">
+        Brand
+      </div>
+      <div class="sort-by-price" @click="price">
+        Price
+      </div>
     </div>
     <div class="par-top-layout mt-4">
       <div class="col-md-3 par-list-gb">
