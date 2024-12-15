@@ -46,7 +46,7 @@ document.querySelector('.submit-button').addEventListener('click', async (event)
 
     try {
         // Gửi request API
-        console.log("fetch")
+        //console.log("fetch")
         const response = await fetch('/Admin/product/addProduct', {
             method: 'POST',
             headers: {
