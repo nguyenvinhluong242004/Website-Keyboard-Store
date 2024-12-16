@@ -1,6 +1,5 @@
 const AccountModel = require('../../models/User/accountModel');
 const passport = require('../../config/passport');
-const dataTempServer = require('../../../index');
 
 class AuthLoginGGController {
     
@@ -36,7 +35,7 @@ class AuthLoginGGController {
             }
 
             const data_ = await AccountModel.getInforAccountByEmail(user.email);
-            dataTempServer.setDataUser(data_);
+            req.session.user = data_;
 
             res.redirect('/account'); // Chuyển hướng sau khi đăng nhập thành công
         })(req, res, next);

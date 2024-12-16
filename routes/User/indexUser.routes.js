@@ -20,7 +20,17 @@ const introductionRouter = require('./introduction.route');
 const detailGroupbyRouter = require('./detailGroupby.route');
 const detailProductRouter = require('./detailProduct.route');
 
+const shoppingCartRouter = require('./shoppingCart.route');
+
 // ---------------------------------------------------------
+
+router.use('/account',  (req, res, next) => {
+    console.log(req.session.user)
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    next();
+});
 
 // Route cho trang chủ
 router.use('/', homepageRouter); // Trang chủ của user
@@ -43,5 +53,10 @@ router.use('/service', serviceRouter); // Dịch vụ
 router.use('/introduction', introductionRouter); // Giới thiệu
 router.use('/detail-group-by', detailGroupbyRouter); // Chi tiết nhóm sản phẩm
 router.use('/detail-product', detailProductRouter); // Chi tiết sản phẩm
+
+//Giỏ hàng
+
+router.use('/shopping-cart', shoppingCartRouter); // Chi tiết giỏ hàng
+
 
 module.exports = router;

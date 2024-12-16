@@ -69,7 +69,7 @@
                                     <span class="old-price">${{this.oldprice}}</span>
                                     <span class="current-price">${{this.currentprice}}</span>
                                 </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                                <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                             </div>
                         </a>
                     </li>
@@ -91,7 +91,7 @@
                                     <span class="old-price">${{this.oldprice}}</span>
                                     <span class="current-price">${{this.currentprice}}</span>
                                 </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                                <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                             </div>
                         </a>
                     </li>
@@ -127,7 +127,7 @@
                                     <span class="old-price">${{this.oldprice}}</span>
                                     <span class="current-price">${{this.currentprice}}</span>
                                 </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                                <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                             </div>
                         </a>
                     </li>
@@ -149,7 +149,7 @@
                                     <span class="old-price">${{this.oldprice}}</span>
                                     <span class="current-price">${{this.currentprice}}</span>
                                 </div>
-                                <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                                <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                             </div>
                         </a>
                     </li>
@@ -181,7 +181,7 @@
                             <span class="old-price">$25.00</span>
                             <span class="current-price">$18.00</span>
                         </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                        <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
                 <a href="#" class="card-link">
@@ -193,7 +193,7 @@
                             <span class="old-price">$25.00</span>
                             <span class="current-price">$18.00</span>
                         </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                        <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
                 <a href="#" class="card-link">
@@ -205,7 +205,7 @@
                             <span class="old-price">$25.00</span>
                             <span class="current-price">$18.00</span>
                         </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                        <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
                 <a href="#" class="card-link">
@@ -217,7 +217,7 @@
                             <span class="old-price">$25.00</span>
                             <span class="current-price">$18.00</span>
                         </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                        <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
                 <a href="#" class="card-link">
@@ -229,7 +229,7 @@
                             <span class="old-price">$25.00</span>
                             <span class="current-price">$18.00</span>
                         </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                        <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>              
             </div>
@@ -244,7 +244,7 @@
                             <span class="old-price">${{this.oldprice}}</span>
                             <span class="current-price">${{this.currentprice}}</span>
                         </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                        <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
                 {{/each}}               
@@ -260,7 +260,7 @@
                             <span class="old-price">${{this.oldprice}}</span>
                             <span class="current-price">${{this.currentprice}}</span>
                         </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                        <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
                 {{/each}}              
@@ -276,7 +276,7 @@
                             <span class="old-price">${{this.oldprice}}</span>
                             <span class="current-price">${{this.currentprice}}</span>
                         </div>
-                        <button class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                        <button onclick="addToCart('{{this.productid}}')" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
                 {{/each}}            
@@ -284,3 +284,27 @@
         </div>
     </section>
 </body>
+
+<script>
+    function addToCart(productId) {
+        console.log("Product ID:", productId);
+         $.ajax({
+            url: '/shopping-cart/add', 
+            method: 'POST',                      
+            contentType: 'application/json',   
+            data: JSON.stringify({             
+                ProductID: productId           
+            }),
+            success: function(response) {
+                // Xử lý khi gọi API thành công
+                console.log("Success:", response);
+                alert(response.message);
+            },
+            error: function(xhr, status, error) {
+                // Xử lý lỗi
+                console.error("Error:", error);
+                alert("Có lỗi xảy ra, vui lòng thử lại.");
+            }
+        });
+    }
+</script>
