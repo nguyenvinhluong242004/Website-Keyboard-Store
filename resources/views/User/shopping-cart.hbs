@@ -1,0 +1,141 @@
+<div class="container mt-4">
+    <div class="bg-success text-white text-center py-2 mb-2">
+        <h4>Giỏ hàng (<span id="cart-count">0</span>)</h4>
+    </div>
+    <div id="cart-items-container"></div>
+
+    <div class="d-flex justify-content-between align-items-center p-3 border">
+        <div style="min-width: 100px;">
+            <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)">
+            <label for="select-all">Tất Cả</label>
+        </div>
+        <div style="min-width: 400px;">
+            <span class="total-payment">Tổng Tiền: <span id="total-price">0</span> đ</span>
+        </div>
+        <button class="btn btn-buy">MUA NGAY</button>
+    </div>
+</div>
+
+<script>
+    // Hàm lấy dữ liệu giỏ hàng
+    function loadCart() {
+        $.ajax({
+            url: '/shopping-cart/get',
+            method: 'GET',
+            success: function (response) {
+                console.log(response.listCart)
+                if (response.success) {
+                    renderCartItems(response.listCart);
+                } else {
+                    console.error("Lỗi khi tải giỏ hàng:", response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+
+    // Hàm cập nhật giỏ hàng
+    function changeCountItem(productId, quantity) {
+        $.ajax({
+            url: '/shopping-cart/change',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                ProductID: productId,
+                Quantity: quantity
+            }),
+            success: function (response) {
+                if (response.success) {
+                    renderCartItems(response.listCart); // Cập nhật lại giỏ hàng
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+
+    // Hàm hiển thị giỏ hàng
+    function renderCartItems(cartItems) {
+        const container = document.getElementById("cart-items-container");
+        const cartCount = document.getElementById("cart-count");
+
+        let totalQuantity = 0;
+
+        container.innerHTML = ""; // Xóa các sản phẩm cũ
+
+        cartItems.forEach(item => {
+            totalQuantity += 1;
+
+            const cartItemHTML = `
+                <div class="cart-item border p-3 d-flex align-items-start mb-2">
+                    <input type="checkbox" class="select-item" data-product-id="${item.productid}" 
+                           data-price="${item.currentprice}" data-quantity="${item.quantity}" onclick="updateTotalPrice()"
+                           style="margin: auto; margin-right: 7px;">
+                    <img src="${item.imagepath}/1.jpg" alt="Product" class="me-3">
+                    <div class="w-100">
+                        <h6>${item.productname}</h6>
+                        <div class="d-flex">
+                            <p class="text-danger fw-bold" style="margin-right: 10px;">
+                                <s style="color: black;">${item.oldprice}</s>
+                            </p>
+                            <p class="text-danger fw-bold">${item.currentprice}</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button onclick="changeCountItem('${item.productid}', ${item.quantity - 1})" 
+                                type="button" class="quantity-btn">-</button>
+                            <input type="text" value="${item.quantity}" class="mx-2 quantity-input"
+                                style="display: block; width: 6ch; text-align: center; border: none;">
+                            <button onclick="changeCountItem('${item.productid}', ${item.quantity + 1})" 
+                                type="button" class="quantity-btn">+</button>
+                            <div class="ms-auto d-flex">
+                                <div class="similar-btn px-3 py-1 me-2" style="cursor: pointer;">Sản phẩm tương tự</div>
+                                <div onclick="changeCountItem('${item.productid}', 0)" 
+                                    class="delete-btn px-3 py-1" style="cursor: pointer;">Xóa</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += cartItemHTML;
+        });
+
+        // Cập nhật tổng số lượng sản phẩm
+        cartCount.textContent = totalQuantity;
+
+        // Khởi động lại tổng tiền
+        updateTotalPrice();
+    }
+
+    // Hàm tính tổng tiền
+    function updateTotalPrice() {
+        const checkboxes = document.querySelectorAll(".select-item:checked");
+        let totalPrice = 0;
+
+        checkboxes.forEach(checkbox => {
+            const price = parseFloat(checkbox.getAttribute("data-price"));
+            const quantity = parseInt(checkbox.getAttribute("data-quantity"));
+            totalPrice += price * quantity;
+        });
+
+        document.getElementById("total-price").textContent = totalPrice.toLocaleString();
+    }
+
+    // Hàm chọn tất cả checkbox
+    function toggleSelectAll(selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll(".select-item");
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+
+        // Tính lại tổng tiền khi chọn tất cả hoặc bỏ chọn tất cả
+        updateTotalPrice();
+    }
+
+    // Load giỏ hàng khi trang được tải
+    document.addEventListener("DOMContentLoaded", loadCart);
+</script>

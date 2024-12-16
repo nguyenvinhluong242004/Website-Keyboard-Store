@@ -1,5 +1,4 @@
 const AccountModel = require('../../models/User/accountModel');
-const dataTempServer = require('../../../index');
 
 class AccountController {
 
@@ -16,8 +15,8 @@ class AccountController {
 
     // [POST] /account/get-info/api
     async callAPIAccountGetInfo(req, res) {
-        console.log(dataTempServer.dataUser)
-        return res.json({ success: true, dataUser: dataTempServer.getDataUser(), message: 'Gửi thông tin account' });
+        console.log(req.session.user)
+        return res.json({ success: true, dataUser: req.session.user, message: 'Gửi thông tin account' });
     }
 
     // [POST] /account/change-info/api
@@ -25,10 +24,10 @@ class AccountController {
         const { username, sdt, email } = req.body;
         console.log(username, sdt, email); // Kiểm tra các giá trị
         console.log(req.body); // Kiểm tra cấu trúc của req.body
-        dataTempServer.setStoredEmail(email);
+        req.session.email = email;
 
 
-        let storedEmail = dataTempServer.storedEmail;
+        let storedEmail = req.session.email;
         try {
             // Kiểm tra tài khoản có tồn tại và mã xác thực đúng
             console.log(storedEmail)
@@ -43,12 +42,12 @@ class AccountController {
             await AccountModel.changeInfoByEmail(storedEmail, username, sdt)
 
             console.log('Đặt lại thông tin thành công');
-            dataTempServer.setStoredEmail(email);
+            req.session.email = email;
             storedEmail = email;
 
             const data_ = await AccountModel.getInforAccountByEmail(storedEmail);
 
-            dataTempServer.setDataUser(data_);
+            req.session.user = data_;
 
             res.json({ success: true, message: 'Đặt lại thông tin thành công' });
         } catch (err) {

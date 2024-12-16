@@ -108,10 +108,10 @@ class accountModel {
     static async changePasswordByEmail(email, hashedNewPassword) {
         try {
             const result = await pool.query(
-                `SELECT * 
-                 FROM Users 
+                `UPDATE AccountType 
+                 SET passwordorgoogleid = $2
                  WHERE email = $1`,
-                [email]
+                [email, hashedNewPassword]
             );
             return result.rows.length > 0 ? result.rows[0] : null;
         } catch (err) {

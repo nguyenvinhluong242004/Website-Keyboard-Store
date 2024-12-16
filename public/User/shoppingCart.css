@@ -1,0 +1,44 @@
+.cart-item {
+    background-color: #ccccccc4;
+    border-radius: 10px;
+}
+
+.cart-item img {
+    width: 100px;
+    height: auto;
+}
+.quantity-btn {
+    border: none;
+    padding: 1px 7px;
+    cursor: pointer;
+}
+.quantity-btn:hover {
+    background-color: aliceblue;
+}
+.quantity-btn:active {
+    background-color: rgb(255, 255, 255);
+}
+.delete-btn {
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+.similar-btn {
+    background-color: orange;
+    color: white;
+    text-align: center;
+}
+.total-payment {
+    font-weight: bold;
+    color: red;
+    font-size: 1.2rem;
+}
+.btn-buy {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+}
+.btn-buy:hover {
+    background-color: rgba(255, 60, 0, 0.699);
+}

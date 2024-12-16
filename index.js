@@ -11,27 +11,6 @@ const session = require('express-session');
 const app = express();
 const port = 4001; // Cổng để chạy server
 
-// Object để lưu trữ các biến cần chia sẻ
-const dataTempServer = {
-    dataUser: null,
-    storedCode: 88888,
-    storedEmail: "example@gmail.com",
-    setDataUser(user) {
-        this.dataUser = user;
-    },
-    setStoredCode(code) {
-        this.storedCode = code;
-    },
-    setStoredEmail(email) {
-        this.storedEmail = email;
-    },
-    getDataUser() {
-        return this.dataUser;
-    }
-};
-
-module.exports = dataTempServer;
-
 // Load biến môi trường từ file .env
 require('dotenv').config({ path: './.env' });
 const bodyParser = require('body-parser'); // Xử lý dữ liệu từ các yêu cầu HTTP
@@ -40,12 +19,15 @@ const route = require('./routes/app.routes');
 const pool = require('./app/config/database');
 const passport = require('./app/config/passport');
 
-
 // Middleware session
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        secure: false,        // Cấu hình cookie, với secure: true nếu chạy trên https
+        maxAge: 1000 * 60 * 60 * 24// Thời gian sống của cookie (1h * 24) } 
+    }
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));

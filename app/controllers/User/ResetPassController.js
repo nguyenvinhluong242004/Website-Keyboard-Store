@@ -1,5 +1,4 @@
 const AccountModel = require('../../models/User/accountModel');
-const dataTempServer = require('../../../index');
 const authPass = require('../../config/AuthPass');
 
 
@@ -19,10 +18,10 @@ class ResetPassController {
     // [POST] /reset-password/api
     async callAPIResetPass(req, res){
         const { newPassword, confirmNewPassword, verificationCode, timeCode } = req.body; // Lấy email, mật khẩu mới và mã xác thực từ yêu cầu
-        console.log(dataTempServer.storedEmail, newPassword, confirmNewPassword, verificationCode, timeCode, dataTempServer.storedCode);
+        console.log(req.session.email, newPassword, confirmNewPassword, verificationCode, timeCode, req.session.code);
         try {
             // Kiểm tra tài khoản có tồn tại và mã xác thực đúng
-            const existingUser = await AccountModel.findAccountByEmail(dataTempServer.storedEmail);
+            const existingUser = await AccountModel.findAccountByEmail(req.session.email);
 
             if (!existingUser) {
                 console.log('Tài khoản không tồn tại');
@@ -30,7 +29,7 @@ class ResetPassController {
             }
 
             // Nếu mã xác thực không đúng, trả về lỗi
-            if (String(verificationCode) !== String(dataTempServer.storedCode)) {
+            if (String(verificationCode) !== String(req.session.code)) {
                 console.log('Mã xác thực không đúng');
                 return res.status(400).json({ success: false, message: 'Mã xác thực không đúng' });
             }
@@ -49,7 +48,7 @@ class ResetPassController {
 
             const hashedNewPassword = await authPass.hashPassword(newPassword);
 
-            await AccountModel.changePasswordByEmail(dataTempServer.storedEmail, hashedNewPassword);
+            await AccountModel.changePasswordByEmail(req.session.email, hashedNewPassword);
 
             console.log('Đặt lại mật khẩu thành công');
             res.json({ success: true, message: 'Đặt lại mật khẩu thành công' });

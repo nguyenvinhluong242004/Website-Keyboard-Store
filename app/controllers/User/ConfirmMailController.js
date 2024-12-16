@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer'); // Thư viện gửi email
-const dataTempServer = require('../../../index');
 
 // Cấu hình transporter cho nodemailer để gửi email qua Gmail
 const transporter = nodemailer.createTransport({
@@ -27,21 +26,21 @@ class ConfirmPassController {
     sendCode(req, res){
         if (req.body.status){ // status: true --> lấy từ input
             console.log("yes")
-            dataTempServer.setStoredEmail(req.body.email.toString()); // Lấy email từ yêu cầu
+            req.session.email = req.body.email.toString(); // Lấy email từ yêu cầu
             console.log(req.body.email.toString());
         }
-        dataTempServer.setStoredCode(Math.floor(100000 + Math.random() * 900000)); // Tạo mã xác thực ngẫu nhiên
+        req.session.code = Math.floor(100000 + Math.random() * 900000); // Tạo mã xác thực ngẫu nhiên
 
-        console.log('Email:', dataTempServer.storedEmail);
+        console.log('Email:', req.session.email);
         console.log('Email User:', process.env.EMAIL_USER);
         console.log('Email Password:', process.env.EMAIL_PASS);
 
         // Gửi mã xác thực qua email
         transporter.sendMail({
             from: process.env.EMAIL_USER,
-            to: dataTempServer.storedEmail,
+            to: req.session.email,
             subject: 'Mã xác thực của bạn',
-            text: `Mã xác thực của bạn là: ${dataTempServer.storedCode}`,
+            text: `Mã xác thực của bạn là: ${req.session.code}`,
         }, (error, info) => {
             if (error) {
                 return res.status(500).send({ message: 'Gửi email thất bại' });

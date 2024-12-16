@@ -1,5 +1,4 @@
 const AccountModel = require('../../models/User/accountModel');
-const dataTempServer = require('../../../index');
 const authPass = require('../../config/AuthPass');
 
 class LoginController {
@@ -29,7 +28,7 @@ class LoginController {
                 if (isMatch) {
                     const data_ = await AccountModel.getInforAccountByEmail(loginEmail);
                     
-                    dataTempServer.setDataUser(data_);
+                    req.session.user = data_;
 
                     console.log('Đăng nhập thành công');
                     return res.json({ success: true, message: 'Đăng nhập thành công' });
