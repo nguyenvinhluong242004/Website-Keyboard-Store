@@ -8,6 +8,7 @@ controller.showKitPhim = (req, res) => {
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/KitPhim/kitPhim.js"></script>
+        <link rel="stylesheet" href="User/home.css">
         `
      });
 };

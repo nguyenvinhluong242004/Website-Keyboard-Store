@@ -9,7 +9,7 @@ const expressHandlebars = require('express-handlebars'); // Template engine
 const session = require('express-session');
 
 const app = express();
-const port = 4001; // Cổng để chạy server
+const port = process.env.PORT; // Cổng để chạy server
 
 // Load biến môi trường từ file .env
 require('dotenv').config({ path: './.env' });

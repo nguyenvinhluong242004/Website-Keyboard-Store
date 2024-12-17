@@ -2,7 +2,7 @@ import ProductCard from './Component/ProductCard.js';
 import FilterProduct from './Component/FilterProduct.js';
 
 export default {
-    props: ['productType'],
+    props: ['productType', 'searchQuery'],
     components: {
         'product-card': ProductCard,
         'filter-product': FilterProduct
@@ -15,6 +15,7 @@ export default {
             },
             products: [],
             visibleCount: 12,
+            loading: false
         };
     },
 
@@ -33,37 +34,85 @@ export default {
 
     methods: {
         async fetchKitPhim() {
+            this.loading = true;
             const response = await axios.get(`/kitPhim/api/get-kit-phim?visibleCount=${this.visibleCount}`); // Get data from the server
             const data = response.data;
             this.products = data.dataKitPhim;
             this.product.quantity = data.totalProducts;
+            this.loading = false;
         },
         async fetchKeCap() {
+            this.loading = true;
             const response = await axios.get(`/keCap/api/get-ke-cap?visibleCount=${this.visibleCount}`); // Get data from the server
             const data = response.data;
             this.products = data.dataKeCap;
             this.product.quantity = data.totalProducts;
+            this.loading = false;
         },
         async fetchSwitch() {
+            this.loading = true;
             const response = await axios.get(`/switch/api/get-switch?visibleCount=${this.visibleCount}`); // Get data from the server
             const data = response.data;
             this.products = data.dataSwitch;
             this.product.quantity = data.totalProducts;
+            this.loading = false;
         },
         async fetchAccessories(){
+            this.loading = true;
             const response = await axios.get(`/accessories/api/get-accessories?visibleCount=${this.visibleCount}`); // Get data from the server
             const data = response.data;
             this.products = data.dataAccessories;
             this.product.quantity = data.totalProducts;
+            this.loading = false;
         },
         async fetchGroupByProduct() {
+            this.loading = true;
             const response = await axios.get(`/group-by-product/api/get-group-by-product?visibleCount=${this.visibleCount}`); // Get data from the server
             const data = response.data;
             this.products = data.dataGroupByProduct;
-            this.product.quantity = data.totalProducts
+            this.product.quantity = data.totalProducts;
+            this.loading = false;
+        },
+        async fetchSearch() {
+            this.loading = true;
+            const searchQueryString = String(this.searchQuery);
+            const sanitizedQuery = searchQueryString.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+            
+            if (!sanitizedQuery) {
+                alert('Please enter a valid search query.');
+                window.location.href = `/error?search=${this.searchQuery}`;
+                return;
+            }
+            const response = await axios.get(`/search/api/get-search?search=${sanitizedQuery}&visibleCount=${this.visibleCount}`); // Get data from the server
+            const data = response.data;
+            if (parseInt(data.totalProducts) === 0){
+                window.location.href = `/error?search=${this.searchQuery}`;
+                return;
+            }
+            this.products = data.dataSearchProduct;
+            this.product.quantity = data.totalProducts;
+            this.loading = false;
         },
         addToCart(product) {
-            alert(`${product.ProductName} đã được thêm vào giỏ hàng!`);
+            console.log(product.productid);
+            $.ajax({
+                url: '/shopping-cart/add', 
+                method: 'POST',                      
+                contentType: 'application/json',   
+                data: JSON.stringify({             
+                    ProductID: product.productid           
+                }),
+                success: function(response) {
+                    // Xử lý khi gọi API thành công
+                    console.log("Success:", response);
+                    alert(response.message);
+                },
+                error: function(xhr, status, error) {
+                    // Xử lý lỗi
+                    console.error("Error:", error);
+                    alert("Có lỗi xảy ra, vui lòng thử lại.");
+                }
+            });
         },
         loadMore() {
             this.visibleCount += 12;
@@ -81,6 +130,9 @@ export default {
             }
             else if (this.product.type === 'GroupBy Product') {
                 this.fetchGroupByProduct();
+            }
+            else if (this.product.type === 'Search Product') {
+                this.fetchSearch();
             }
         },
         filterProducts(type) {
@@ -115,31 +167,44 @@ export default {
             this.fetchAccessories();
         }
         else if (this.product.type === 'GroupBy Product') {
-            console.log('GroupBy Product');
             this.fetchGroupByProduct();
+        }
+        else if (this.product.type === 'Search Product') {
+            //console.log(this.searchQuery)
+            //this.searchQuery = decodeURIComponent(this.searchQuery);
+            this.fetchSearch();
         }
     },
     template: `
-    <div class="container col-10 mt-3">
-        <div class="img-container mx-auto text-center">
-            <img :src="imagePoster" class="img-fluid h-100" alt="Tiêu đề">
+    <div v-if="loading" class="loading-spinner d-flex justify-content-center align-items-center">
+        <!-- You can use any loading spinner here -->
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
-
-        <div class="responsive-font fw-bold mt-4 mb-4">
-            <div class = "row">
-                <div class="col-9">
-                    <span>{{ product.type }}</span>
-                    <span> Số lượng có: {{ product.quantity }}</span>
-                </div>
-                <filter-product @filter-change="filterProducts" />
+    </div>
+    <div v-else>
+        <!-- Your existing content goes here -->
+        <div class="container col-10 mt-3">
+            <div class="img-container mx-auto text-center">
+                <img :src="imagePoster" class="img-fluid h-100" alt="Tiêu đề">
             </div>
-        </div>
 
-        <div class="row">
-            <product-card v-for="product in visibleProducts" :key="product.productid" :product="product" @add-to-cart="addToCart"></product-card>
-        </div>
-        <div class="text-center my-4">
-            <button class="btn btn-secondary" @click="loadMore">Xem thêm sản phẩm</button>
+            <div class="responsive-font fw-bold mt-4 mb-4">
+                <div class="row">
+                    <div class="col-9">
+                        <span class="text-danger me-2">{{ product.type }}</span>
+                        <span class="text-success ms-2">Số lượng có: {{ product.quantity }}</span>
+                    </div>
+                    <filter-product @filter-change="filterProducts" />
+                </div>
+            </div>
+
+            <div class="row">
+                <product-card v-for="product in visibleProducts" :key="product.productid" :product="product" @add-to-cart="addToCart"></product-card>
+            </div>
+            <div class="text-center my-4">
+                <button class="btn btn-secondary" @click="loadMore">Xem thêm sản phẩm</button>
+            </div>
         </div>
     </div>
     `

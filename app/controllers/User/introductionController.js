@@ -4,7 +4,7 @@ class IntroductionController {
     index(req, res) {
         res.render('User/introduction', {
             layout: 'layoutUser', // Layout chung cho các trang
-            title: 'Giới Thiệu Về Chúng Tôi',
+            title: 'Introduction',
             customHead: `
                 <link rel="stylesheet" href="User/introduction_styles.css">
             `,
