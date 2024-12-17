@@ -8,6 +8,7 @@ controller.showKeCap = (req, res) => {
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/KeCap/keCap.js"></script>
+        <link rel="stylesheet" href="User/home.css">
         `
     });
 };

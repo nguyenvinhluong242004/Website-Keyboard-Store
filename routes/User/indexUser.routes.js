@@ -19,8 +19,12 @@ const serviceRouter = require('./service.route');
 const introductionRouter = require('./introduction.route');
 const detailGroupbyRouter = require('./detailGroupby.route');
 const detailProductRouter = require('./detailProduct.route');
+const searchProductRouter = require('./searchProduct.route');
+const subscribeNewsletter = require('./subscribeNewsletter.route');
 
 const shoppingCartRouter = require('./shoppingCart.route');
+
+const errorProductNotFoundRouter = require('./errorProductNotFound.route');
 
 // ---------------------------------------------------------
 
@@ -53,10 +57,15 @@ router.use('/service', serviceRouter); // Dịch vụ
 router.use('/introduction', introductionRouter); // Giới thiệu
 router.use('/detail-group-by', detailGroupbyRouter); // Chi tiết nhóm sản phẩm
 router.use('/detail-product', detailProductRouter); // Chi tiết sản phẩm
+router.use('/search', searchProductRouter); 
+router.use('/subscribe-news-letter', subscribeNewsletter)
 
 //Giỏ hàng
 
 router.use('/shopping-cart', shoppingCartRouter); // Chi tiết giỏ hàng
+
+//show error for not found product when search
+router.use('/error', errorProductNotFoundRouter);
 
 
 module.exports = router;

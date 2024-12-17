@@ -160,7 +160,7 @@
                 const navState = JSON.parse(localStorage.getItem('navState'));
                 if (navState) {
                     for (const id in navState) {
-                        if (navState[id]) {
+                        if (navState[id] ) {
                             $('#' + id).addClass('show');
                         }
                     }

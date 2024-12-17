@@ -4,17 +4,19 @@
 export default {
     props: ['product'],
     template: `
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img :src="product.imagepath + '/1.jpg'" class="card-img-top" :alt="product.productname">
-                <div class="card-body responsive-font">
-                    <span class="card-title row fw-bold ms-4">{{ product.productname }}</span>
-                    <span class="card-title row text-danger fw-bold ms-4">{{ formatPrice(product.currentprice) }} VNĐ</span>
-                    <button class="btn btn-primary responsive-font" @click="addToCart">
-                        <i class="bi bi-cart-plus"></i> Thêm vào giỏ hàng
-                    </button>
+        <div class="col-md-4 mb-4 card-item">
+            <a href="#" class="card-link">
+                <img :src="product.imagepath + '/1.jpg'" alt="Card Image" class="card-image">
+                <p class="badge" :class="product.categoryname">{{ product.categoryname }}</p>
+                <h2 class="card-title">{{ product.description }}</h2>
+                <div class="card-bottom">
+                    <div class="price">
+                        <span class="old-price">{{ formatPrice(product.oldprice) }} VNĐ</span>
+                        <span class="current-price">{{ formatPrice(product.currentprice) }} VNĐ</span>
+                    </div>
+                    <button @click="addToCart" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                 </div>
-            </div>
+            </a>
         </div>
     `,
     methods: {
@@ -22,7 +24,11 @@ export default {
             this.$emit('add-to-cart', this.product);
         },
         formatPrice(value) {
+            if (value == null) {
+                return 'N/A';
+            }
             return value.toLocaleString('vi-VN');
         }
     }
 };
+
