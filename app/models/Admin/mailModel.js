@@ -42,7 +42,7 @@ const sendEmails = async (emails, subject, message) => {
     const mailPromises = emails.map(email => 
         transporter.sendMail({
             from: process.env.EMAIL_USER,
-            to: "nguyenvo122005@gmail.com", // test ở đây, thay bằng "to: email" nếu không test
+            to: email, // test ở đây, thay bằng "to: email" nếu không test
             subject: subject || "No Subject",
             text: message || "No Content",
         })
