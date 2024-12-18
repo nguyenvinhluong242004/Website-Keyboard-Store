@@ -85,7 +85,7 @@ const productController = {
 
     addProduct: async (req, res) => {
         try {
-            console.log(req.body);
+            //console.log(req.body);
             const { name, listedPrice, adjustedPrice, type, quantity, brand, specification, description, images } = req.body;
     
             // Kiểm tra xem sản phẩm đã tồn tại chưa
