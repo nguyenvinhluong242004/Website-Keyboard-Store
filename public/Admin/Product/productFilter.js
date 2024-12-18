@@ -135,4 +135,4 @@ document.getElementById('sort-button').addEventListener('click', () => fetchProd
 document.getElementById('sort-button2').addEventListener('click', () => fetchProducts(1));
 
 // Fetch initial products on page load
-fetchProducts(1);
+//fetchProducts(1);
