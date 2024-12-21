@@ -4,7 +4,9 @@ const detailProductController = require('../../app/controllers/User/detailProduc
 const apiImageController = require("../../app/controllers/User/getApiImageController");
 
 
-router.get('/', detailProductController.showDetailProduct);
-router.get('/image/api', apiImageController.createApi.bind(apiImageController));
+router.get('/instock/:id', detailProductController.showDetailProduct);
+router.get('/instock/image/api', apiImageController.createApi.bind(apiImageController));
+router.get('/instock/review/api',detailProductController.getReview);
+router.post('/insert/review',  detailProductController.insertReview);
 
 module.exports = router;
