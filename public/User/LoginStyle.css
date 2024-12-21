@@ -2,11 +2,11 @@
 
 .login-control {
     margin: auto;
-    max-width: 400px;
+    width: 720px;
     padding: 15px;
-    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border: 1px solid black;
+    margin-bottom: 10px;
 }
 .card-header {
     font-size: 1.5rem;
@@ -49,7 +49,6 @@ a:hover {
 /* CSS Bổ sung */
 
 .prl-card {
-    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border: 1px solid black;
 }

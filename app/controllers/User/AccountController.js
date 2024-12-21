@@ -13,6 +13,12 @@ class AccountController {
         });
     }
 
+    // [POST] /account/logout
+    async callAPIAccountLogout(req, res) {
+        req.session.user = null;
+        return res.json({ success: true, message: 'Đăng xuất' });
+    }
+
     // [POST] /account/get-info/api
     async callAPIAccountGetInfo(req, res) {
         console.log(req.session.user)
