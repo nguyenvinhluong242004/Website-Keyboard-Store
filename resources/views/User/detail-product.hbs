@@ -1,4 +1,5 @@
 <div id="app" class="container">
+
   <div class="name" v-html="getDB.productname"></div>
   <div class="flex_image">
 
@@ -57,16 +58,16 @@
     Description:
   </div>
   <div v-html="formattedDesc"></div>
-  <div></div>
-  <img :src="img_detail_2" width="100%" alt="detail" />
-  <img :src="img_detail_3" width="100%" alt="detail3" />
+  {{! <img :src="img_detail_2" width="100%" alt="detail" />
+  <img :src="img_detail_3" width="100%" alt="detail3" /> }}
   <div class="customer">
     <div style="display: flex; justify-content: space-between">
       <div class="customer_review">Customer Reviews</div>
       <button @click="cancelReview" class="cancel_review">
-        {{reviewButtonText}}
+        [[ reviewButtonText ]]
       </button>
     </div>
+
     <hr />
 
     <!-- Sử dụng thẻ form để tạo form đăng comment -->
@@ -128,25 +129,24 @@
     </form>
 
     <hr />
-    <div v-if="submitted">
-      <div v-for="(review, index) in submittedReviews" :key="index">
-        <div><strong>Name:</strong> {{review.name}}</div>
-        <div><strong>Email:</strong> {{review.email}}</div>
-        <div><strong>Review Title:</strong> {{review.reviewTitle}}</div>
-        <div>
-          <strong>Review Content:</strong>
-          {{review.reviewContent}}
-        </div>
-        <div v-if="review.imageName">
-          <strong>Uploaded Image:</strong>
-          {{review.imageName}}
-        </div>
-        <hr />
+
+    <div v-for ="(review, index) in reviews" :key="index">
+      <div><strong>Date:</strong> [[review.reviewdate]]</div>
+      <div><strong>Email:</strong> [[review.email]]</div>
+      <div><strong>Review Content:</strong> [[review.comment]]</div>
+
+      <div>
+        <strong>Stars:</strong>
+        [[review.stars]]
       </div>
+
+      <hr />
     </div>
+
   </div>
 </div>
 
 <script>
-  window.data = JSON.parse('{{{data}}}');
+  window.data = JSON.parse('{{{data}}}'); window.idProduct =
+  {{idProduct}};
 </script>
