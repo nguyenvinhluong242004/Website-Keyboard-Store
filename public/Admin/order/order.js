@@ -7,11 +7,8 @@ new Vue({
       price: 1,
       describe: '1',
       quantity: 1,
-      
-      // type: '',
-    
-      // brand: '',
-     
+      type: '',
+      brand: '',
     },
     table_groupbyProduct:{
       close: '',
@@ -113,21 +110,34 @@ new Vue({
     
         if (!typeData.success) {
           console.error('Error fetching category ID:', typeData.error);
-          alert('dit me no.');
           return;
         }
     
         // Lấy typeid từ dữ liệu trả về
         const typeid = typeData.typeid;
+
+        const brandResponse = await fetch(`/admin/order/brand?brandName=${this.form.brand}`);
+        const brandData = await brandResponse.json();
     
+        if (!typeData.success) {
+          console.error('Error fetching category ID:', typeData.error);
+          return;
+        }
+    
+        // Lấy branchid từ dữ liệu trả về
+        const brandid = brandData.brandid;
+  
+
         const formData = {
+          pathimage:'/image/1',
           description: this.form.describe,
           productname: this.form.name,
           currentprice: parseInt(this.form.price, 10),
           quantity: parseInt(this.form.quantity, 10),
+          branchid: parseInt(brandid, 10),
           categoryid: parseInt(typeid, 10),
         };
-    
+                                                                                 
         const response = await fetch('/admin/order/insert', {
           method: 'POST',
           headers: {

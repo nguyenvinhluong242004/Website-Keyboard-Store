@@ -73,7 +73,7 @@ new Vue({
       }
 
       return new Promise((resolve, reject) => {
-        fetch(`/admin/d/api/searchRegister?q=${encodeURIComponent(this.searchQuery)}&page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
+        fetch(`/admin/detail-participants/api/searchRegister?q=${encodeURIComponent(this.searchQuery)}&page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
           .then((response) => {
             if (!response.ok) {
               return reject("Failed to fetch data");
@@ -195,7 +195,7 @@ new Vue({
 
     fetchParticipants() {
       return new Promise((resolve, reject) => {
-        fetch(`/admin/d/api?page=${this.page}&perPage=${this.perPage}&orderby=${this.sort}`)
+        fetch(`/admin/detail-participants/api?page=${this.page}&perPage=${this.perPage}&orderby=${this.sort}`)
           .then((response) => {
             if (!response.ok) {
               reject("Failed to fetch data");
@@ -217,7 +217,7 @@ new Vue({
 
     fetchRegister() {
       return new Promise((resolve, reject) => {
-        fetch(`/admin/d/api/register?page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
+        fetch(`/admin/detail-participants/api/register?page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
           .then((response) => {
             if (!response.ok) {
               return reject("Failed to fetch data");
@@ -247,7 +247,7 @@ new Vue({
 
     fetchAllRegister() {
       return new Promise((resolve, reject) => {
-        fetch(`/admin/d/api/exportRegister?page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
+        fetch(`/admin/detail-participants/api/exportRegister?page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
           .then((response) => {
             if (!response.ok) {
               return reject("Failed to fetch data");
@@ -273,7 +273,7 @@ new Vue({
 
       this.selectedIndexRegister = index ||0;
       return new Promise((resolve, reject) => {
-        fetch(`/admin/d/api/detailRegister?page=${this.page}&perPage=${this.perPage}&id=${orderID}`)
+        fetch(`/admin/detail-participants/api/detailRegister?page=${this.page}&perPage=${this.perPage}&id=${orderID}`)
           .then((response) => {
             if (!response.ok) {
               return reject("Failed to fetch data");
