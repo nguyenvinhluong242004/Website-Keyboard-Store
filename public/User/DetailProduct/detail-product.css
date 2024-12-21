@@ -84,10 +84,11 @@
   align-items: center;
   border: 1px solid black;
   font-weight: bold;
-  background-color: antiquewhite;
+  background-color: rgb(202, 202, 202);
   cursor: pointer;
-  width: 150px; /* thêm kích thước cố định nếu cần */
-  height: 40px; /* thêm chiều cao cố định nếu cần */
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
 }
 .submit {
   display: flex;
