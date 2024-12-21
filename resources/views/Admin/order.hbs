@@ -33,7 +33,7 @@
       </div>
 
       <div class="col-md-11">
-        {{!-- <div class="input-images">
+        <div class="input-images">
           <!-- Nút + để chọn ảnh -->
           <div class="add-image-btn" @click="triggerFileInput">
             <i class="fas fa-plus"></i>
@@ -106,7 +106,7 @@
           <div v-if="imageUrl_4" class="image-preview">
             <img :src="imageUrl_4" alt="Selected Image" />
           </div>
-        </div> --}}
+        </div>
 
         <input
           class="input-name"
@@ -168,7 +168,7 @@
             v-model="form.quantity"
           />
         </div>
-{{!-- 
+
         <input
           class="input-brand"
           type="text"
@@ -176,7 +176,7 @@
           name="name"
           placeholder="Brand..."
           v-model="form.brand"
-        /> --}}
+        />
 
         <input
           class="input-describe"
