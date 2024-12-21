@@ -25,6 +25,6 @@ router.use('/monthly-sales', monthlySales);
 router.use('/order', orderItem)
 router.use('/product', product)
 router.use('/mail', mail);
-router.use ('/d',detailParticiparts)
+router.use ('/detail-participants',detailParticiparts)
 
 module.exports = router;
