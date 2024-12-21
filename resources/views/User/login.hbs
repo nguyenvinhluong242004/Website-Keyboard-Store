@@ -1,4 +1,11 @@
 <!-- login.hbs -->
+<ul class="breadcrumb" style="margin: 7px; margin-left: 100px;">
+    <li>
+        <a href="/" style="text-decoration: none;"><span>Trang chủ</span></a>
+        <span class="mr_lr">&nbsp;/&nbsp;</span>
+    </li>
+    <li><strong><span>Đăng nhập tài khoản</span></strong></li>
+</ul>
 <div id="login-control" class="login-control">
     <div class="card-header text-center">Đăng nhập tài khoản</div>
     <div class="card-body">
@@ -12,10 +19,12 @@
             </div>
             <div class="form-group position-relative">
                 <label for="loginPassword">Mật Khẩu</label>
-                <input :type="isHiddenPassword ? 'password' : 'text'" class="form-control" id="loginPassword" v-model="loginPassword"
-                    placeholder="Mật Khẩu" required>
-                <i @click.prevent="setHiddenPassword" v-if="!isHiddenPassword" class="bi bi-eye-fill position-absolute eye-icon"></i>
-                <i @click.prevent="setHiddenPassword" v-else="" class="bi bi-eye-slash-fill position-absolute eye-icon"></i>
+                <input :type="isHiddenPassword ? 'password' : 'text'" class="form-control" id="loginPassword"
+                    v-model="loginPassword" placeholder="Mật Khẩu" required>
+                <i @click.prevent="setHiddenPassword" v-if="!isHiddenPassword"
+                    class="bi bi-eye-fill position-absolute eye-icon"></i>
+                <i @click.prevent="setHiddenPassword" v-else=""
+                    class="bi bi-eye-slash-fill position-absolute eye-icon"></i>
             </div>
 
             <button type="submit" class="btn btn-custom mt-4">Đăng Nhập</button>

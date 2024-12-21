@@ -49,6 +49,21 @@ new Vue({
         setHiddenPassword() {
             this.isHiddenPassword = !this.isHiddenPassword;
         },
+        // Logout
+        async logout() {
+            try {
+                const response = await axios.post('/account/logout');
+                if (response.data.success) {
+                    this.goToLogin();
+                } else {
+                    alert(response.data.message);
+                }
+            } catch (error) {
+                console.error('Có lỗi xảy ra khi đăng xuất', error);
+
+                alert(response.data.message);
+            }
+        },
         // Xử lý đăng nhập
         async login() {
             if (this.loginEmail && this.loginPassword) {
