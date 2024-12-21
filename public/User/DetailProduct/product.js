@@ -1,15 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
   new Vue({
     el: "#app",
+   
+      delimiters: ['[[', ']]'],
+  
     data: {
+      product:window.idProduct,
+
       poster:[],
       currentIndex: 0,
-      imagePath: 'public/image/detail_product',
+      imagePath: '',
       
-      img: "/image/detail_product/1.jpg",
-      img_detail_1:"/image/detail_product/2.jpg",
-      img_detail_2:"/image/detail_product/3.jpg",
-      img_detail_3:"/image/detail_product/4.jpg",
+      img: '',
+      img_detail_1:'',
+      img_detail_2:'',
+      img_detail_3:'',
+      
       name: "",
       email: "",
       quanlity: "1",
@@ -26,17 +32,31 @@ document.addEventListener("DOMContentLoaded", function () {
         reviewContent: "",
         imageName: "",
       },
-      submittedReviews: [],
+      reviews: [],
       getDB: window.data.dataProduct[0],
     },
     methods: {
+      async fetchReview(){
+        fetch(`/detail-product/instock/review/api?id=${this.product}`)
+        .then(response => response.json())
+        .then(data => {
+          this.reviews = data.reviews;
+          console.log("review:",this.reviews);
+        })
+        .catch(error => console.error('Error fetching images:', error));
+      },
       async fetchImages() {
         // Gửi đường dẫn thư mục qua tham số query
-        fetch('/detail-product/image/api?directory=public/image/detail_product')
+        url=this.product;
+
+        fetch(`/detail-product/instock/image/api?id=${url}`)
           .then(response => response.json())
           .then(data => {
             this.poster = data;
-           
+            this.img=this.poster[0];
+            this.img_detail_1=this.poster[1];
+            this.img_detail_2=this.poster[2];
+            this.img_detail_3=this.poster[3];
           })
           .catch(error => console.error('Error fetching images:', error));
       },
@@ -47,15 +67,15 @@ document.addEventListener("DOMContentLoaded", function () {
         this.currentIndex =
           (this.currentIndex - 1 + this.poster.length) % this.poster.length;
       },
-      submitForm() {
+     async submitForm() {
         // Thêm dữ liệu bình luận vào mảng submittedReviews
-        this.submittedReviews.push({
-          name: this.name,
+        const reviewData = {
+          productid: this.product,
           email: this.email,
-          reviewTitle: this.reviewTitle,
-          reviewContent: this.reviewContent,
-          imageName: this.uploadedImage ? this.uploadedImage.name : "",
-        });
+          reviewdate: '2024/11/22',
+          comment: this.reviewContent,
+          stars: 5,
+        };
 
         // Cập nhật trạng thái và reset form sau khi submit
         this.submitted = true;
@@ -64,12 +84,27 @@ document.addEventListener("DOMContentLoaded", function () {
         this.reviewTitle = "";
         this.reviewContent = "";
         this.uploadedImage = null;
-
-        alert("Form submitted successfully!");
+                                                                                 
+        const response = await fetch('/detail-product/insert/review', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(reviewData),  
+        });
+    
+        const responseData = await response.json();
+    
+        if (responseData.success) {
+          this.fetchReview();
+          alert("Form submitted successfully!");
+        }
       },
+
       handleFileUpload(event) {
         this.uploadedImage = event.target.files[0];
       },
+
       cancelReview() {
         this.isComment = !this.isComment;
         this.reviewButtonText = this.isComment
@@ -77,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
           : "Write review";
       },
     },
+
     computed: {
       formattedSpec() {
         return this.getDB.specification.replace(/\n/g, '<br>');
@@ -87,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     
     mounted() {
+      this.fetchReview();
       this.fetchImages(); 
     },
   });
