@@ -1,3 +1,10 @@
+<ul class="breadcrumb" style="margin: 7px; margin-left: 100px;">
+    <li>
+        <a href="/" style="text-decoration: none;"><span>Trang chủ</span></a>
+        <span class="mr_lr">&nbsp;/&nbsp;</span>
+    </li>
+    <li><strong><span>Tài khoản</span></strong></li>
+</ul>
 <div id="login-control" class="login-control prl-card shadow-sm">
     <form @submit.prevent="requireChangeInformation">
         <div class="prl-card-header bg-light text-center text-white py-3"
@@ -41,8 +48,8 @@
                 <img src="https://img.icons8.com/?size=100&id=81443&format=png&color=000000" alt="Favorites">
             </div>
             <div class="d-flex flex-column gap-2">
-                <button @click.prevent="goToLogin" class="btn btn-secondary my-1">Đăng nhập tài khoản khác</button>
-                <button @click.prevent="goToLogin" class="btn btn-danger">Đăng xuất</button>
+                <button @click.prevent="logout" class="btn btn-secondary my-1">Đăng nhập tài khoản khác</button>
+                <button @click.prevent="logout" class="btn btn-danger">Đăng xuất</button>
             </div>
         </div>
     </form>
