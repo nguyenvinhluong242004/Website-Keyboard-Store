@@ -3,27 +3,33 @@ document.addEventListener("DOMContentLoaded", function () {
   new Vue({
     el: "#app",
     data: {
-      mainImage: "/image/detail_groupby/1.jpg",
+      idGroupby:window.idGroupby,
+      mainImage:'',
       isContentVisible: false,
       check: false,
       quanlity: 1,
-      images: [
-        "/image/detail_groupby/1.jpg",
-        "/image/detail_groupby/2.jpg",
-        "/image/detail_groupby/3.jpg",
-        "/image/detail_groupby/4.jpg",
-        "/image/detail_groupby/5.jpg",
-        "/image/detail_groupby/6.jpg",
-        "/image/detail_groupby/7.jpg",
-        "/image/detail_groupby/8.jpg",
-        "/image/detail_groupby/9.jpg",
-        "/image/detail_groupby/10.jpg",
-        "/image/detail_groupby/11.jpg",
-        "/image/detail_groupby/12.jpg",
-      ],
+      images: [],
       getDB: window.data.dataGroupByProduct[0],
     },
     methods: {
+      async fetchImages() {
+
+        url = this.idGroupby;
+        
+        console.log('url:',url);
+
+        fetch(`/detail-product/instock/image/api?id=${url}`)
+          .then(response => response.json())
+          .then(data => {
+            this.images = data;
+            this.mainImage=this.images[0];
+
+            console.log(this.images);
+            
+          })
+          .catch(error => console.error('Error fetching images:', error));
+      },
+
       changeMainImage(image) {
         this.mainImage = image;
       },
@@ -46,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     },
     mounted() {
+      this.fetchImages();
       console.log("Vue instance has been mounted and script is loaded.");
       console.log("Data from server (window.data):", this.getDB);
     },
