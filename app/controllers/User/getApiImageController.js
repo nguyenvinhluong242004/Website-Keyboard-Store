@@ -3,7 +3,9 @@ const { getImagesFromDirectory } = require("../../models/User/apiImage.js");
 class GetApiImageController {
   // Phương thức để xử lý API lấy ảnh từ thư mục
   async createApi(req, res) {
-    const directory = req.query.directory; // Lấy đường dẫn từ query parameter
+    const id = req.query.id; // Lấy đường dẫn từ query parameter
+
+    const directory = `public/image/${id}`;
 
     // Nếu không có tham số directory, trả về lỗi
     if (!directory) {
