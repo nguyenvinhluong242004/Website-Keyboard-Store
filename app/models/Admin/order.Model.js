@@ -1,14 +1,14 @@
 const pool = require("../../config/database");
 
-const insertGroupBy = async (description, productname, currentprice, quantity,categoryid) => {
+const insertGroupBy = async (pathimage,description, productname, currentprice, quantity,  brandid, categoryid) => {
   const client = await pool.connect();
   try {
     const query = `
-      INSERT INTO public.product (description, productname, currentprice, quantity,categoryid)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO public.product (imagepath,description, productname, currentprice, quantity,  brandid, categoryid)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING productid 
     `;
-    const values = [description, productname, currentprice, quantity,categoryid];
+    const values = [pathimage,description, productname, currentprice, quantity, brandid, categoryid];
 
     const result = await client.query(query, values);
 
@@ -54,7 +54,7 @@ const typeid = async (typeName) => {
             `,
             [typeName]
         );
-        console.log('fasdfasdfa:',typeName);
+        console.log('category name:',typeName);
         console.log('result:',result);
 
       if (result.rows.length > 0) {
@@ -73,6 +73,37 @@ const typeid = async (typeName) => {
     }
   };
   
+const brandid = async (brandName) => {
+    const client = await pool.connect();
+
+    try {
+
+        const result = await client.query(
+            `
+            SELECT brandid
+            FROM public.brand
+            WHERE brandname = $1
+            `,
+            [brandName]
+        );
+        console.log('result:',result);
+
+      if (result.rows.length > 0) {
+        return {
+          success: true, 
+          brandid: result.rows[0].brandid, 
+        };
+      } else {
+        return { success: false, error: 'xxxx' };
+      }
+    } catch (error) {
+      console.error("Lỗi khi truy vấn vào bảng brand:", error);
+      return { success: false, error: error.message };
+    } finally {
+      client.release(); // Đóng kết nối
+    }
+  };
+  
   
 
-module.exports = { insertGroupBy,insertGroupByProduct,typeid };
+module.exports = { insertGroupBy,insertGroupByProduct,typeid,brandid };
