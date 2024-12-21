@@ -1,23 +1,35 @@
 const pool = require('../../config/database');
 
-const getProduct = async (req, res) => {
-    const visibleCount = req.query.visibleCount || 1;
+const getProduct = async (id, visibleCount = 1) => {
+    if (!id || isNaN(id) || id <= 0) {
+        throw new Error('ID sản phẩm không hợp lệ.');
+    }
+
+    if (!Number.isInteger(visibleCount) || visibleCount <= 0) {
+        throw new Error('Số lượng hiển thị không hợp lệ.');
+    }
 
     const client = await pool.connect();
     try {
-        // Query to get data from database
+        // Query để lấy dữ liệu từ cơ sở dữ liệu
         const result = await client.query(`
             SELECT * 
             FROM public.product p
-            WHERE p.productid = 2
-            LIMIT $1
-        `, [visibleCount]);
+            WHERE p.productid = $1
+            LIMIT $2
+        `, [id, visibleCount]);  // Sử dụng id và visibleCount trong truy vấn
+
+        if (result.rows.length === 0) {
+            throw new Error('Không tìm thấy sản phẩm.');
+        }
+
         return {
             dataProduct: result.rows
         };
     } catch (error) {
-        console.error('Lỗi truy vấn!', error);
-        res.status(500).json({ error: 'Có lỗi xảy ra khi lấy dữ liệu.' });
+        console.error('Lỗi truy vấn:', error.message);
+        console.error('Chi tiết lỗi:', error.stack);
+        throw new Error('Có lỗi xảy ra khi lấy dữ liệu.');
     } finally {
         client.release();
     }
