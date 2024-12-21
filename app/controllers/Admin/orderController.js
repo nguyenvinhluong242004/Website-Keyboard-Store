@@ -13,15 +13,18 @@ controller.order = async (req, res) => {
 
 controller.createGroupBy = async (req, res) => {
   try {
-    const { description, productname, currentprice, quantity,categoryid } = req.body;
+    const { pathimage,description, productname, currentprice, quantity, branchid, categoryid } = req.body;
     const result = await Order.insertGroupBy(
+      pathimage,
       description,
       productname,
       currentprice,
       quantity,
+      branchid,
       categoryid
     );
     console.log("Result from insertGroupBy:", result); // Log kết quả từ model
+
     if (result.success) {
       // Trả về productid nếu thành công
       res.status(201).json({
@@ -85,6 +88,27 @@ controller.getType = async (req, res) => {
 
     if (result.success) {
       res.status(200).json({success:true, typeid: result.typeid });
+    } else {
+      res.status(404).json({success:false, message: result.error });
+    }
+
+  } catch (error) {
+  
+    console.error("Lỗi khi xử lý request:", error);
+    res.status(500).json({ message: 'An unexpected error occurred' });
+  }
+};
+
+controller.getBrand = async (req, res) => {
+  try {
+    const brandName = req.query.brand || 'Cherry';
+
+    console.log('brand name:',brandName);
+
+    const result = await Order.brandid(brandName);
+
+    if (result.success) {
+      res.status(200).json({success:true, brandid: result.brandid });
     } else {
       res.status(404).json({success:false, message: result.error });
     }
