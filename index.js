@@ -2,8 +2,10 @@
 require('dotenv').config();
 
 // Import các module cần thiết
-const path = require('path'); // Xử lý đường dẫn tệp
+ // Xử lý đường dẫn tệp
 const express = require('express'); // Web framework cho Node.js
+const path = require('path');
+
 const morgan = require('morgan'); // Module ghi log
 const expressHandlebars = require('express-handlebars'); // Template engine
 const session = require('express-session');
