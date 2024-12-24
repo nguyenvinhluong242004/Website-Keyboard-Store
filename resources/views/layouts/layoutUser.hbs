@@ -32,36 +32,42 @@
 </head>
 <body class = "bg-secondary-subtle min-height-100">
     <!-- Header -->
-    <header id="header" class="py-3 w-100 mb-1" style="background-color: #E4DFDF;">
-        <div class="container">
+    <header id="header" class="py-3 w-100 m-0" style="background-color: #E4DFDF;">
+        <div class="container-fluid mx-0">
             <div class="row align-items-center">
-                <div class="col-md-3">
+                <div class="col-md-3 text-center">
                     <h1 class="h3">Mechanical Store</h1>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <nav class="nav justify-content-center">
-                        <a class="nav-link text-black" href="/">Home</a>
+                        <a class="nav-link text-black fs-4" href="/">Home</a>
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-black" href="#" id="instockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-black fs-4" href="#" id="instockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Instock
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="instockDropdown">
-                                <li><a class="dropdown-item" href="/kitPhim">Kecap</a></li>
-                                <li><a class="dropdown-item" href="/keCap">Kecap</a></li>
-                                <li><a class="dropdown-item" href="/switch">Switch</a></li>
-                                <li><a class="dropdown-item" href="/accessories">Accessories</a></li>
+                                <li><a class="dropdown-item fs-5" href="/kitPhim">Kit Phim</a></li>
+                                <li><a class="dropdown-item fs-5" href="/keCap">Kecap</a></li>
+                                <li><a class="dropdown-item fs-5" href="/switch">Switch</a></li>
+                                <li><a class="dropdown-item fs-5" href="/accessories">Accessories</a></li>
                             </ul>
                         </div>
-                        <a class="nav-link text-black" href="/group-by-product">GroupBy</a>
-                        <a class="nav-link text-black" href="/introduction">Introduce</a>
-                        <a class="nav-link text-black" href="/service">Service</a>
+                        <a class="nav-link text-black fs-4" href="/group-by-product">GroupBy</a>
+                        <a class="nav-link text-black fs-4" href="/introduction">Introduce</a>
+                        <a class="nav-link text-black fs-4" href="/service">Service</a>
                     </nav>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="d-flex align-items-center">
-                        <input type="text" class="form-control me-2" placeholder="Search" v-model="searchQuery" @keyup.enter="search">
-                        <a class="nav-link me-2" href="/account"><i class="bi bi-person-circle"></i> <i class="fa-solid fa-user"></i></a>
-                        <a class="nav-link" href="/shopping-cart"><i class="bi bi-cart"></i> <i class="fa-solid fa-cart-shopping"></i></a>
+                        <div class="col-12 col-md-10">
+                            <input type="text" class="form-control me-2" placeholder="Search" v-model="searchQuery" @keyup.enter="search">
+                        </div>
+                        <div class="col-6 col-md-1 text-center">
+                            <a class="nav-link" href="/account"><i class="bi bi-person-circle fs-4"></i> <i class="fa-solid fa-user fs-4"></i></a>
+                        </div>
+                        <div class="col-6 col-md-1 text-center">
+                            <a class="nav-link" href="/shopping-cart"><i class="bi bi-cart fs-4"></i> <i class="fa-solid fa-cart-shopping fs-4"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,34 +78,44 @@
     {{{body}}}
 
     <!-- Footer -->
-    <footer id="footer" class="bg-dark text-white py-4 mt-auto w-100" style="background-color: #607381;">
-        <div class="container">
+    <footer id="footer" class="text-white py-4 mt-auto w-100" style="background-color: #607381;">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-4">
-                    <h3 class="text-center">Address</h3>
-                    <p>123 Mechanical St, Keyboard City, KB 12345</p>
+                <div class="col-md-4 text-center">
+                    <h1 class="">Address</h1>
+                    <h4 style="color: #C8B8B8;">123 Mechanical St, Keyboard City, KB 12345</h4>
                 </div>
-                <div class="col-md-4">
-                    <h3 class="text-center">Newsletter</h3>
-                    <p>Stay updated by sending your email to receive information:</p>
+                <div class="col-md-4 text-center">
+                    <h1 class="">Newsletter</h1>
+                    <h4 style="color: #C8B8B8;">Stay updated by sending your email to receive information:</h4>
                     <form @submit.prevent="subscribeNewsletter">
-                        <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Enter your email" v-model="newsletterEmail" required>
-                            <button class="btn btn-primary" type="submit">Subscribe</button>
+                        <div class="row w-100">
+                            <div class="col-12 mb-2">
+                                <input type="email" class="form-control mx-auto" style="max-width: 75%;" placeholder="Enter your email" v-model="newsletterEmail" required>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <button class="btn mx-auto" style="max-width: 25%; background-color: #E2AC21" type="submit">Subscribe</button>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-secondary" @click="toggleDarkMode" style="max-width: 50%; background-color: #E2AC21 padding: 1rem 2rem; font-size: 1.25rem;">Dark Mode</button>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="col-md-4 text-center">
-                    <h3>Follow Us</h3>
-                    <a href="https://www.facebook.com" class="text-primary me-2"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.zalo.me" class="text-white">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMDg68zSJU2TpKyMFJwkWpuGsXF_FTMJguqA&s" alt="Zalo Icon" style="width: 16px; height: 16px;">
-                    </a>
+                    <h1>Follow Us</h1>
+                    <div class="col-6 mx-auto mb-4">
+                        <a href="https://www.facebook.com" class="text-primary me-2 fs-1"><i class="fa-brands fa-facebook-f"></i></a>
+                    </div>
+                    <div class="col-6 mx-auto">
+                        <a href="https://www.zalo.me" class="text-white">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMDg68zSJU2TpKyMFJwkWpuGsXF_FTMJguqA&s" alt="Zalo Icon" style="width: 50px; height: 50px;">
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-md-12 text-center">
-                    <button class="btn btn-secondary" @click="toggleDarkMode">Dark Mode</button>
                 </div>
             </div>
         </div>

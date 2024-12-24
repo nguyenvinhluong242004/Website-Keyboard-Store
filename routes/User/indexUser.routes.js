@@ -23,6 +23,7 @@ const searchProductRouter = require('./searchProduct.route');
 const subscribeNewsletter = require('./subscribeNewsletter.route');
 
 const shoppingCartRouter = require('./shoppingCart.route');
+const paymentRouter = require('./payment.route');
 
 const errorProductNotFoundRouter = require('./errorProductNotFound.route');
 
@@ -66,6 +67,9 @@ router.use('/shopping-cart', shoppingCartRouter); // Chi tiết giỏ hàng
 
 //show error for not found product when search
 router.use('/error', errorProductNotFoundRouter);
+
+// Payment
+router.use('/payment', paymentRouter);
 
 
 module.exports = router;

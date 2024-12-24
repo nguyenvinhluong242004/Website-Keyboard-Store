@@ -111,6 +111,27 @@ document.addEventListener("DOMContentLoaded", function () {
           ? "Cancel review"
           : "Write review";
       },
+
+      addToCart(){
+        $.ajax({
+          url: '/shopping-cart/add', 
+          method: 'POST',                      
+          contentType: 'application/json',   
+          data: JSON.stringify({             
+              ProductID: this.product           
+          }),
+          success: function(response) {
+              // Xử lý khi gọi API thành công
+              console.log("Success:", response);
+              alert(response.message);
+          },
+          error: function(xhr, status, error) {
+              // Xử lý lỗi
+              console.error("Error:", error);
+              alert("Có lỗi xảy ra, vui lòng thử lại.");
+          }
+      });
+      }
     },
 
     computed: {

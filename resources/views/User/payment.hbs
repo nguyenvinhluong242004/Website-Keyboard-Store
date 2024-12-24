@@ -1,0 +1,75 @@
+<div id="app" class="container mt-5">
+    <!-- User Information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            User Information
+        </div>
+        <div class="card-body">
+            <p><strong>Name:</strong> [[user.username]]</p>
+            <p><strong>Phone:</strong> [[user.phone]]</p>
+            <p><strong>Address:</strong> [[address]]</p>
+        </div>
+    </div>
+
+    <!-- Product Information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Product Information
+        </div>
+        <div class="card-body">
+            <div v-for="item in cartItems" :key="item.productid" class="cart-item border p-3 d-flex align-items-start mb-2">
+                <img :src="`${item.imagepath}/1.jpg`" alt="Product" class="me-3" style="width: 100px; height: 100px;">
+                <div class="w-100">
+                    <h6>[[ item.productname ]]</h6>
+                    <p class="text-danger fw-bold">[[ item.currentprice ]]</p>
+                    <p>Quantity: [[ item.quantity ]]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shipping Method -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Shipping Method
+        </div>
+        <div class="card-body">
+            <p><strong>Estimated Delivery Date:</strong> [[ estimatedDeliveryDate ]]</p>
+        </div>
+    </div>
+
+    <!-- Payment Method -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Payment Method
+        </div>
+        <div class="card-body">
+            <select class="form-select" id="paymentMethod">
+                <option value="Pay In Cash">Pay In Cash</option>
+                <option value="Money Transfer">Money Transfer</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Order Details -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Order Details
+        </div>
+        <div class="card-body">
+            <p><strong>Subtotal:</strong> $<span id="subtotal">[[subtotal]]</span></p>
+            <p><strong>Shipping:</strong> $<span id="shippingFee">5.00</span></p>
+            <h3 class="text-danger"><strong>Total:</strong> $<span id="total">[[total]]</span></h4>
+        </div>
+    </div>
+
+    <!-- Order Button -->
+    <div class="text-center">
+        <button class="btn btn-primary btn-lg" id="orderButton" @click="validateInformation">Order</button>
+    </div>
+</div>
+
+<script>
+    window.user = {{{user}}};
+    window.cartItems = {{{cartItems}}};
+</script>

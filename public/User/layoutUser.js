@@ -12,7 +12,6 @@ new Vue({
         },
 
         subscribeNewsletter() {
-            console.log(this.newsletterEmail);
             axios.post('/subscribe-news-letter/api', { email: this.newsletterEmail })
                     .then(response => {
                         alert(response.data.message);
