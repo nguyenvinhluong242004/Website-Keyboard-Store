@@ -94,7 +94,6 @@ export default {
             this.loading = false;
         },
         addToCart(product) {
-            console.log(product.productid);
             $.ajax({
                 url: '/shopping-cart/add', 
                 method: 'POST',                      
@@ -170,8 +169,6 @@ export default {
             this.fetchGroupByProduct();
         }
         else if (this.product.type === 'Search Product') {
-            //console.log(this.searchQuery)
-            //this.searchQuery = decodeURIComponent(this.searchQuery);
             this.fetchSearch();
         }
     },
@@ -200,7 +197,7 @@ export default {
             </div>
 
             <div class="row">
-                <product-card v-for="product in visibleProducts" :key="product.productid" :product="product" @add-to-cart="addToCart"></product-card>
+                <product-card v-for="product in visibleProducts" :key="product.productid" :product="product" :type="productType" @add-to-cart="addToCart"></product-card>
             </div>
             <div class="text-center my-4">
                 <button class="btn btn-secondary" @click="loadMore">Xem thêm sản phẩm</button>

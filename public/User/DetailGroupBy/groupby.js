@@ -36,15 +36,32 @@ document.addEventListener("DOMContentLoaded", function () {
       showMess() {
         alert("Quay lại");
       },
-      addCart() {
-        alert("Đã thêm vào giỏ hàng");
-      },
       toggleContent() {
         this.isContentVisible = !this.isContentVisible;
       },
       toggleCheck() {
         this.check = !this.check;
       },
+      addToCart(){
+        $.ajax({
+          url: '/shopping-cart/add', 
+          method: 'POST',                      
+          contentType: 'application/json',   
+          data: JSON.stringify({             
+              ProductID: this.idGroupby           
+          }),
+          success: function(response) {
+              // Xử lý khi gọi API thành công
+              console.log("Success:", response);
+              alert(response.message);
+          },
+          error: function(xhr, status, error) {
+              // Xử lý lỗi
+              console.error("Error:", error);
+              alert("Có lỗi xảy ra, vui lòng thử lại.");
+          }
+      });
+      }
     },
     computed: {
       formattedDescription() {

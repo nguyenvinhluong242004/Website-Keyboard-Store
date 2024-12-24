@@ -19,11 +19,13 @@
         <div style="min-width: 400px;">
             <span class="total-payment">Tổng Tiền: <span id="total-price">0</span> đ</span>
         </div>
-        <button class="btn btn-buy">MUA NGAY</button>
+        <button class="btn btn-buy" onclick="placeOrder()">MUA NGAY</button>
     </div>
 </div>
 
 <script>
+    let cartItemsMoveToPayment = [];
+
     // Hàm lấy dữ liệu giỏ hàng
     function loadCart() {
         $.ajax({
@@ -32,6 +34,9 @@
             success: function (response) {
                 console.log(response.listCart)
                 if (response.success) {
+                    response.listCart.forEach(item => {
+                        cartItemsMoveToPayment.push(item);
+                    });
                     renderCartItems(response.listCart);
                 } else {
                     console.error("Lỗi khi tải giỏ hàng:", response.message);
@@ -55,6 +60,10 @@
             }),
             success: function (response) {
                 if (response.success) {
+                    cartItemsMoveToPayment = [];
+                    response.listCart.forEach(item => {
+                        cartItemsMoveToPayment.push(item);
+                    });
                     renderCartItems(response.listCart); // Cập nhật lại giỏ hàng
                 } else {
                     alert(response.message);
@@ -141,6 +150,14 @@
 
         // Tính lại tổng tiền khi chọn tất cả hoặc bỏ chọn tất cả
         updateTotalPrice();
+    }
+
+    function placeOrder() {
+        // Redirect to the payment page with cart items
+        const cartItems = JSON.stringify(cartItemsMoveToPayment);
+        console.log(cartItems);
+        console.log(cartItemsMoveToPayment);
+        window.location.href = `/payment?cartItems=${encodeURIComponent(cartItems)}`;
     }
 
     // Load giỏ hàng khi trang được tải

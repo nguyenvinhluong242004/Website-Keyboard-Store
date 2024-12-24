@@ -2,10 +2,10 @@
 
 // Define the product card component
 export default {
-    props: ['product'],
+    props: ['product','type'],
     template: `
         <div class="col-md-4 mb-4 card-item">
-            <a href="#" class="card-link">
+            <a :href="computedHref" class="card-link">
                 <img :src="product.imagepath + '/1.jpg'" alt="Card Image" class="card-image">
                 <p class="badge" :class="product.categoryname">{{ product.categoryname }}</p>
                 <h2 class="card-title">{{ product.description }}</h2>
@@ -19,6 +19,13 @@ export default {
             </a>
         </div>
     `,
+    computed: {
+        computedHref() {
+            return this.type === 'GroupBy Product' 
+                ? `/detail-group-by/${this.product.productid}` 
+                : `/detail-product/instock/${this.product.productid}`;
+        }
+    },
     methods: {
         addToCart() {
             this.$emit('add-to-cart', this.product);
