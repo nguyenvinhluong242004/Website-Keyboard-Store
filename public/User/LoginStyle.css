@@ -85,3 +85,23 @@ a:hover {
     color: #6c757d; /* Optional: adjusts color of the icon */
     font-size: 1.25rem;
 }
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 7px;
+}
+
+.card-body-ac {
+    flex-shrink: 0; /* Giữ chiều cao phần body cố định */
+
+}
+
+
+.list-group-item {
+    cursor: pointer;
+}
+
+.list-group-item:last-child {
+}

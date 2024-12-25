@@ -126,13 +126,13 @@ class accountModel {
      * @param {string} username - Tên
      * @returns {Promise<Object|null>} - Trả về thông tin tài khoản hoặc null nếu không tìm thấy
      */
-    static async changeInfoByEmail(email, username, sdt) {
+    static async changeInfoByEmail(userid, email, username, sdt) {
         try {
             const result = await pool.query(
                 `UPDATE Users 
-                 SET username = $1, phone = $2 
-                 WHERE email = $3`,
-                [username, sdt, email]
+                 SET username = $2, email = $3, phone = $4 
+                 WHERE userid = $1`,
+                [userid, username, email, sdt]
             );
             return result.rows.length > 0 ? result.rows[0] : null;
         } catch (err) {
@@ -141,7 +141,83 @@ class accountModel {
         }
     }
 
-    
+    static async getAllAddress(userid) {
+        try {
+            const result = await pool.query(
+                `SELECT * 
+                 FROM Address 
+                 WHERE userid = $1`,
+                [userid]
+            );
+            return result.rows.length > 0 ? result.rows : [];
+        } catch (err) {
+            console.error('Lỗi truy vấn cơ sở dữ liệu!', err);
+            throw new Error('Lỗi truy vấn cơ sở dữ liệu');
+        }
+    }
+
+    static async addOrUpdateAddress(id, userid, province, district, ward, street) {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN'); // Bắt đầu transaction
+
+            if (id) {
+                // Nếu id đã tồn tại, thực hiện cập nhật
+                await client.query(
+                    `UPDATE Address 
+                    SET userid = $2, province = $3, district = $4, ward = $5, street = $6
+                    WHERE id = $1`,
+                    [id, userid, province, district, ward, street]
+                );
+            } else {
+                // Nếu id rỗng, thực hiện thêm mới
+                await client.query(
+                    `INSERT INTO Address (userid, province, district, ward, street)
+                    VALUES ($1, $2, $3, $4, $5)`,
+                    [userid, province, district, ward, street]
+                );
+            }
+
+            await client.query('COMMIT'); // Xác nhận transaction
+        } catch (err) {
+            await client.query('ROLLBACK'); // Quay lại nếu có lỗi
+            console.error('Lỗi: ', err);
+            throw new Error('Lỗi thêm hoặc cập nhật dữ liệu vào cơ sở dữ liệu');
+        } finally {
+            client.release(); // Giải phóng kết nối
+        }
+    }
+
+
+    static async deleteAddressById(id) {
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN'); // Bắt đầu transaction
+
+            // Xóa bản ghi khỏi bảng Address
+            const result = await client.query(
+                `DELETE FROM Address WHERE id = $1`,
+                [id]
+            );
+
+            await client.query('COMMIT'); // Xác nhận transaction
+
+            if (result.rowCount === 0) {
+                // Không tìm thấy bản ghi để xóa
+                throw new Error('Không tìm thấy địa chỉ với ID đã cung cấp');
+            }
+            return { success: true, message: 'Đã xóa địa chỉ thành công' };
+        } catch (err) {
+            await client.query('ROLLBACK'); // Quay lại nếu có lỗi
+            console.error('Lỗi khi xóa địa chỉ: ', err);
+            throw new Error('Lỗi khi xóa địa chỉ');
+        } finally {
+            client.release(); // Giải phóng kết nối
+        }
+    }
+
+
+
 
 }
 

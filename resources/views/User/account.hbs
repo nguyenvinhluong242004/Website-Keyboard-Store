@@ -1,56 +1,358 @@
 <ul class="breadcrumb" style="margin: 7px; margin-left: 100px;">
     <li>
-        <a href="/" style="text-decoration: none;"><span>Trang chủ</span></a>
+        <a href="/" style="text-decoration: none; color: blue;"><span>Trang chủ</span></a>
         <span class="mr_lr">&nbsp;/&nbsp;</span>
     </li>
     <li><strong><span>Tài khoản</span></strong></li>
 </ul>
-<div id="login-control" class="login-control prl-card shadow-sm">
-    <form @submit.prevent="requireChangeInformation">
-        <div class="prl-card-header bg-light text-center text-white py-3"
-            style="background: linear-gradient(45deg, #ff6b6b, #f7b733);">
-            <img src="https://via.placeholder.com/80" alt="Avatar người dùng"
-                class="rounded-circle border border-white mb-2">
-            <h5 class="card-title mb-1">
-                <span v-if="!isChangeInformation" v-text="dataUser.username"></span>
-            </h5>
-            <button v-if="!isChangeInformation" @click.prevent="changeInformation" class="btn btn-light btn-sm m-2">Sửa
-                hồ sơ</button>
-            <button v-if="isChangeInformation" type="submit" class="btn btn-light btn-sm m-2">Cập nhật hồ sơ</button>
-        </div>
-        <div class="card-body">
-            <div class="info-card p-3 rounded mb-3">
-                <p v-if="isChangeInformation" class="d-flex align-items-center mb-2">
-                    <i class="bi bi-person-circle me-2 mr-3"></i>
-                    <input type="text" class="form-control" id="newUsername" v-model="dataUser.username"
-                        placeholder="newUsername" required>
-                </p>
-                <p class="d-flex align-items-center mb-2">
-                    <i class="bi bi-telephone-fill me-2 mr-3"></i>
-                    <input type="text" class="form-control" id="newUserSdt" v-model="dataUser.phone"
-                        placeholder="newUserSdt" required :disabled="!isChangeInformation">
-                </p>
-                <p class="d-flex align-items-center mb-2">
-                    <i class="bi bi-envelope-fill me-2 mr-3"></i>
-                    <input type="email" class="form-control" id="newUserEmail" v-model="dataUser.email"
-                        placeholder="newUserEmail" disabled="true">
-                </p>
-                {{!-- <p class="d-flex align-items-center mb-2">
-                    <i class="bi bi-geo-alt-fill me-2 mr-3"></i>
-                    <input type="text" class="form-control" id="newUserAddress" v-model="dataUser.address"
-                        placeholder="newUserAddress" required :disabled="!isChangeInformation">
-                </p> --}}
-            </div>
-            <div class="d-flex justify-content-around my-3">
-                <img src="https://img.icons8.com/ios-filled/50/wallet.png" alt="Wallet">
-                <img src="https://img.icons8.com/?size=100&id=H0JqzxqGxPQm&format=png&color=000000" alt="Time">
-                <img src="https://img.icons8.com/ios-filled/50/delivery.png" alt="Delivery">
-                <img src="https://img.icons8.com/?size=100&id=81443&format=png&color=000000" alt="Favorites">
-            </div>
-            <div class="d-flex flex-column gap-2">
-                <button @click.prevent="logout" class="btn btn-secondary my-1">Đăng nhập tài khoản khác</button>
-                <button @click.prevent="logout" class="btn btn-danger">Đăng xuất</button>
+<div class="container py-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4" style="height: 100%; min-height: 360px;">
+                <div class="card-body-ac text-center" style="height: 120px; border-bottom: 1px solid black;">
+                    <img src="https://via.placeholder.com/80" alt="Avatar người dùng" class="rounded-circle mb-2">
+                    <h5 class="card-title" id="txtname"></h5>
+                </div>
+                <div>
+                    <ul class="list-group" style="margin-top: 0px; border-radius: 0%;">
+                        <li class="list-group-item active" data-section="accountInfo" style="border: none;">Thông tin
+                            tài khoản</li>
+                        <li class="list-group-item" data-section="addressBook" style="border: none;">Sổ địa chỉ</li>
+                        <li class="list-group-item" data-section="orderManagement" style="border: none;">Quản lý đơn
+                            hàng</li>
+                        <li class="list-group-item" id="logoutBtn" style="border: none;">Đăng xuất</li>
+                    </ul>
+                </div>
+                <div>
+
+                </div>
             </div>
         </div>
-    </form>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div id="accountInfo" class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Thông tin tài khoản</h5>
+                </div>
+                <div class="card-body">
+                    <form id="accountForm">
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-3 col-form-label">Họ Tên</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="username" placeholder="Họ tên">
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-3 col-form-label">Số điện thoại</label>
+                            <div class="col-md-9">
+                                <div class="d-flex">
+                                    <input type="text" class="form-control" id="phone" placeholder="Số điện thoại">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <label class="col-md-3 col-form-label">Email</label>
+                            <div class="col-md-9">
+                                <div class="d-flex">
+                                    <input type="email" class="form-control" id="email" placeholder="Email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-danger" id="changeinfo">Lưu thay đổi</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="addressBook" class="card shadow-sm d-none">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Sổ địa chỉ</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary" id="addAddressBtn">Thêm địa chỉ mới</button>
+                    <div id="addressList"></div>
+                </div>
+            </div>
+
+            <div id="orderManagement" class="card shadow-sm d-none">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Quản lý đơn hàng</h5>
+                </div>
+                <div class="card-body">
+                    <p>Hiển thị danh sách đơn hàng tại đây.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addressModalLabel">Thêm/Sửa địa chỉ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addressForm">
+                        <div class="mb-3">
+                            <label for="street" class="form-label">Đường</label>
+                            <input type="text" class="form-control" id="street" placeholder="Nhập đường">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ward" class="form-label">Phường</label>
+                            <input type="text" class="form-control" id="ward" placeholder="Nhập phường">
+                        </div>
+                        <div class="mb-3">
+                            <label for="district" class="form-label">Quận</label>
+                            <input type="text" class="form-control" id="district" placeholder="Nhập quận">
+                        </div>
+                        <div class="mb-3">
+                            <label for="province" class="form-label">Tỉnh</label>
+                            <input type="text" class="form-control" id="province" placeholder="Nhập tỉnh">
+                        </div>
+                        <input type="hidden" id="addressId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveAddressBtn">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="notificationMessage">Nội dung thông báo sẽ hiển thị ở đây.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let section = 'accountInfo';
+        let dataUser = {};
+        let addressList = [];
+
+        // Hiển thị danh sách địa chỉ
+        function renderAddressList() {
+            let addressHtml = '';
+            addressList.forEach((addr, index) => {
+                addressHtml += `
+                <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                    <span>${addr.street}, ${addr.ward}, ${addr.district}, ${addr.province}</span>
+                    <div>
+                        <button class="btn btn-sm btn-warning editAddressBtn" data-id="${addr.id}">Sửa</button>
+                        <button class="btn btn-sm btn-danger deleteAddressBtn" data-id="${addr.id}">Xóa</button>
+                    </div>
+                </div>`;
+            });
+            $('#addressList').html(addressHtml);
+        }
+
+        // Xử lý thêm địa chỉ mới
+        $('#addAddressBtn').on('click', function () {
+            $('#addressModalLabel').text('Thêm địa chỉ mới');
+            $('#addressForm')[0].reset();
+            $('#addressId').val('');
+            $('#addressModal').modal('show');
+        });
+
+        // Xử lý lưu địa chỉ
+        $('#saveAddressBtn').on('click', function () {
+            const street = $('#street').val();
+            const ward = $('#ward').val();
+            const district = $('#district').val();
+            const province = $('#province').val();
+            const addressId = $('#addressId').val();
+
+            if (street === '' || ward === '' || district === '' || province === '') {
+
+                $('#addressModal').modal('hide');
+                showNotification("Vui lòng nhập đầy đủ thông tin");
+                return;
+            }
+
+            $.ajax({
+                url: '/account/add-address/api',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: addressId,
+                    province: province,
+                    district: district,
+                    ward: ward,
+                    street: street
+                }),
+                success: function (response) {
+                    console.log(response.data)
+                    addressList = response.data;
+                    $('#addressModal').modal('hide');
+                    renderAddressList();
+                    showNotification("Đã cập nhật sổ địa chỉ.");
+                },
+                error: function (error) {
+                    console.error("Có lỗi khi lấy thông tin: ", error);
+                    showNotification("Có lỗi khi lấy thông tin. Vui lòng thử lại.");
+                }
+            });
+        });
+
+        // Xử lý sửa địa chỉ
+        $(document).on('click', '.editAddressBtn', function () {
+            const id = $(this).data('id');
+            const addr = addressList.find(item => item.id === id);
+
+            $('#street').val(addr.street);
+            $('#ward').val(addr.ward);
+            $('#district').val(addr.district);
+            $('#province').val(addr.province);
+            $('#addressId').val(id);
+
+            $('#addressModalLabel').text('Chỉnh sửa địa chỉ');
+            $('#addressModal').modal('show');
+        });
+
+        // Xử lý xóa địa chỉ
+        $(document).on('click', '.deleteAddressBtn', function () {
+            const id = $(this).data('id');
+            $.ajax({
+                url: '/account/delete-address/api',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: id,
+                }),
+                success: function (response) {
+                    console.log(response.data)
+                    addressList = response.data;
+                    $('#addressModal').modal('hide');
+                    renderAddressList();
+                    showNotification("Đã cập nhật sổ địa chỉ.");
+                },
+                error: function (error) {
+                    console.error("Có lỗi khi lấy thông tin: ", error);
+                    showNotification("Có lỗi khi lấy thông tin. Vui lòng thử lại.");
+                }
+            });
+        });
+
+        getInfor();
+        $('.list-group-item').on('click', function () {
+            $(`#${section}`).addClass('d-none');
+            section = $(this).data('section');
+            if (section === 'none') {
+                return;
+            }
+
+            $('.list-group-item').removeClass('active');
+            $(this).addClass('active');
+
+            $(`#${section}`).removeClass('d-none');
+
+            if (section === 'accountInfo') {
+                getInfor();
+            } else if (section === 'addressBook') {
+                $.ajax({
+                    url: '/account/get-address/api',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                    }),
+                    success: function (response) {
+                        console.log(response.data)
+                        addressList = response.data;
+
+                        // Render ban đầu
+                        renderAddressList();
+                    },
+                    error: function (error) {
+                        console.error("Có lỗi khi lấy thông tin: ", error);
+                        showNotification("Có lỗi khi lấy thông tin. Vui lòng thử lại.");
+                    }
+                });
+            } else if (section === 'orderManagement') {
+                $.get('/account/get-orders/api', function (data) {
+                    if (data.success) {
+                        console.log(data.orders);
+                    }
+                });
+            }
+        });
+        $('#logoutBtn').on('click', function () {
+            $.post('/account/logout', function (data) {
+                if (data.success) {
+                    window.location.reload();
+                }
+            });
+        });
+        $('#changeinfo').on('click', function () {
+            console.log($('#username').val())
+            $.ajax({
+                url: '/account/change-info/api',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    userid: dataUser.userid,
+                    username: $('#username').val(),
+                    phone: $('#phone').val(),
+                    email: $('#email').val(),
+                }),
+                success: function (response) {
+                    console.log(response.dataUser)
+                    dataUser = response.dataUser;
+                    $('#txtname').text(response.dataUser.username);
+                    $('#username').val(response.dataUser.username);
+                    $('#phone').val(response.dataUser.phone);
+                    $('#email').val(response.dataUser.email);
+                    showNotification("Thay đổi thông tin thành công");
+
+                },
+                error: function (error) {
+                    console.error("Có lỗi khi thay đổi thông tin: ", error);
+                    showNotification("Có lỗi khi thay đổi thông tin. Vui lòng thử lại.");
+                }
+            });
+        });
+        function getInfor() {
+            $.ajax({
+                url: '/account/get-info/api',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                }),
+                success: function (response) {
+                    console.log(response.dataUser)
+                    dataUser = response.dataUser;
+                    $('#txtname').text(response.dataUser.username);
+                    $('#username').val(response.dataUser.username);
+                    $('#phone').val(response.dataUser.phone);
+                    $('#email').val(response.dataUser.email);
+                },
+                error: function (error) {
+                    console.error("Có lỗi khi lấy thông tin: ", error);
+                    showNotification("Có lỗi khi lấy thông tin. Vui lòng thử lại.");
+                }
+            });
+        }
+
+        function showNotification(message) {
+            $('#notificationMessage').text(message); // Cập nhật nội dung thông báo
+            $('#notificationModal').modal('show');   // Hiển thị modal
+        }
+    });
+</script>
