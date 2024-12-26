@@ -8,8 +8,10 @@ const controller = {};
 // Render Kit Phim
 controller.showDetailProduct = async (req, res) => {
   idProduct = req.params.id || 1;
-  console.log("id product:", idProduct);
 
+
+  console.log('id product:',idProduct);
+  const user = req.session.user;
   try {
     // Lấy dữ liệu từ model
     const data = await getProduct(idProduct);
@@ -23,6 +25,7 @@ controller.showDetailProduct = async (req, res) => {
                 <script defer src="/User/DetailProduct/product.js"></script>
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
             `,
+      user: user,
       idProduct: idProduct,
       data: JSON.stringify(data),
     });

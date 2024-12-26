@@ -3,6 +3,7 @@ const controller = {};
 
 // Render Kit Phim
 controller.showDetailGroupby = async (req, res) => {
+    const user = req.session.user;
     const id = req.params.id || 1;
     const visibleCount = req.query.visibleCount || 1; // Lấy visibleCount từ query
 
@@ -20,6 +21,7 @@ controller.showDetailGroupby = async (req, res) => {
                 <link rel="stylesheet" href="/User/DetailGroupBy/detail-groupby.css">
                 <script defer src="/User/DetailGroupBy/groupby.js"></script>
             `,
+            user: user,
             idGroupby:id,
             data: JSON.stringify(data) // Chuyển dữ liệu sang JSON để Vue.js sử dụng
         });
