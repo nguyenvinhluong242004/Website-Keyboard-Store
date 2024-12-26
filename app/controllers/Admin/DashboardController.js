@@ -23,6 +23,7 @@ class DashboardController {
                 revenueData: JSON.stringify(revenueData),
                 productLabels: JSON.stringify(productLabels),
                 productData: JSON.stringify(productData),
+                admin: req.session.admin,
             });
         } catch (error) {
             console.error(error);

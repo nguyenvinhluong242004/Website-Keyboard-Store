@@ -16,6 +16,7 @@ class PurchaseHistoryController {
                 layout: 'layoutAdmin',
                 title: 'Order List',
                 orders, // Dữ liệu các đơn hàng
+                admin: req.session.admin,
                 page: Number(page),
                 total_pages: totalPages,
             });

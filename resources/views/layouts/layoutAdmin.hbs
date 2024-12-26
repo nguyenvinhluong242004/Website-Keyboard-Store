@@ -31,6 +31,7 @@
         <nav class="col-md-2 sidebar bg-dark">
             <h4 class="text-center text-white py-3">Mechanical</h4>
             <a href="/admin/dashboard" class="text-white py-2 px-3">Dashboard</a>
+
             <!-- Dropdown Menu -->
             <div class="dropdown d-block">
                 <a class="dropdown-toggle text-white py-2 px-3 d-block" href="#" id="dropdownMenuLink"
@@ -95,29 +96,25 @@
                     <a href="#" class="text-white py-2 ps-5 d-block">About</a>
                 </div>
             </div>
-
         </nav>
-
 
         <!-- Main content -->
         <main class="col-md-10">
-            <!-- Header -->
             <header class="header d-flex justify-content-between align-items-center">
-                <!-- Button to toggle sidebar -->
                 <button class="btn btn-dark" id="toggleSidebarBtn" style="z-index: 100;">
-                    <i class="bi bi-list" style="font-size: 1.5rem;"></i> <!-- Icon for toggle -->
+                    <i class="bi bi-list" style="font-size: 1.5rem;"></i>
                 </button>
-
                 <span class="title">HomePage</span>
-
                 <div class="d-flex align-items-center">
-
                     <i class="bi bi-bell mx-3" style="font-size: 1.5rem;"></i>
                     <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle " type="button" data-bs-toggle="dropdown"
+                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-
-                            <i class="bi bi-person-circle"></i> Name
+                            {{#if admin}}
+                            <i class="bi bi-person-circle"></i> {{admin.email}}
+                            {{else}}
+                            <i class="bi bi-person-circle"></i> Login
+                            {{/if}}
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -125,29 +122,22 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li><a class="dropdown-item" href="/admin/login/out">Logout</a></li>
                         </ul>
                     </div>
                 </div>
             </header>
 
-            <!-- Content Area -->
             <div class="content">
                 {{{body}}}
             </div>
         </main>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
         $(document).ready(function () {
-            // Save the state of the navigation bar to local storage
-            function saveNavState() {
+            // Save dropdown state
+            function saveDropdownState() {
                 const navState = {};
                 $('.dropdown .collapse').each(function () {
                     const id = $(this).attr('id');
@@ -156,56 +146,66 @@
                 localStorage.setItem('navState', JSON.stringify(navState));
             }
 
-            // Load the state of the navigation bar from local storage
-            function loadNavState() {
+            // Load dropdown state
+            function loadDropdownState() {
                 const navState = JSON.parse(localStorage.getItem('navState'));
                 if (navState) {
                     for (const id in navState) {
-                        if (navState[id] ) {
+                        if (navState[id]) {
                             $('#' + id).addClass('show');
+                            //$('a[data-bs-target="#' + id + '"]').addClass('active');
                         }
                     }
                 }
             }
 
-            // Save the state when a dropdown is toggled
-            $('.dropdown .collapse').on('shown.bs.collapse hidden.bs.collapse', function () {
-                saveNavState();
-            });
+            // Save active link state
+            function saveActiveLinkState() {
+                //const activeLink = $('.sidebar .active').attr('href');
+                //localStorage.setItem('activeLink', activeLink || '');
+            }
 
-            // Load the state on page load
-            loadNavState();
+            // Load active link state
+            function loadActiveLinkState() {
+                //const activeLink = localStorage.getItem('activeLink');
+                //if (activeLink) {
+                //$('.sidebar a').removeClass('active');
+                //$('.sidebar a[href="' + activeLink + '"]').addClass('active');
+                //}
+            }
 
-            // Lưu trạng thái của sidebar vào localStorage
+            // Save sidebar state
             function saveSidebarState() {
-                if ($('.sidebar').hasClass('hidden')) {
-                    localStorage.setItem('sidebarState', 'hidden');
-                } else {
-                    localStorage.setItem('sidebarState', 'visible');
+                localStorage.setItem('sidebarState', $('.sidebar').hasClass('hidden') ? 'hidden' : 'visible');
+            }
+
+            // Load sidebar state
+            function loadSidebarState() {
+                const state = localStorage.getItem('sidebarState');
+                if (state === 'hidden') {
+                    $('.sidebar').addClass('hidden');
+                    $('main').addClass('main-expanded');
                 }
             }
 
-            // Khi sidebar bị ẩn, main chiếm toàn bộ chiều rộng
+            // Event listeners
+            $('.dropdown .collapse').on('shown.bs.collapse hidden.bs.collapse', saveDropdownState);
+            $('.sidebar a').on('click', function () {
+                //$('.sidebar a').removeClass('active');
+                //$(this).addClass('active');
+                saveActiveLinkState();
+            });
+
             $('#toggleSidebarBtn').on('click', function () {
                 $('.sidebar').toggleClass('hidden');
-                $('main').toggleClass('main-expanded');  // Thêm lớp main-expanded
-                saveSidebarState();  // Lưu trạng thái mới
+                $('main').toggleClass('main-expanded');
+                saveSidebarState();
             });
 
-            // Tải trạng thái sidebar từ localStorage
-            function loadSidebarState() {
-                const sidebarState = localStorage.getItem('sidebarState');
-                if (sidebarState === 'hidden') {
-                    $('.sidebar').addClass('hidden');
-                    $('main').addClass('main-expanded'); // Khi ẩn, main sẽ chiếm toàn bộ chiều rộng
-                } else {
-                    $('.sidebar').removeClass('hidden');
-                    $('main').removeClass('main-expanded');
-                }
-            }
-
-            loadSidebarState();  // Tải trạng thái khi trang được tải lại
-
+            // Initial load
+            loadDropdownState();
+            loadSidebarState();
+            loadActiveLinkState();
         });
     </script>
 </body>

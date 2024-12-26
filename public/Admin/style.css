@@ -58,3 +58,12 @@ body {
     transition: margin-left 0.3s;
 }
 
+
+.sidebar.hidden {
+    display: none;
+}
+
+.main-expanded {
+    width: 100%;
+}
+
