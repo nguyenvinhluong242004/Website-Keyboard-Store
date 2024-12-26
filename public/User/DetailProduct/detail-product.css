@@ -72,7 +72,11 @@
   justify-content: center;
 }
 .customer {
+  margin-top: 50px;
   width: 100%;
+  border: 2px solid rgb(197, 197, 197);
+  border-radius: 5px;
+  padding: 20px;
 }
 .customer_review {
   font-weight: bold;
