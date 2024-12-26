@@ -3,13 +3,15 @@ const {searchProduct} = require('../../models/User/SearchProductModel');
 const controller ={}
 
 controller.showSearchProduct = (req, res) => {
+    const user = req.session.user;
     res.render('User/ProductPage', {layout: 'layoutUser', title: 'Search Product', 
         searchQuery: req.query.search || '',
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/SearchProduct/searchProduct.js"></script>
         <link rel="stylesheet" href="User/home.css">
-        `
+        `,
+        user: user
     });
 } 
 

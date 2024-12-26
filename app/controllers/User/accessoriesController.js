@@ -4,12 +4,14 @@ const controller ={}
 
 //Render Accessories
 controller.showAccessories = (req, res) => {
+    const user = req.session.user;
     res.render('User/ProductPage', {layout: 'layoutUser', title: 'Accessories',
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/Accessories/accessories.js"></script>
         <link rel="stylesheet" href="User/home.css">
-        `
+        `,
+        user: user
      });
 };
 

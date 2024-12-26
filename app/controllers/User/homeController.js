@@ -21,6 +21,8 @@ const homeController = {
             const bottomSalesProduct = salesProduct.data.slice(10, 20);
 
             const poster = await getPosters();
+            const user = req.session.user;
+
             res.render("User/home", {
                 layout: 'layoutUser',
                 title: 'Home',
@@ -30,6 +32,7 @@ const homeController = {
                     <script defer type="module" src="User/Home/helper.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
                 `,
+                user: user,
                 topNewProduct,
                 bottomNewProduct,
                 topSalesProduct,
