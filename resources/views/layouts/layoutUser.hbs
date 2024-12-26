@@ -32,17 +32,17 @@
 </head>
 <body class = "bg-secondary-subtle min-height-100">
     <!-- Header -->
-    <header id="header" class="py-3 w-100 m-0" style="background-color: #E4DFDF;">
+    <header id="header" class="text-white py-3 w-100 m-0" style="background-color: black;">
         <div class="container-fluid mx-0">
             <div class="row align-items-center">
-                <div class="col-md-3 text-center">
+                <div class="col-3 text-center">
                     <h1 class="h3">Mechanical Store</h1>
                 </div>
-                <div class="col-md-5">
+                <div class="col-5">
                     <nav class="nav justify-content-center">
-                        <a class="nav-link text-black fs-4" href="/">Home</a>
+                        <a class="nav-link text-black fs-4 text-white" href="/">Home</a>
                         <div class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-black fs-4" href="#" id="instockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-black fs-4 text-white" href="#" id="instockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Instock
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="instockDropdown">
@@ -52,20 +52,26 @@
                                 <li><a class="dropdown-item fs-5" href="/accessories">Accessories</a></li>
                             </ul>
                         </div>
-                        <a class="nav-link text-black fs-4" href="/group-by-product">GroupBy</a>
-                        <a class="nav-link text-black fs-4" href="/introduction">Introduce</a>
-                        <a class="nav-link text-black fs-4" href="/service">Service</a>
+                        <a class="nav-link text-black fs-4 text-white" href="/group-by-product">GroupBy</a>
+                        <a class="nav-link text-black fs-4 text-white" href="/introduction">Introduce</a>
+                        <a class="nav-link text-black fs-4 text-white" href="/service">Service</a>
                     </nav>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
                     <div class="d-flex align-items-center">
-                        <div class="col-12 col-md-10">
+                        <div class="col-8">
                             <input type="text" class="form-control me-2" placeholder="Search" v-model="searchQuery" @keyup.enter="search">
                         </div>
-                        <div class="col-6 col-md-1 text-center">
+                        <div class="col-3 text-center">
                             <a class="nav-link" href="/account"><i class="bi bi-person-circle fs-4"></i> <i class="fa-solid fa-user fs-4"></i></a>
+                            <span>Hello, </span>
+                            {{#if user}}
+                                <span class="text-danger fw-bold">{{user.username}}</span>
+                            {{else}}
+                                <span class="text-danger fw-bold"><a href="/login" class="text-danger fw-bold">Sign In</a></span>
+                            {{/if}}
                         </div>
-                        <div class="col-6 col-md-1 text-center">
+                        <div class="col-1 text-center">
                             <a class="nav-link" href="/shopping-cart"><i class="bi bi-cart fs-4"></i> <i class="fa-solid fa-cart-shopping fs-4"></i></a>
                         </div>
                     </div>

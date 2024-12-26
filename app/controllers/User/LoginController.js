@@ -5,12 +5,14 @@ class LoginController {
 
     // [GET] /login
     index(req, res) {
+        const user = req.session.user;
         res.render('User/login', {
             layout: 'layoutUser', title: 'Login',
             customHead: `
             <link rel="stylesheet" href="User/LoginStyle.css">
             <script defer type="module" src="User/Login/app.js"></script>
-            `
+            `,
+            user: user
         });
     }
 

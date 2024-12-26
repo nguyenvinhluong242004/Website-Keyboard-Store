@@ -5,12 +5,14 @@ class RegisterController {
 
     // [GET] /register
     index(req, res){
+        const user = req.session.user;
         res.render('User/register', {
             layout: 'layoutUser', title: 'Register',
             customHead: `
             <link rel="stylesheet" href="User/LoginStyle.css">
             <script defer type="module" src="User/Login/app.js"></script>
-            `
+            `,
+            user: user
         });
     }
 

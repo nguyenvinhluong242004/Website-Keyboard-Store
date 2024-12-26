@@ -4,12 +4,14 @@ const controller ={}
 
 //Render Switch
 controller.showSwitch = (req, res) => {
+    const user = req.session.user;
     res.render('User/ProductPage', {layout: 'layoutUser', title: 'Switch',
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/Switch/switch.js"></script>
         <link rel="stylesheet" href="User/home.css">
-        `
+        `,
+        user: user
      });
 };
 

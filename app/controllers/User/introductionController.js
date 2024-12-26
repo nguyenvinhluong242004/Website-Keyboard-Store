@@ -2,12 +2,14 @@
 class IntroductionController {
     // Render trang giới thiệu
     index(req, res) {
+        const user = req.session.user;
         res.render('User/introduction', {
             layout: 'layoutUser', // Layout chung cho các trang
             title: 'Introduction',
             customHead: `
                 <link rel="stylesheet" href="User/introduction_styles.css">
             `,
+            user: user,
             introductionData: {
                 introductionText: "Xin chào và chào mừng bạn đến với Tlynx shop, nơi tập trung những sản phẩm bàn phím cơ và phụ kiện dành riêng cho những người đam mê công nghệ, lập trình viên, và game thủ chuyên nghiệp.",
                 products: [

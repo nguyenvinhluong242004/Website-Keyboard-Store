@@ -13,7 +13,8 @@ controller.showPayment = (req, res) => {
         <script defer type="module" src="User/Payment/payment.js"></script>
         <link rel="stylesheet" href="User/home.css">
         `,
-        user: JSON.stringify(user),
+        user: user,
+        _user: JSON.stringify(user),
         cartItems: JSON.stringify(cartItems)
     });
 }   
