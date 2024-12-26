@@ -4,11 +4,13 @@ class ShoppingCartController {
 
     // [GET] /shopping-cart
     index(req, res) {
+        const user = req.session.user;
         res.render('User/shopping-cart', {
             layout: 'layoutUser', title: 'Shopping',
             customHead: `
                     <link rel="stylesheet" href="User/shoppingCart.css">
-                    `
+                    `,
+            user: user
         });
     }
 

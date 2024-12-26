@@ -19,14 +19,15 @@ class ServiceController {
             ],
             repairServiceText: "Về dịch vụ sửa chữa phím như: phím không hoạt động, bung socket, đứt mạch, chập chờn,... và những lỗi khác bạn vui lòng liên hệ để được tư vấn và báo giá cụ thể cho từng lỗi."
         };
-
+        const user = req.session.user;
         res.render('User/service', {
             ...serviceData, // Truyền dữ liệu tĩnh từ serviceData
             layout: 'layoutUser', // Layout chung
             title: 'Service', // Tiêu đề trang
             customHead: `
                 <link rel="stylesheet" href="User/service.css"> 
-            `
+            `,
+            user:user
         });
     }
 }

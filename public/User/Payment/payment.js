@@ -69,7 +69,7 @@ new Vue({
                 return;
             }
 
-            this.placeOrder
+            this.placeOrder();
         }
     },
     mounted() {
