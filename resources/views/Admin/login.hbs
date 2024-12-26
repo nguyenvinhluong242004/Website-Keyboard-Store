@@ -1,27 +1,81 @@
 <div class="container">
-    <div class="login-box">
+    <div class="login-box pb-5">
         <div class="logo">
             <h2>Machanical Keyboard</h2>
-            <h5>Admin</h5>
+            <h3>Admin</h3>
         </div>
         <form>
             <div class="mb-3">
-                <label for="username" class="form-label">Username or Email</label>
-                <input type="text" class="form-control" id="username" placeholder="admin">
+                <label for="username" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="admin">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" placeholder="********">
             </div>
-            <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">Remember Me</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Log In</button>
+            <button type="button" id="login" class="btn btn-primary mt-2">Log In</button>
         </form>
-        <div class="footer-link">
+        <div class="footer-link d-none">
             <a href="#">Lost your password?</a><br>
             <a href="#">Back to my custom website</a>
         </div>
     </div>
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Thông báo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="notificationMessage">Nội dung thông báo sẽ hiển thị ở đây.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+
+        // Xử lý lưu địa chỉ
+        $('#login').on('click', function () {
+            const email = $('#email').val();
+            const password = $('#password').val();
+
+            if (email === '' || password === '') {
+
+                $('#addressModal').modal('hide');
+                showNotification("Vui lòng nhập đầy đủ thông tin");
+                return;
+            }
+
+            $.ajax({
+                url: '/admin/login/api',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+                success: function (response) {
+                    window.location.href = '/admin/dashboard';
+                    showNotification("Đăng nhập thành công");
+                },
+                error: function (error) {
+                    console.error("Có lỗi khi lấy thông tin: ", error);
+                    showNotification("Có lỗi khi lấy thông tin. Vui lòng thử lại.");
+                }
+            });
+        });
+
+        function showNotification(message) {
+            $('#notificationMessage').text(message); // Cập nhật nội dung thông báo
+            $('#notificationModal').modal('show');   // Hiển thị modal
+        }
+    });
+</script>

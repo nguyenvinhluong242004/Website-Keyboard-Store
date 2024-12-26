@@ -13,12 +13,22 @@ const product = require('./product.route');
 const detailParticiparts = require('./detailParticipants.route');
 const mail = require('./mail.route');
 
+
+router.use('/login', loginRouter); // Trang login admin
+
+router.use((req, res, next) => {
+    console.log(req.session.admin);
+    if (!req.session.admin) {
+        return res.redirect('/admin/login');
+    }
+    next();
+});
+
 //------------------------------------------
 
 router.use('/dashboard', dashboardRouter);
 router.use('/purchase-history', purchaseHistoryRouter);
 router.use('/customer-list', customerListRouter);
-router.use('/', loginRouter); // Trang login admin
 router.use('/overview', overview);
 router.use('/daily-sales', dailySales);
 router.use('/monthly-sales', monthlySales);

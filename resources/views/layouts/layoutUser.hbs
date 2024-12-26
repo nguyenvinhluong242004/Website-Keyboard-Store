@@ -35,7 +35,7 @@
     <header id="header" class="text-white py-3 w-100 m-0" style="background-color: black;">
         <div class="container-fluid mx-0">
             <div class="row align-items-center">
-                <div class="col-3 text-center">
+                <div class="col-3 text-center align-items-center">
                     <h1 class="h3">Mechanical Store</h1>
                 </div>
                 <div class="col-5">
@@ -47,7 +47,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="instockDropdown">
                                 <li><a class="dropdown-item fs-5" href="/kitPhim">Kit Phim</a></li>
-                                <li><a class="dropdown-item fs-5" href="/keCap">Kecap</a></li>
+                                <li><a class="dropdown-item fs-5" href="/keCap">Keycap</a></li>
                                 <li><a class="dropdown-item fs-5" href="/switch">Switch</a></li>
                                 <li><a class="dropdown-item fs-5" href="/accessories">Accessories</a></li>
                             </ul>
@@ -59,15 +59,14 @@
                 </div>
                 <div class="col-4">
                     <div class="d-flex align-items-center">
-                        <div class="col-8">
+                        <div class="col-7" style="margin-right: 7px;">
                             <input type="text" class="form-control me-2" placeholder="Search" v-model="searchQuery" @keyup.enter="search">
                         </div>
-                        <div class="col-3 d-flex align-items-center justify-content-center">
+                        <div class="col-4 d-flex align-items-center justify-content-center">
                             <a class="nav-link" href="/account"><i class="bi bi-person-circle fs-4"></i> <i class="fa-solid fa-user fs-4"></i></a>
                             <div class="d-flex flex-column align-items-center ms-2">
-                                <span class="fw-bold">Hello,</span>
                                 {{#if user}}
-                                    <span class="text-danger fw-bold">{{user.username}}</span>
+                                    <span class="text-danger fw-bold">{{ user.username }}</span>
                                 {{else}}
                                     <span class="text-danger fw-bold"><a href="/login" class="text-danger fw-bold">Sign In</a></span>
                                 {{/if}}

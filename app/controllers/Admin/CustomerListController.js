@@ -18,6 +18,7 @@ class CustomerListController {
             layout: 'layoutAdmin',
             title: 'Customer List',
             data: users, // Dữ liệu khách hàng
+            admin: req.session.admin,
             page: Number(page), // Trang hiện tại
             total_pages: totalPages, // Tổng số trang
             per_page: perPage, // Số khách hàng mỗi trang

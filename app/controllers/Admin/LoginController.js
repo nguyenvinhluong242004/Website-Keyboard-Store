@@ -1,4 +1,4 @@
-const AccountProvider = require('../../models/User/accountModel');
+const AccountProvider = require('../../models/Admin/AccountModel');
 const authPass = require('../../config/AuthPass');
 
 class LoginController {
@@ -13,24 +13,32 @@ class LoginController {
         });
     }
 
+    // [GET] /login
+    logout(req, res) {
+        req.session.admin = null;
+        return res.redirect('/admin/login');
+    }
+
     // [POST] /login/api
     async callAPILogin(req, res) {
-        const { loginEmail, loginPassword } = req.body; // Lấy email và password từ request
+        const { email, password } = req.body; // Lấy email và password từ request
+
+        console.log(req.body)
+        console.log(email, password)
 
         try {
             // Kiểm tra tài khoản có tồn tại trong cơ sở dữ liệu
-            const existingUser = await AccountProvider.findAccountByEmail(loginEmail);
+            const existingUser = await AccountProvider.findAccountAdmin(email);
 
             if (existingUser) {
-                const isMatch = await authPass.verifyPassword(loginPassword, existingUser.passwordorgoogleid);
-                console.log(loginPassword, existingUser.passwordorgoogleid)
+                const isMatch = await authPass.verifyPassword(password, existingUser.password);
+                console.log(password, existingUser.password)
                 if (isMatch) {
-                    const data_ = await AccountProvider.getInforAccountByEmail(loginEmail);
                     
-                    dataTempServer.setDataUser(data_);
+                    req.session.admin = existingUser;
 
                     console.log('Đăng nhập thành công');
-                    return res.json({ success: true, message: 'Đăng nhập thành công' });
+                    return res.json({ success: true, admin: req.session.admin, message: 'Đăng nhập thành công' });
                 } else {
                     // Nếu mật khẩu không đúng
                     console.log('Email hoặc mật khẩu không đúng');
