@@ -2,16 +2,22 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("Initial window.data:", window.data);
   new Vue({
     el: "#app",
+    delimiters: ['[[', ']]'],
     data: {
       idGroupby:window.idGroupby,
       mainImage:'',
-      isContentVisible: false,
-      check: false,
+      isContentVisible: true,
+      check: true,
       quanlity: 1,
       images: [],
       getDB: window.data.dataGroupByProduct[0],
     },
     methods: {
+      formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' }; // Định dạng ngày/tháng/năm
+        return date.toLocaleDateString('vi-VN', options); // Ví dụ: 27/12/2024
+      },
       async fetchImages() {
 
         url = this.idGroupby;
@@ -66,6 +72,12 @@ document.addEventListener("DOMContentLoaded", function () {
     computed: {
       formattedDescription() {
         return this.getDB.specification.replace(/\n/g, '<br>');
+      },
+      formattedEndDate() {
+        return this.formatDate(this.getDB.enddate);
+      },
+      formattedArriveDate() {
+        return this.formatDate(this.getDB.estimatearrive);
       },
     },
     mounted() {
