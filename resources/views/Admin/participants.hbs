@@ -20,7 +20,7 @@
     </div>
     <div class="par-top-layout mt-4">
       <div class="col-md-3 par-list-gb">
-        <div class="par-head-list"> <h2 >List if Group by</h2></div>
+        <div class="par-head-list"> <h2 >List of Group by</h2></div>
         
         <div class="par-body-list" v-if="participants.length">
 
@@ -30,9 +30,9 @@
           >
             <div class="product" :class="{ 'selected-tab': selectedIndex === index }" @click="detailProductGroupBy(item,index)">
              
-                <p><img :src="item.imagepath +'/1.jpg'" class="par-style-img"  alt="Product Image" /></p>
+              <div class="image"> <p><img :src="item.imagepath +'/1.jpg'" class="par-style-img"  alt="Product Image" /></p></div>
                 
-                <div class="x">
+                <div class="xy">
                   <p><span v-text="item.productname"></span></p>
                   <p><span v-text="item.enddate"></span></p>
                 </div>
