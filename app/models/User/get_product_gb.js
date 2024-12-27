@@ -6,8 +6,8 @@ const getGroupByProduct = async (id, visibleCount = 1) => {
         // Query to get data from database
         const result = await client.query(`
             SELECT * 
-            FROM public.groupbyproduct g
-            JOIN public.product p ON g.productid = p.productid
+            FROM public.product p 
+            JOIN public.groupbyproduct g ON g.productid = p.productid
             WHERE g.groupbyid = $1
             LIMIT $2
         `, [id, visibleCount]);
