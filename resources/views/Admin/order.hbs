@@ -35,9 +35,16 @@
       <div class="col-md-11">
         <div class="input-images">
           <!-- Nút + để chọn ảnh -->
-          <div class="add-image-btn" @click="triggerFileInput">
+          <div class="add-image-btn" @click="triggerFileInput"
+          v-if="!imageUrl">
             <i class="fas fa-plus"></i>
           </div>
+
+          <!-- Hiển thị ảnh đã chọn -->
+            <div v-if="imageUrl" class="add-image-btn">
+              <img :src="imageUrl"  alt="Selected Image" />
+            </div>
+
           <!-- Ẩn ô nhập ảnh -->
           <input
             type="file"
@@ -47,16 +54,12 @@
             style="display:none;"
           />
 
-          <!-- Hiển thị ảnh đã chọn -->
-          <div v-if="imageUrl" class="image-preview">
-            <img :src="imageUrl" alt="Selected Image" />
-          </div>
-
-
           <!-- Nút + để chọn ảnh -->
-          <div class="add-image-btn" @click="triggerFileInput_2">
+          <div class="add-image-btn" @click="triggerFileInput_2"
+          v-if="!imageUrl_2">
             <i class="fas fa-plus"></i>
           </div>
+
           <!-- Ẩn ô nhập ảnh -->
           <input
             type="file"
@@ -67,12 +70,13 @@
           />
 
           <!-- Hiển thị ảnh đã chọn -->
-          <div v-if="imageUrl_2" class="image-preview">
+          <div v-if="imageUrl_2" class="add-image-btn">
             <img :src="imageUrl_2" alt="Selected Image" />
           </div>
-          
+
           <!-- Nút + để chọn ảnh -->
-          <div class="add-image-btn" @click="triggerFileInput_3">
+          <div class="add-image-btn" @click="triggerFileInput_3"
+           v-if="!imageUrl_3">
             <i class="fas fa-plus"></i>
           </div>
           <!-- Ẩn ô nhập ảnh -->
@@ -85,12 +89,13 @@
           />
 
           <!-- Hiển thị ảnh đã chọn -->
-          <div v-if="imageUrl_3" class="image-preview">
+          <div v-if="imageUrl_3" class="add-image-btn">
             <img :src="imageUrl_3" alt="Selected Image" />
           </div>
 
           <!-- Nút + để chọn ảnh -->
-          <div class="add-image-btn" @click="triggerFileInput_4">
+          <div class="add-image-btn" @click="triggerFileInput_4"
+           v-if="!imageUrl_4">
             <i class="fas fa-plus"></i>
           </div>
           <!-- Ẩn ô nhập ảnh -->
@@ -103,7 +108,7 @@
           />
 
           <!-- Hiển thị ảnh đã chọn -->
-          <div v-if="imageUrl_4" class="image-preview">
+          <div v-if="imageUrl_4" class="add-image-btn">
             <img :src="imageUrl_4" alt="Selected Image" />
           </div>
         </div>
@@ -192,6 +197,6 @@
   </div>
   <div class="button mt-5">
     <div class="btn-reset" @click="resetForm">Reset</div>
-    <div class="btn-create"  @click="submitForm">Create</div>
+    <div class="btn-create" @click="submitForm">Create</div>
   </div>
 </div>
