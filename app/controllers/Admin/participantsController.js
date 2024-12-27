@@ -30,9 +30,13 @@ controller.getGroupBy = async (req, res) => {
     const orderby = req.query.orderby || 'enddate';
 
     const participantsData = await moduleParticipants.getListGroupBy( page, perPage, orderby);
-
+    
     participantsData.allProductGroupBy.forEach((item) => {
       item.enddate = moment(item.enddate).format("YYYY-MM-DD");
+    });
+
+    participantsData.allProductGroupBy.forEach((item) => {
+      item.estimatearrive = moment(item.estimatearrive).format("YYYY-MM-DD");
     });
 
     res.json({
@@ -55,7 +59,9 @@ controller.getRegister = async (req, res) => {
     const id = parseInt(req.query.id) || 1;
 
     const listRegister = await moduleParticipants.getListRegister(page, perPage, id);
-
+    listRegister.allRegister.forEach((item) => {
+      item.orderdate = moment(item.orderdate).format("YYYY-MM-DD");
+    });
     res.json({
       allRegister: listRegister.allRegister,
       totalPages: Math.ceil(listRegister.totalRegister / perPage),
@@ -77,7 +83,7 @@ controller.getRegisterSearch = async (req, res) => {
     const query = req.query.q || 'Pay In Cash';
 
     const listRegister = await moduleParticipants.searchRegister(page, perPage, id, query);
-
+  
     res.json({
       result: listRegister.resultSearch,
       totalPagesSearch: Math.ceil(listRegister.totalSearch / perPage),
@@ -92,12 +98,13 @@ controller.getRegisterSearch = async (req, res) => {
 
 controller.getRegisterExport = async (req, res) => {
   try {
- 
+    
     const page = parseInt(req.query.page) || 1; 
     const perPage = parseInt(req.query.perPage) || 3; 
     const id = parseInt(req.query.id) || 1;
-
+  
     const listRegister = await moduleParticipants.getListRegister(page, perPage, id);
+      
 
     res.json({
       export: listRegister.exportRegister,
@@ -122,6 +129,15 @@ controller.getDetailRegister = async (req, res) => {
       perPage,
       orderid
     );
+
+    listDetailRegister.allRegister.forEach((item) => {
+      item.orderdate = moment(item.orderdate).format("YYYY-MM-DD");
+    });
+    listDetailRegister.allRegister.forEach((item) => {
+      item.estimatearrive = moment(item.estimatearrive).format("YYYY-MM-DD");
+    });
+
+    console.log('fdffffff',listDetailRegister);
 
     res.json({
       allRegister: listDetailRegister.allRegister,
