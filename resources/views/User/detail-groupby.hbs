@@ -1,9 +1,9 @@
-<div id="app" class="container">
+<div id="app" class="container mt-5">
   <div class="row">
 
     <div class="col-md-7">
-      <div class="main-image">
-        <img :src="mainImage" alt="Main" width="100%" />
+      <div >
+        <img :src="mainImage" class="main-image" alt="Main" width="100%" />
       </div>
 
       <div class="grid-container">
@@ -30,15 +30,18 @@
       <div>
         <div class="card-body group_by rounded">GROUP BY</div>
         <div class="time mt-3">End date:</div>
-        <div class="time" v-html="getDB.enddate"></div>
+        <div class="time">[[formattedEndDate]]</div>
       </div>
 
-      <div class="price">
-        <div class="money" v-text="getDB.currentprice"></div>
+      
+
+      <div class="price mt-4">
+        <div class="price-text">Price :</div>
+        <div class="money">[[getDB.currentprice]]</div>
         <div class="symbol">$</div>
       </div>
 
-      <div class="fw-bold mt-5">Kit</div>
+      <div class="kit">Kit</div>
       <select
         id="mySelect"
         style="width: 200px; border: 2px solid #000000; border-radius: 5px"
@@ -57,7 +60,7 @@
       />
 
       <div class="card-body fw-bold rounded flex_quan time_arrival mt-5">
-        Estimated Arrival: Q1 2025
+        Estimated Arrival: [[formattedArriveDate]]
       </div>
       <button @click="addToCart" class="cart fw-bold mt-5 text-white">
         Thêm vào giỏ hàng
@@ -70,11 +73,7 @@
         ></i>
       </div>
       <div class="content" v-show="isContentVisible">
-        Deadbeats - a collaborative project between artisans Rubrehose and
-        Hello?, bring you DCS Deadbeats. Inspired by the Cherry NCR
-        dye-sublimated keycaps, this classic colorway is complimented by soft
-        primary colors and absolutely loaded with symbolism from these two
-        prominent makers.
+       [[getDB.description]]
       </div>
       <hr />
       <div class="Specifications" @click="toggleCheck">
@@ -82,7 +81,9 @@
         <i class="fas" :class="{'fa-plus': !check, 'fa-minus': check}"></i>
       </div>
       <div class="content" v-show="check">
-        <div v-html="formattedDescription"></div>
+        <div>
+          [[getDB.specification]]
+        </div>
       </div>
     </div>
 
