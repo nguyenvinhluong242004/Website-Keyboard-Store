@@ -16,7 +16,7 @@ new Vue({
       page: 1, 
       pageRegister: 1, 
       perPage: 3,
-      perPageRegister: 2,
+      perPageRegister: 3,
       totalPages: 1, 
       totalPagesRegister: 1, 
       totalPagesDetailRegister:1,

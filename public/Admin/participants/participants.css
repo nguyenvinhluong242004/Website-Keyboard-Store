@@ -399,7 +399,8 @@ hr {
   justify-content: space-around;
 }
 .par-head-hd {
-  background-color: #989898;
+  padding: 10px;
+  background-color: #cbcbcb;
   width: 100%;
   border-radius: 5px;
   display: flex;
@@ -411,6 +412,7 @@ hr {
   width: 30%;
 }
 .par-body-hd {
+  padding: 10px;
   display: flex;
   margin-top: 20px;
 }
@@ -431,7 +433,7 @@ hr {
 .content-note {
   width: 30%;
   height: 200px;
-  background-color: #c2c2c2;
+  background-color: #d8d8d8;
   border-radius: 5px;
 }
 .order-note {
