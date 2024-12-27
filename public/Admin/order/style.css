@@ -81,10 +81,10 @@
 .input-images{
     width: 100%;
     height: 200px;
-    background-color: rgb(214, 214, 214);
     border-radius: 10px;
     display: flex;
-    align-items: center;
+    align-items:start;
+    justify-content: space-between;
 }
 .input-name{
     width:100%;
@@ -204,13 +204,26 @@ background-color: rgb(155, 155, 155);
 }
 .add-image-btn {
     font-size: 30px;
-    color: #007bff;
     cursor: pointer;
-    margin-bottom: 10px;
+    width: 20%;
+    height: 80%;
+    background-color:#d6d6d6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
-.image-preview {
-    margin-top: 10px;
+.preview-img{
+    font-size: 30px;
+    width: 20%;
+    height: 80%;
+    background-color:#d6d6d6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
 }
+
 img {
     width: 200px;
     height: auto;
