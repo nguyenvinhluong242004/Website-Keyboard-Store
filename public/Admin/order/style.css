@@ -217,11 +217,16 @@ background-color: rgb(155, 155, 155);
     font-size: 30px;
     width: 20%;
     height: 80%;
-    background-color:#d6d6d6;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+}
+.preview-img img {
+    width: 100%; /* Đầy chiều rộng của phần tử cha */
+    height: 100%; /* Đầy chiều cao của phần tử cha */
+    object-fit: cover; /* Đảm bảo ảnh luôn vừa khít mà không bị méo */
+    display: block;  
 }
 
 img {
