@@ -4,6 +4,13 @@
     align-items: center;
     justify-items: center;
   }
+  .main-image{
+    border-radius: 5px;
+  }
+  .price-text{
+    font-size: 15px;
+    font-weight: bold;
+  }
   .name {
     font-size: 30px;
     font-weight: bold;
@@ -16,11 +23,7 @@
     width: 100%;
     justify-content: space-between;
   }
-  .money {
-    color: red;
-    font-weight: bold;
-    font-size: 30px;
-  }
+
   .group_by {
     font-weight: bolder;
     color: rgb(53, 142, 244);
@@ -154,14 +157,21 @@
   }
   .price{
     display: flex;
-    width: 100px;
-    height: 100px;
-    justify-content: center;
-    align-items: center;
-    gap:5px;
+    width: 200px;
+    gap:10px;
+  }
+  .money {
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
   }
   .symbol{
     color: #797979;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 15px;
+  }
+  .kit{
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: bold;
   }
