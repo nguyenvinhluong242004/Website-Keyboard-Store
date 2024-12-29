@@ -56,7 +56,7 @@
                             <label class="col-md-3 col-form-label">Email</label>
                             <div class="col-md-9">
                                 <div class="d-flex">
-                                    <input type="email" class="form-control" id="email" placeholder="Email">
+                                    <input type="email" class="form-control" id="email" placeholder="Email" disabled>
                                 </div>
                             </div>
                         </div>
@@ -296,12 +296,23 @@
         $('#logoutBtn').on('click', function () {
             $.post('/account/logout', function (data) {
                 if (data.success) {
+                    showNotification("Đăng xuất thành công");
                     window.location.reload();
                 }
             });
         });
         $('#changeinfo').on('click', function () {
+            const regexUsername = /^[a-zA-Z_]*$/;
+            const regexSDT = /^0[0-9]{9}$/; 
             console.log($('#username').val())
+            if (!$('#phone').val().match(regexSDT)){
+                alert('Số điện thoại không hợp lệ!');
+                return;
+            }
+            if ($('#username').val() === ''){
+                alert('Tên không hợp lệ!');
+                return;
+            }
             $.ajax({
                 url: '/account/change-info/api',
                 method: 'POST',
