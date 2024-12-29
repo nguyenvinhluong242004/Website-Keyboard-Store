@@ -21,6 +21,21 @@ class accountModel {
         }
     }
 
+    static async findAccountByEmailTypeEmail(email) {
+        try {
+            const result = await pool.query(
+                `SELECT * 
+                 FROM AccountType 
+                 WHERE email = $1 AND type='Email'`,
+                [email]
+            );
+            return result.rows.length > 0 ? result.rows[0] : null;
+        } catch (err) {
+            console.error('Lỗi truy vấn cơ sở dữ liệu!', err);
+            throw new Error('Lỗi truy vấn cơ sở dữ liệu');
+        }
+    }
+
     /**
      * Kiểm tra thông tin tài khoản dựa trên email
      * @param {string} email - Email đăng nhập
