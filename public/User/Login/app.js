@@ -181,8 +181,6 @@ new Vue({
             if (this.timer === 0) {
                 // Gửi lại mã xác thực
                 console.log('Mã xác thực đã được gửi lại!');
-                $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
-                $('#notificationModal').modal('show');   // Hiển thị modal
                 try {
                     // status: true --> email được lấy là email trong thẻ input
                     // status: false --> email được lấy là email đã lưu ở server
