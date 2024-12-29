@@ -263,7 +263,7 @@
 h2 {
     margin: 0;
     font-family: var(--heading-font);
-    color: var(--dark-color);
+    color:#f8f8f8;
     font-weight: 700;
     display: block;
     font-size: 1.5em;
@@ -277,7 +277,7 @@ header h2{
 }
 
 header {
-    background-color: #5668af;
+    background-color: #42a3d8;
     display: flex;
     align-items: center;
     justify-content: space-between; /* Đẩy các phần tử về hai bên */
@@ -307,7 +307,7 @@ header .swiper-slide-button {
 }
 
 header .swiper-slide-button:hover {
-    background-color: #198a80; /* Màu xanh đậm hơn khi hover */
+    background-color: #2eb8aa; /* Màu xanh đậm hơn khi hover */
     transform: scale(1.1); /* Phóng to nhẹ khi hover */
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25); /* Tăng bóng đổ khi hover */
 }
@@ -377,7 +377,7 @@ header .swiper-slide-button i {
 }
 
 .trending-products .container-home {
-    background-color: #5668af;
+    background-color: #42a3d8;
     display: flex;
     align-items: center;
     justify-content: space-between; 
@@ -402,8 +402,8 @@ header .swiper-slide-button i {
 }
 
 .trending-products .tab-box .tab-btn.active {
-    color: #4B0082; 
-    background-color: #FFC0CB; 
+    color: #ffffff; 
+    background-color: #79a1e2; 
     transform: scale(0.95);
 }
 
@@ -444,6 +444,10 @@ header .swiper-slide-button i {
 .content .card-link {
     width: 100%;
     box-sizing: border-box;
+}
+
+.content .card-link:hover {
+    border-color: #5272f0;
 }
 
 .content-box {
