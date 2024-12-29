@@ -113,22 +113,27 @@ document.addEventListener("DOMContentLoaded", function () {
       },
 
       addToCart(){
+        console.log(parseInt(this.quanlity))
         $.ajax({
           url: '/shopping-cart/add', 
           method: 'POST',                      
           contentType: 'application/json',   
           data: JSON.stringify({             
-              ProductID: this.product           
+              ProductID: this.product,  
+              Quantity: parseInt(this.quanlity),         
           }),
           success: function(response) {
               // Xử lý khi gọi API thành công
               console.log("Success:", response);
-              alert(response.message);
+              $('#notificationMessage').text(response.message); // Cập nhật nội dung thông báo
+              $('#notificationModal').modal('show');   // Hiển thị modal
           },
           error: function(xhr, status, error) {
               // Xử lý lỗi
               console.error("Error:", error);
-              alert("Có lỗi xảy ra, vui lòng thử lại.");
+              $('#notificationMessage').text('Có lỗi xảy ra, vui lòng thử lại.'); // Cập nhật nội dung thông báo
+              $('#notificationModal').modal('show');   // Hiển thị modal
+
           }
       });
       }

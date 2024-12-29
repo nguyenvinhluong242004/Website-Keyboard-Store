@@ -1,3 +1,4 @@
+const shoppingCartModel = require('../../models/User/shoppingCartModel');
 const ShoppingCartModel = require('../../models/User/shoppingCartModel');
 
 class ShoppingCartController {
@@ -16,8 +17,13 @@ class ShoppingCartController {
 
     // [POST] /shopping-cart/add
     async add(req, res) {
-        const { ProductID } = req.body; // Lấy email và password từ request
-        console.log(ProductID);
+        const { ProductID, Quantity = 1 } = req.body; // Lấy email và password từ request
+        console.log(ProductID, Quantity);
+
+        if (Quantity < 1) {
+            return res.json({ success: false, message: 'Số lượng sản phẩm thêm vào không hợp lệ' });
+        }
+
 
         if (!req.session.user) {
             console.log('Chưa đăng nhập');
@@ -29,7 +35,23 @@ class ShoppingCartController {
         }
 
         try {
-            const result = await ShoppingCartModel.addProductToShoppingCart(req.session.user.userid, ProductID);
+            const pro = await ShoppingCartModel.getInfomation(ProductID);
+            if (pro.quantity === 0) {
+                console.log('Sản phẩm tạm đang hết hàng!')
+                return res.json({ success: false, message: `Sản phẩm tạm đang hết hàng!` });
+            }
+            const proCart = await ShoppingCartModel.getProductToShoppingCart(req.session.user.userid, ProductID);
+            if (proCart) {
+                if (Quantity + proCart.quantity > pro.quantity) {
+                    console.log('Vượt quá số lượng có sẵn!')
+                    return res.json({ success: false, message: `Vượt quá số lượng có sẵn! Tối đa được thêm: ${pro.quantity - proCart.quantity}` });
+                }
+            }
+            if (Quantity > pro.quantity) {
+                console.log('Vượt quá số lượng có sẵn!')
+                return res.json({ success: false, message: `Vượt quá số lượng có sẵn! Tối đa được thêm: ${pro.quantity}` });
+            }
+            const result = await ShoppingCartModel.addProductToShoppingCart(req.session.user.userid, ProductID, Quantity);
 
             if (result) {
                 console.log('Thêm vào giỏ hàng thành công!');
@@ -78,6 +100,12 @@ class ShoppingCartController {
         }
 
         try {
+            const pro = await ShoppingCartModel.getInfomation(ProductID);
+            if (Quantity > pro.quantity) {
+                console.log('Vượt quá số lượng có sẵn!')
+                return res.json({ success: false, message: `Vượt quá số lượng có sẵn! Tối đa: ${pro.quantity}` });
+            }
+
             const rs = await ShoppingCartModel.updateProductQuantity(req.session.user.userid, ProductID, parseInt(Quantity));
             if (rs) {
                 const listCart = await ShoppingCartModel.getAllProductsInCart(req.session.user.userid);

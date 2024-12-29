@@ -23,6 +23,24 @@
     </div>
 </div>
 
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notificationModalLabel">Thông báo</h5>
+            </div>
+            <div class="modal-body">
+                <p id="notificationMessage">Nội dung thông báo sẽ hiển thị ở đây.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeNotificationBtn"
+                    data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     let cartItemsMoveToPayment = [];
 
@@ -60,13 +78,22 @@
             }),
             success: function (response) {
                 if (response.success) {
+                    const t = cartItemsMoveToPayment.length;
                     cartItemsMoveToPayment = [];
                     response.listCart.forEach(item => {
                         cartItemsMoveToPayment.push(item);
                     });
+                    const tt = cartItemsMoveToPayment.length;
+
+                    if (tt < t) {
+                        $('#notificationMessage').text('Đã xóa sản phẩm'); // Cập nhật nội dung thông báo
+                        $('#notificationModal').modal('show');   // Hiển thị modal
+                    }
                     renderCartItems(response.listCart); // Cập nhật lại giỏ hàng
                 } else {
-                    alert(response.message);
+                    $('#notificationMessage').text(response.message); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
+                    return false;
                 }
             },
             error: function (xhr, status, error) {
@@ -87,12 +114,21 @@
         cartItems.forEach(item => {
             totalQuantity += 1;
 
+            const isUnavailable = item.quantity > item.total;
+
+            let slug = '';
+
+            if (item.categoryid === 1) slug = 'keCap';
+            else if (item.categoryid === 2) slug = 'kitPhim';
+            if (item.categoryid === 3) slug = 'accessories';
+            else if (item.categoryid === 4) slug = 'switch';
+
             const cartItemHTML = `
-                <div class="cart-item border p-3 d-flex align-items-start mb-2">
+                <div class="cart-item border p-3 d-flex align-items-start mb-2 ${isUnavailable ? 'text-decoration-line-through' : ''}">
                     <input type="checkbox" class="select-item" data-product-id="${item.productid}" 
-                           data-price="${item.currentprice}" data-quantity="${item.quantity}" onclick="updateTotalPrice()"
-                           style="margin: auto; margin-right: 7px;">
-                    <img src="${item.imagepath}/1.jpg" alt="Product" class="me-3">
+                        data-price="${item.currentprice}" data-quantity="${item.quantity}" onclick="updateTotalPrice()"
+                        style="margin: auto; margin-right: 7px;" ${isUnavailable ? 'disabled' : ''}>
+                    <img onclick="getItem(${item.productid})" src="${item.imagepath}/1.jpg" style="cursor: pointer;" alt="Product" class="me-3">
                     <div class="w-100">
                         <h6>${item.productname}</h6>
                         <div class="d-flex">
@@ -103,13 +139,16 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <button onclick="changeCountItem('${item.productid}', ${item.quantity - 1})" 
-                                type="button" class="quantity-btn">-</button>
+                                type="button" class="quantity-btn" ${isUnavailable ? 'disabled' : ''}>-</button>
                             <input type="text" value="${item.quantity}" class="mx-2 quantity-input"
-                                style="display: block; width: 6ch; text-align: center; border: none;">
+                                style="display: block; width: 6ch; text-align: center; border: none;"
+                                data-original-quantity="${item.quantity}"
+                                onblur="handleQuantityChange(this, '${item.productid}')"
+                                onkeydown="if(event.key === 'Enter') handleQuantityChange(this, '${item.productid}')" ${isUnavailable ? 'disabled' : ''}>
                             <button onclick="changeCountItem('${item.productid}', ${item.quantity + 1})" 
-                                type="button" class="quantity-btn">+</button>
+                                type="button" class="quantity-btn" ${isUnavailable ? 'disabled' : ''}>+</button>
                             <div class="ms-auto d-flex">
-                                <div class="similar-btn px-3 py-1 me-2" style="cursor: pointer;">Sản phẩm tương tự</div>
+                                <a href="/${slug}" class="similar-btn px-3 py-1 me-2" style="cursor: pointer; text-decoration: none;">Sản phẩm tương tự</a>
                                 <div onclick="changeCountItem('${item.productid}', 0)" 
                                     class="delete-btn px-3 py-1" style="cursor: pointer;">Xóa</div>
                             </div>
@@ -141,9 +180,8 @@
         document.getElementById("total-price").textContent = totalPrice.toLocaleString();
     }
 
-    // Hàm chọn tất cả checkbox
     function toggleSelectAll(selectAllCheckbox) {
-        const checkboxes = document.querySelectorAll(".select-item");
+        const checkboxes = document.querySelectorAll(".select-item:not(:disabled)");
         checkboxes.forEach(checkbox => {
             checkbox.checked = selectAllCheckbox.checked;
         });
@@ -152,12 +190,36 @@
         updateTotalPrice();
     }
 
+
     function placeOrder() {
         // Redirect to the payment page with cart items
         const cartItems = JSON.stringify(cartItemsMoveToPayment);
         console.log(cartItems);
         console.log(cartItemsMoveToPayment);
         window.location.href = `/payment?cartItems=${encodeURIComponent(cartItems)}`;
+    }
+
+    // Hàm xử lý cập nhật số lượng khi người dùng nhấn Enter hoặc bấm ra ngoài
+    function handleQuantityChange(inputElement, productId) {
+        const originalQuantity = parseInt(inputElement.getAttribute("data-original-quantity"));
+        const newQuantity = parseInt(inputElement.value);
+        let sta = true;
+
+        if (newQuantity !== originalQuantity && !isNaN(newQuantity) && newQuantity >= 0) {
+            sta = changeCountItem(productId, newQuantity);
+        } else {
+            // Khôi phục giá trị cũ nếu số lượng không hợp lệ
+            $('#notificationMessage').text('Giá trị nhập không hợp lệ'); // Cập nhật nội dung thông báo
+            $('#notificationModal').modal('show');   // Hiển thị modal
+            inputElement.value = originalQuantity;
+        }
+        if (!sta) {
+            inputElement.value = originalQuantity;
+        }
+    }
+
+    function getItem(productId){
+        window.location.href = `/detail-product/instock/${productId}`;
     }
 
     // Load giỏ hàng khi trang được tải

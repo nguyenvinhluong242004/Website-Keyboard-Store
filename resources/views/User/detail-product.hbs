@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="flex_money">
-        <div class="cart" @click="addToCart">Thêm vào giỏ hàng</div>
+        <div class="cart" @click="addToCart" style="cursor: pointer;">Thêm vào giỏ hàng</div>
       </div>
     </div>
   </div>
@@ -144,6 +144,24 @@
     </div>
 
   </div>
+</div>
+
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="notificationModalLabel">Thông báo</h5>
+            </div>
+            <div class="modal-body">
+                <p id="notificationMessage">Nội dung thông báo sẽ hiển thị ở đây.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeNotificationBtn"
+                    data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
