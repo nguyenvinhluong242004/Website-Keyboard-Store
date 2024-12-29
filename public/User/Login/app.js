@@ -54,14 +54,23 @@ new Vue({
             try {
                 const response = await axios.post('/account/logout');
                 if (response.data.success) {
-                    this.goToLogin();
+                    $('#notificationMessage').text('Đăng xuất thành công'); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
+                    // this.goToDetailAccount();
+
+                    // Gắn sự kiện cho nút "Đóng"
+                    $('#closeNotificationBtn').on('click', () => {
+                        this.goToLogin(); // Gọi hàm sau khi modal đóng
+                    });
                 } else {
-                    alert(response.data.message);
+                    $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
                 }
             } catch (error) {
                 console.error('Có lỗi xảy ra khi đăng xuất', error);
 
-                alert(response.data.message);
+                $('#notificationMessage').text('Có lỗi khi đăng xuất. Vui lòng thử lại'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
             }
         },
         // Xử lý đăng nhập
@@ -74,23 +83,39 @@ new Vue({
                     });
 
                     if (response.data.success) {
-                        alert(response.data.message);
-                        this.goToDetailAccount();
+                        $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                        $('#notificationModal').modal('show');   // Hiển thị modal
+                        // this.goToDetailAccount();
+
+                        // Gắn sự kiện cho nút "Đóng"
+                        $('#closeNotificationBtn').on('click', () => {
+                            this.goToDetailAccount(); // Gọi hàm sau khi modal đóng
+                        });
                     } else {
-                        alert(response.data.message);
+                        $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                        $('#notificationModal').modal('show');   // Hiển thị modal
                     }
                 } catch (error) {
                     console.error('Lỗi đăng nhập:', error);
-                    alert('Có lỗi xảy ra khi đăng nhập');
+                    $('#notificationMessage').text('Có lỗi xảy ra khi đăng nhập'); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
                 }
             } else {
-                alert('Vui lòng nhập đầy đủ thông tin đăng nhập.');
+                $('#notificationMessage').text('Vui lòng nhập đầy đủ thông tin đăng nhập.'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
             }
         },
         // Xử lý đăng ký
         async signup() {
+            const regexEmail = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,}){1,4}$/;
+            if (!this.signupEmail.match(regexEmail)) {
+                $('#notificationMessage').text('Email không hợp lệ!'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
+                return;
+            }
             if (this.signupPassword !== this.confirmPassword) {
-                alert('Mật khẩu và mật khẩu xác nhận không khớp.');
+                $('#notificationMessage').text('Mật khẩu và mật khẩu xác nhận không khớp.'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
             } else if (this.signupEmail && this.signupPassword) {
                 try {
                     const response = await axios.post('/register/api', {
@@ -99,35 +124,56 @@ new Vue({
                     });
 
                     if (response.data.success) {
-                        alert(response.data.message);
-                        this.goToLogin();
+                        $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                        $('#notificationModal').modal('show');   // Hiển thị modal
+
+                        // Gắn sự kiện cho nút "Đóng"
+                        $('#closeNotificationBtn').on('click', () => {
+                            this.goToLogin(); // Gọi hàm sau khi modal đóng
+                        });
                     } else {
-                        alert('Có lỗi xảy ra khi đăng ký');
+                        $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                        $('#notificationModal').modal('show');   // Hiển thị modal
                     }
                 } catch (error) {
                     console.error('Lỗi đăng ký:', error);
-                    alert('Có lỗi xảy ra khi đăng ký');
+                    $('#notificationMessage').text('Có lỗi xảy ra khi đăng ký'); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
                 }
             } else {
-                alert('Vui lòng nhập đầy đủ thông tin đăng ký.');
+                $('#notificationMessage').text('Vui lòng nhập đầy đủ thông tin đăng ký. Vui lòng thử lại'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
             }
         },
         // Hàm gọi api gửi code xác thực
         async sendCodeToMail() {
+            const regexEmail = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,}){1,4}$/;
+            if (!this.recoveryEmail.match(regexEmail)) {
+                $('#notificationMessage').text('Email không hợp lệ!'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
+                return;
+            }
             try {
                 // status: true --> email được lấy là email trong thẻ input
                 // status: false --> email được lấy là email đã lưu ở server
                 const response = await axios.post('/confirm-mail/send-code/api', { email: this.recoveryEmail, status: true });
                 if (response.data.success) {
-                    alert(response.data.message);
-                    this.goToResetPassword();
+                    $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
+
+                    // Gắn sự kiện cho nút "Đóng"
+                    $('#closeNotificationBtn').on('click', () => {
+                        this.goToResetPassword(); // Gọi hàm sau khi modal đóng
+                    });
                 } else {
-                    alert(response.data.message);
+                    $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
                 }
             } catch (error) {
                 console.error('Có lỗi xảy ra khi gửi mã xác thực:', error);
 
-                alert(response.data.message);
+                $('#notificationMessage').text('Có lỗi xảy ra khi gửi mã xác thực. Vui lòng thử lại.'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
             }
         },
         // Hàm gửi mã xác thực lại
@@ -135,20 +181,29 @@ new Vue({
             if (this.timer === 0) {
                 // Gửi lại mã xác thực
                 console.log('Mã xác thực đã được gửi lại!');
+                $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
                 try {
                     // status: true --> email được lấy là email trong thẻ input
                     // status: false --> email được lấy là email đã lưu ở server
                     const response = await axios.post('/confirm-mail/send-code/api', { email: this.recoveryEmail, status: false });
                     if (response.data.success) {
-                        alert(response.data.message);
-                        this.startTimer(); // Khởi động lại bộ đếm sau khi gửi lại mã
+                        $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                        $('#notificationModal').modal('show');   // Hiển thị modal
+
+                        // Gắn sự kiện cho nút "Đóng"
+                        $('#closeNotificationBtn').on('click', () => {
+                            this.startTimer(); // Khởi động lại bộ đếm sau khi gửi lại mã
+                        });
                     } else {
-                        alert(response.data.message);
+                        $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                        $('#notificationModal').modal('show');   // Hiển thị modal
                     }
                 } catch (error) {
                     console.error('Có lỗi xảy ra khi gửi mã xác thực:', error);
 
-                    alert(response.data.message);
+                    $('#notificationMessage').text('Có lỗi xảy ra khi gửi mã xác thực. Vui lòng thử lại'); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
                 }
             }
         },
@@ -180,14 +235,21 @@ new Vue({
                 });
 
                 if (response.data.success) {
-                    alert(response.data.message);
-                    this.goToLogin(); // Điều hướng đến trang đăng nhập hoặc một trang xác nhận
+                    $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
+
+                    // Gắn sự kiện cho nút "Đóng"
+                    $('#closeNotificationBtn').on('click', () => {
+                        this.goToLogin();
+                    });
                 } else {
-                    alert(response.data.message);
+                    $('#notificationMessage').text(response.data.message); // Cập nhật nội dung thông báo
+                    $('#notificationModal').modal('show');   // Hiển thị modal
                 }
             } catch (error) {
                 console.error('Có lỗi xảy ra khi đặt lại mật khẩu:', error);
-                alert('Không thể đặt lại mật khẩu. Vui lòng thử lại!');
+                $('#notificationMessage').text('Không thể đặt lại mật khẩu. Vui lòng thử lại!'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
             }
 
         },
