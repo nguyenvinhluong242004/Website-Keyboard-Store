@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   new Vue({
     el: "#app",
-   
       delimiters: ['[[', ']]'],
   
     data: {
@@ -48,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
       async fetchImages() {
         // Gửi đường dẫn thư mục qua tham số query
         url=this.product;
+        console.log('url',url);
 
         fetch(`/detail-product/instock/image/api?id=${url}`)
           .then(response => response.json())
@@ -139,15 +139,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     },
 
-    computed: {
-      formattedSpec() {
-        return this.getDB.specification.replace(/\n/g, '<br>');
-      },
-      formattedDesc() {
-        return this.getDB.description.replace(/\n/g, '<br>');
-      },
-    },
-    
+    // computed: {
+    //   formattedSpec() {
+    //     return this.getDB.specification.replace(/\n/g, '<br>');
+    //   },
+    //   formattedDesc() {
+    //     return this.getDB.description.replace(/\n/g, '<br>');
+    //   },
+    // },
+
     mounted() {
       this.fetchReview();
       this.fetchImages(); 
