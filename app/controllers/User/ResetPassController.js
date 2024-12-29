@@ -27,25 +27,25 @@ class ResetPassController {
 
             if (!existingUser) {
                 console.log('Tài khoản không tồn tại');
-                return res.status(404).json({ success: false, message: 'Tài khoản không tồn tại' });
+                return res.json({ success: false, message: 'Tài khoản không tồn tại' });
             }
 
             // Nếu mã xác thực không đúng, trả về lỗi
             if (String(verificationCode) !== String(req.session.code)) {
                 console.log('Mã xác thực không đúng');
-                return res.status(400).json({ success: false, message: 'Mã xác thực không đúng' });
+                return res.json({ success: false, message: 'Mã xác thực không đúng' });
             }
 
             // Nếu xác nhận mật khẩu mới không đúng, trả về lỗi
             if (String(newPassword) !== String(confirmNewPassword)) {
                 console.log('Xác nhận mật khẩu mới không đúng');
-                return res.status(400).json({ success: false, message: 'Xác nhận mật khẩu mới không đúng' });
+                return res.json({ success: false, message: 'Xác nhận mật khẩu mới không đúng' });
             }
 
             // Nếu mã xác thực đúng, mã hết hạn
             if (timeCode <= 0) {  // Giả sử `storedCode` là mã đã được lưu
                 console.log('Mã xác thực hết hạn');
-                return res.status(400).json({ success: false, message: 'Mã xác thực hết hạn' });
+                return res.json({ success: false, message: 'Mã xác thực hết hạn' });
             }
 
             const hashedNewPassword = await authPass.hashPassword(newPassword);
