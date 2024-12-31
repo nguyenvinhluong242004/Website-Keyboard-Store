@@ -8,7 +8,7 @@ const getGroupByProduct = async (id, visibleCount = 1) => {
             SELECT * 
             FROM public.product p 
             JOIN public.groupbyproduct g ON g.productid = p.productid
-            WHERE g.groupbyid = $1
+            WHERE p.productid = $1
             LIMIT $2
         `, [id, visibleCount]);
 
