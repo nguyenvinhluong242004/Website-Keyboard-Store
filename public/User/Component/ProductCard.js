@@ -8,7 +8,7 @@ export default {
             <a :href="computedHref" class="card-link">
                 <img :src="product.imagepath + '/1.jpg'" alt="Card Image" class="card-image">
                 <p class="badge" :class="product.categoryname">{{ product.categoryname }}</p>
-                <h2 class="card-title">{{ product.description }}</h2>
+                <h2 class="card-title">{{ product.productname }}</h2>
                 <div class="card-bottom">
                     <div class="price">
                         <span class="old-price">{{ formatPrice(product.oldprice) }} VNĐ</span>
