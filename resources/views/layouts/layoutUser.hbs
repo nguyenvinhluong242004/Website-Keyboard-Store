@@ -98,7 +98,7 @@
                     <form @submit.prevent="subscribeNewsletter">
                         <div class="row w-100">
                             <div class="col-12 mb-2">
-                                <input type="email" class="form-control mx-auto" style="max-width: 75%;" placeholder="Enter your email" v-model="newsletterEmail" required>
+                                <input type="email" class="form-control mx-auto" style="max-width: 75%;" placeholder="Enter your email" v-model="newsletterEmail" @blur="validateEmail" required>
                             </div>
                             <div class="col-12 mb-2">
                                 <button class="btn mx-auto" style="max-width: 25%; background-color: #E2AC21" type="submit">Subscribe</button>
