@@ -65,19 +65,19 @@
     position:absolute;
     font-weight: bold;
     margin-left: 5px;
-    margin-top:560px;
+    margin-top:570px;
 }
 .brand{
     position:absolute;
     font-weight: bold;
     margin-left: 5px;
-    margin-top:620px;
+    margin-top:630px;
 }
 .describe{
     position:absolute;
     font-weight: bold;
     margin-left: 5px;
-    margin-top:680px;
+    margin-top:690px;
 }
 .input-images{
     width: 100%;
@@ -94,6 +94,7 @@
     border-radius: 10px;
     margin-top: 10px;
     border: none;
+    padding: 20px;
 }
 .input-price{
     width: 20%;
@@ -102,6 +103,7 @@
     border-radius: 10px;
     margin-top: 10px;
     border: none;
+    padding: 20px;
 }
 .input-close{
     width: 20%;
@@ -110,6 +112,7 @@
     border-radius: 10px;
     margin-top: 10px;
     border: none;
+    padding: 20px;
 }
 .input-expected{
     width: 20%;
@@ -118,14 +121,16 @@
     border-radius: 10px;
     margin-top: 10px;
     border: none;
+    padding: 20px;
 }
 .input-type{
     width: 20%;
-    height:50px;
+    height:60px;
     background-color: rgb(214, 214, 214);
     border-radius: 10px;
     margin-top: 10px;
     border: none;
+    padding: 20px;
 }
 .input-quanlity{
     width: 20%;
@@ -134,6 +139,7 @@
     border-radius: 10px;
     margin-top: 10px;
     border: none;
+    padding: 20px;
 }
 .input-brand{
     width: 100%;
@@ -142,6 +148,7 @@
     border-radius: 10px;
     margin-top: 10px;
     border: none;
+    padding: 20px;
 }
 .input-describe{
     width: 100%;
@@ -150,6 +157,7 @@
     border-radius: 10px;
     margin-top: 10px;
     border: none;
+    padding: 20px;
 }
 
 .button{
