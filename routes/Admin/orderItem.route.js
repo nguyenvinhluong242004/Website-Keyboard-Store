@@ -18,6 +18,7 @@ const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         // Lấy tên sản phẩm từ body
         const productName = req.body.productInfo;
+        console.log('vao dc route:', productName);
 
         const sanitizedProductName = productName.replace(/["]/g, '').trim(); 
         req.body.productInfo = sanitizedProductName;
