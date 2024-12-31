@@ -6,6 +6,9 @@ require('dotenv').config();
 const express = require('express'); // Web framework cho Node.js
 const path = require('path');
 
+// const multer = require('multer'); //up immage into db
+// const fs = require('fs'); // wokr with folder
+
 const morgan = require('morgan'); // Module ghi log
 const expressHandlebars = require('express-handlebars'); // Template engine
 const session = require('express-session');
@@ -32,6 +35,7 @@ app.use(session({
     }
 }));
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());

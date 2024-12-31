@@ -1,5 +1,7 @@
 const Order = require("../../models/Admin/order.Model");
+const path = require('path');
 const controller = {};
+
 
 controller.order = async (req, res) => {
   res.render("Admin/order", {
@@ -117,6 +119,27 @@ controller.getBrand = async (req, res) => {
   
     console.error("Lỗi khi xử lý request:", error);
     res.status(500).json({ message: 'An unexpected error occurred' });
+  }
+};
+
+controller.upImage = async (req, res) => {
+  console.log('vao controller!!!');
+  try {
+    // Kiểm tra file có tồn tại không
+    if (!req.file) {
+      return res.status(400).json({ message: 'Không có file được upload.' });
+    }
+
+    const filePath = `/image/${req.body.productInfo}`; // Đường dẫn file trên server
+
+    // Trả về thông tin cho frontend hoặc xử lý thêm (lưu vào DB)
+    res.status(200).json({
+      message: 'Upload thành công!',
+      filePath, // Đường dẫn file để lưu vào database
+    });
+  } catch (error) {
+    console.error('Lỗi khi upload ảnh:', error);
+    res.status(500).json({ message: 'Đã xảy ra lỗi khi upload ảnh.' });
   }
 };
 

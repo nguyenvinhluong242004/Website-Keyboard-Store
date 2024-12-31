@@ -5,7 +5,9 @@ class GetApiImageController {
   async createApi(req, res) {
     const id = req.query.id; // Lấy đường dẫn từ query parameter
 
-    const directory = `public/image/${id}`;
+    const directory = `public/${id}`;
+    
+    console.log('duong dan:',directory);
 
     // Nếu không có tham số directory, trả về lỗi
     if (!directory) {
