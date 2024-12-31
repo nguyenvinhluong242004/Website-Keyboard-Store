@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const pool = require('../../config/database');
 
 /**
  * Lấy tất cả các ảnh trong một thư mục
@@ -9,7 +10,6 @@ const path = require("path");
 const getImagesFromDirectory = (directory) => {
   return new Promise((resolve, reject) => {
     fs.readdir(directory, (err, files) => {
-        console.log('fdfd');
       if (err) {
         return reject(err);
       }
@@ -38,4 +38,35 @@ const getImagesFromDirectory = (directory) => {
   });
 };
 
-module.exports = { getImagesFromDirectory };
+const getPathImage = async (idProduct) => {
+  try {
+    await pool.connect();
+    
+    const res = await pool.query('SELECT imagepath FROM product WHERE productid = $1', [idProduct]);
+    if (res.rows.length > 0) {
+      return res.rows[0].imagepath;
+    } else {
+      throw new Error('Product not found');
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  } 
+};
+const getLastProduct = async () => {
+  try {
+    await pool.connect();
+    
+    const res = await pool.query('SELECT count(*) as last FROM product');
+    if (res.rows.length > 0) {
+      return res.rows[0].last;
+    } else {
+      throw new Error('Product not found');
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  } 
+};
+
+module.exports = { getImagesFromDirectory,getPathImage,getLastProduct};

@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
       check: true,
       quanlity: 1,
       images: [],
+      imagePath:'',
       getDB: window.data.dataGroupByProduct[0],
     },
     methods: {
@@ -24,12 +25,19 @@ document.addEventListener("DOMContentLoaded", function () {
         
         console.log('url:',url);
 
-        fetch(`/detail-product/instock/image/api?id=${url}`)
+       await fetch(`/api/path_img?id=${url}`)
+          .then(response => response.json())
+          .then(data => {
+            this.imagePath = data.imagepath;
+           
+            console.log(this.imagePath);
+          });
+
+        await fetch(`/detail-product/instock/image/api?id=${this.imagePath}`)
           .then(response => response.json())
           .then(data => {
             this.images = data;
-            this.mainImage=this.images[0];
-
+            this.mainImage = this.images[0];
             console.log(this.images);
             
           })
@@ -82,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     mounted() {
       this.fetchImages();
-      console.log("Vue instance has been mounted and script is loaded.");
+
       console.log("Data from server (window.data):", this.getDB);
     },
   });
