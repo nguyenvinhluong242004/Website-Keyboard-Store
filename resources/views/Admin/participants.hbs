@@ -16,7 +16,7 @@
     </div>
     <div class="par-top-layout mt-4">
       <div class="col-md-3 par-list-gb">
-        <div class="par-head-list"> <h2 >List of Group by</h2></div>
+        <div class="par-head-list"> <h4 >List of Group by</h4></div>
         
         <div class="par-body-list" v-if="participants.length">
 
@@ -26,7 +26,7 @@
           >
             <div class="product" :class="{ 'selected-tab': selectedIndex === index }" @click="detailProductGroupBy(item,index)">
              
-              <div class="image"> <p><img :src="item.imagepath +'/1.jpg'" class="par-style-img"  alt="Product Image" /></p></div>
+              <div class="image"> <p><img :src="item.imagepath[0]" class="par-style-img"  alt="Product Image" /></p></div>
                 
                 <div class="xy">
                   <p><span v-text="item.productname"></span></p>
@@ -84,10 +84,26 @@
 
           <div v-if="detailProduct" >
             <div class="par-img">
-              <div class="retangle"> <img :src="detailProduct.images +'/1.jpg'" class="par-detail-img" alt="Không lấy hình ảnh được"></div>
-              <div class="retangle"></div>
-              <div class="retangle"></div>
-              <div class="retangle"></div>
+              <div class="retangle" v-if="detailProduct.images[0]">
+                  <img :src="detailProduct.images[0]" class="par-detail-img" alt="Image Product">
+              </div>
+              <div v-else class="retangle"></div>
+
+              <div class="retangle" v-if="detailProduct.images[1]">
+                  <img :src="detailProduct.images[1]" class="par-detail-img" alt="Image Product">
+              </div>
+              <div v-else class="retangle"></div>
+
+              <div class="retangle" v-if="detailProduct.images[2]">
+                  <img :src="detailProduct.images[2]" class="par-detail-img" alt="Image Product">
+              </div>
+              <div v-else class="retangle"></div>
+
+              <div class="retangle" v-if="detailProduct.images[3]">
+                  <img :src="detailProduct.images[3]" class="par-detail-img" alt="Image Product">
+              </div>
+              <div v-else class="retangle"></div>
+              
             </div>
             <div class="par-name">
               <span v-text="detailProduct.name"></span>
@@ -152,7 +168,7 @@
 
     <div class="par-register mt-3">
       <div class="par-head-register">
-        <h2>List of Customers Register</h2>
+        <h4>List of Customers Register</h4>
         <button class="export-file"  @click="promptFileName">Export File</button>
       </div>
 
