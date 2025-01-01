@@ -5,6 +5,7 @@ const controller = {};
 controller.showDetailGroupby = async (req, res) => {
     const user = req.session.user;
     const id = req.params.id || 1;
+    console.log('id group by:',id);
     const visibleCount = req.query.visibleCount || 1; // Lấy visibleCount từ query
 
     try {

@@ -1,4 +1,6 @@
 const moment = require("moment");
+const fs = require("fs");
+const path = require("path");
 const moduleParticipants = require("../../models/Admin/detailParticipantsModel.js");
 
 const controller = {};
@@ -22,26 +24,39 @@ controller.showParticipants = async (req, res) => {
 };
 
 
-// Lấy tất cả sản phẩm đang group by 
 controller.getGroupBy = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1; 
     const perPage = parseInt(req.query.perPage) || 3; 
     const orderby = req.query.orderby || 'enddate';
 
-    const participantsData = await moduleParticipants.getListGroupBy( page, perPage, orderby);
-    
-    participantsData.allProductGroupBy.forEach((item) => {
-      item.enddate = moment(item.enddate).format("YYYY-MM-DD");
-    });
+    const participantsData = await moduleParticipants.getListGroupBy(page, perPage, orderby);
 
     participantsData.allProductGroupBy.forEach((item) => {
+      // Format ngày tháng
+      item.enddate = moment(item.enddate).format("YYYY-MM-DD");
       item.estimatearrive = moment(item.estimatearrive).format("YYYY-MM-DD");
+      
+      // Xử lý imagepath thành mảng các ảnh
+      const folderPath = path.join(__dirname, "../../../public", item.imagepath); // Đường dẫn tới folder ảnh
+      console.log(folderPath);
+      try {
+        const imageFiles = fs.readdirSync(folderPath) // Lấy danh sách file trong folder
+          .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file)) // Chỉ lấy file ảnh
+          .map((file) => `${item.imagepath}/${file}`); // Tạo URL đầy đủ cho từng ảnh
+        
+        item.imagepath = imageFiles; // Gán mảng ảnh vào trường imagepath
+      } catch (err) {
+        console.error(`Lỗi đọc folder ảnh ${folderPath}:`, err);
+        item.imagepath = []; // Nếu lỗi, gán mảng rỗng
+      }
     });
+
+    console.log('danh sách sản phẩm dạng Groupby:', participantsData.allProductGroupBy);
 
     res.json({
       allProductGroupBy: participantsData.allProductGroupBy,
-      totalPages: Math.ceil(participantsData.totalProductGroupBy / perPage), 
+      totalPages: Math.ceil(participantsData.totalProductGroupBy / perPage),
     });
 
   } catch (error) {

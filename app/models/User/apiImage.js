@@ -16,7 +16,7 @@ const getImagesFromDirectory = (directory) => {
 
       // Lọc các tệp có đuôi là hình ảnh
       const imageFiles = files.filter((file) =>
-        /\.(jpg|jpeg|png|gif)$/i.test(file)
+        /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
       );
 
       // Chuyển đổi đường dẫn tệp thành đường dẫn URL tương đối
