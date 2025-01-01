@@ -21,7 +21,7 @@ new Vue({
       totalPagesRegister: 1, 
       totalPagesDetailRegister:1,
       detailProduct: {
-        name: "name", 
+        name:[], 
         images: "image",
         price: 0, 
         close: "close", 

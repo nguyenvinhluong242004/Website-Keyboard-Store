@@ -49,9 +49,10 @@ document.addEventListener("DOMContentLoaded", function () {
         url=this.product;
         console.log('url',url);
 
-        fetch(`/detail-product/instock/image/api?id=${url}`)
+        fetch(`/detail-product/instock/image_detail_product/api?id=${url}`)
           .then(response => response.json())
           .then(data => {
+            console.log(data);
             this.poster = data;
             this.img=this.poster[0];
             this.img_detail_1=this.poster[1];
