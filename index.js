@@ -63,7 +63,10 @@ app.engine('hbs', expressHandlebars.engine({
                 result.push(i);
             }
             return result;
-        } 
+        },
+        isToggleForm: (value, condition) => {
+            return value === condition ? 'true' : 'false';
+        }
     }
 }));
 app.set('view engine', 'hbs');

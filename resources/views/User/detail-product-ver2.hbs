@@ -1,0 +1,171 @@
+<div id="app" class="container mt-5">
+  <div class="row">
+
+    <div class="col-md-7">
+      <div class="main-image">
+        <img :src="mainImage" alt="Main" width="100%" />
+      </div>
+
+      <div class="grid-container">
+        <div
+          class="grid-item"
+          v-for="(image, index) in images"
+          :key="index"
+          @click="changeMainImage(image)"
+        >
+          <div class="item-image">
+            <img :src="image" :alt="'Ảnh ' + (index + 1)" />
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-4">
+      <div class="name">[[getDB.productname]]</div>
+
+      <div>
+        <div class="group_by">LIMITED INSTOCK</div>
+        <div class="time mt-3">End date:</div>
+        <div class="time">[[formattedEndDate]]</div>
+      </div>
+
+      <div class="price mt-4">
+        <div class="price-text">Price :</div>
+        <div class="money">[[formattedMoney]]</div>
+      </div>
+
+      <div class="kit">Kit</div>
+
+      <select id="mySelect" class="type-product">
+        <option value="option1">Base</option>
+        <option value="option2" selected>Numpad</option>
+        <option value="option3">Full</option>
+      </select>
+
+      <div class="fw-bold mt-5">Quantily</div>
+      <div class="input-quantity-contai">
+        <div class="tru" @click="tru">-</div>
+        <input
+          type="number"
+          v-model="quanlity"
+          min="1"
+          class="input-quantity"
+        />
+        <div class="cong" @click="cong">
+          +
+        </div>
+
+      </div>
+
+      <div class="card-body fw-bold rounded flex_quan time_arrival mt-5">
+        Estimated Arrival: [[formattedArriveDate]]
+      </div>
+      <button @click="addToCart" class="cart fw-bold mt-5 text-white">
+        Thêm vào giỏ hàng
+      </button>
+      <hr />
+      <div class="description" @click="toggleContent">
+        Description
+        <i
+          class="fas"
+          :class="{'fa-plus': !isContentVisible, 'fa-minus': isContentVisible}"
+        ></i>
+      </div>
+      <div class="content" v-show="isContentVisible">
+        [[getDB.description]]
+      </div>
+      <hr />
+      <div class="Specifications" @click="toggleCheck">
+        Specifications
+        <i class="fas" :class="{'fa-plus': !check, 'fa-minus': check}"></i>
+      </div>
+      <div class="content" v-show="check">
+        <div>
+          [[getDB.specification]]
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="recom">
+    <div class="product-same">Recommended Products</div>
+    <div class="container-same-product">
+      <div class="product">
+        <div class="recommend-img">
+          <img src="/image/1/EmeraldGreen_WK_1512x.jpg" alt="recommend" />
+          <div class="status"> ON SALE!</div>
+        </div>
+        <div class="product-infor">
+          <div class="name-product">
+            WILBA.TECH SALVATION PCB
+          </div>
+          <div class="prodcut-price">
+            <div
+              style="color:rgb(170, 170, 170);text-decoration: line-through;"
+            >
+              1000.000 đ
+            </div>
+            <div style="color: green;">
+              600.000 đ
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="product">
+        <div class="recommend-img">
+          <img src="/image/1/EmeraldGreen_WK_1512x.jpg" alt="recommend" />
+          <div class="status"> ON SALE!</div>
+        </div>
+        <div class="product-infor">
+          <div class="name-product">
+            WILBA.TECH SALVATION PCB
+          </div>
+          <div class="prodcut-price">
+            <div
+              style="color:rgb(170, 170, 170);text-decoration: line-through;"
+            >
+              1000.000 đ
+            </div>
+            <div style="color: green;">
+              600.000 đ
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="product">
+        <div class="recommend-img">
+          <img src="/image/1/EmeraldGreen_WK_1512x.jpg" alt="recommend" />
+          <div class="status"> ON SALE!</div>
+        </div>
+        <div class="product-infor">
+          <div class="name-product">
+            WILBA.TECH SALVATION PCB
+          </div>
+          <div class="prodcut-price">
+            <div
+              style="color:rgb(170, 170, 170);text-decoration: line-through;"
+            >
+              1000.000 đ
+            </div>
+            <div style="color: green;">
+              600.000 đ
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="flex_back">
+    <button class="back" @click="showMess">BACK</button>
+  </div>
+
+</div>
+
+<script>
+  window.data = JSON.parse('{{{data}}}'); window.idProduct ={{idProduct}};
+</script>
