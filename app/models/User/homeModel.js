@@ -1,9 +1,13 @@
 const pool = require('../../config/database');
+const path = require('path');
+const fs = require('fs');
 
 const getProducts = async (visibleCount) => {
     const client = await pool.connect();
     try {
+        // Lấy tổng số sản phẩm
         const totalResult = await client.query(`SELECT COUNT(*) FROM public.product`);
+        // Lấy dữ liệu sản phẩm
         const dataResult = await client.query(`
             SELECT p.*, c.categoryname
             FROM public.product p
@@ -12,9 +16,23 @@ const getProducts = async (visibleCount) => {
             LIMIT $1
         `, [visibleCount]);
 
+        // Thêm ảnh đầu tiên vào từng sản phẩm
+        const productsWithImages = await Promise.all(dataResult.rows.map(async (product) => {
+            const folderPath = path.join(__dirname, '../../../public', product.imagepath);
+            try {
+                const files = fs.readdirSync(folderPath);
+                const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                product.firstImage = imageFiles.length > 0 ? `${product.imagepath}/${imageFiles[0]}` : '/path/to/default-image.jpg';
+            } catch (err) {
+                console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
+            }
+            return product;
+        }));
+
         return {
             totalProducts: parseInt(totalResult.rows[0].count, 10),
-            data: dataResult.rows,
+            data: productsWithImages,
         };
     } catch (error) {
         console.error('Lỗi truy vấn sản phẩm:', error);
