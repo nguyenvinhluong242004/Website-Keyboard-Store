@@ -6,7 +6,7 @@ const router = express.Router();
 const orderController = require("../../app/controllers/Admin/orderController");
 
 router.get("/", orderController.order);
-router.post("/insert", orderController.createGroupBy);
+router.post("/insert", orderController.createProduct);
 router.post("/insert-groupbyproduct", orderController.createGroupByProduct);
 router.get("/type", orderController.getType);
 router.get("/brand", orderController.getBrand);
@@ -19,11 +19,14 @@ const storage = multer.diskStorage({
         // Lấy tên sản phẩm từ body
         const productName = req.body.productInfo;
         console.log('vao dc route:', productName);
-
+        if (!productName) {
+            // Ngăn tạo thư mục nếu productInfo không tồn tại
+            return cb(new Error("Missing productInfo. Folder will not be created."));
+        }
         const sanitizedProductName = productName.replace(/["]/g, '').trim(); 
-        req.body.productInfo = sanitizedProductName;
+
         // Tạo đường dẫn thư mục theo tên sản phẩm
-        const productFolderPath = path.join(__dirname, '../../public', 'image', sanitizedProductName);
+        const productFolderPath = path.join(__dirname, '../../public', sanitizedProductName);
 
         // Kiểm tra xem thư mục đã tồn tại chưa, nếu chưa thì tạo mới
         fs.mkdirSync(productFolderPath, { recursive: true });
@@ -31,6 +34,7 @@ const storage = multer.diskStorage({
         // Chỉ định thư mục lưu file
         cb(null, productFolderPath);
     },
+    
     filename: (req, file, cb) => {
         // Tạo tên file duy nhất bằng timestamp
         const fileExtension = path.extname(file.originalname);
