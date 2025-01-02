@@ -90,6 +90,50 @@ controller.showDetailProductVer2 = async (req, res) => {
   }
 };
 
+controller.getImageProduct = async (req, res) => {
+  console.log("getImageProduct");
+  const id = req.params.id || 1; // Lấy ID sản phẩm từ route hoặc mặc định là 1
+  console.log("id product:", id);
+
+  try {
+    // Lấy dữ liệu sản phẩm từ model
+    const productData = await getProduct(id); // Dữ liệu trả về dạng { dataProduct: [...] }
+    const product = productData.dataProduct[0]; // Chỉ lấy sản phẩm đầu tiên trong mảng
+
+    if (!product) {
+      return res.status(404).send("Product not found");
+    }
+
+    // Đường dẫn tới folder ảnh dựa trên `imagepath`
+    const folderPath = path.join(
+      __dirname,
+      "../../../public",
+      product.imagepath
+    );
+    console.log("Folder path:", folderPath);
+
+    try {
+      // Đọc danh sách file ảnh trong thư mục
+      const imageFiles = fs
+        .readdirSync(folderPath) // Lấy danh sách file trong folder
+        .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file)) // Chỉ lấy file ảnh
+        .map((file) => `${product.imagepath}/${file}`); // Tạo URL đầy đủ cho từng ảnh
+
+      product.imagepath = imageFiles; // Gán mảng ảnh vào `imagepath`
+      console.log("Product data:", product);
+    } catch (err) {
+      console.error(`Lỗi đọc folder ảnh ${folderPath}:`, err);
+      product.imagepath = []; // Nếu lỗi, gán mảng rỗng
+    }
+
+    return res.json(product.imagepath);
+
+  } catch (error) {
+    console.error("Error fetching product data:", error.message);
+    res.status(500).send("Error fetching product data: " + error.message);
+  }
+};
+
 controller.insertReview = async (req, res) => {
   try {
     const { productid, email, reviewdate, comment, stars } = req.body;
