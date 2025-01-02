@@ -158,6 +158,12 @@
   height: 100%; /* Ảnh chiếm toàn bộ chiều cao của ô */
   object-fit: cover; /* Giữ tỷ lệ ảnh, cắt bớt nếu cần */
 }
+.main-image{
+  border-radius: 3px;
+}
+.mainIMG{
+  border-radius: 3px;
+}
 
 .container {
   width: 100%;
