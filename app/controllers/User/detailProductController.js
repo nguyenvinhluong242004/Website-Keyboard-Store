@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { _isDomSupported } = require("chart.js/helpers");
-const { getProduct } = require("../../models/User/get_product.js");
+const { getProduct,getSameProduct } = require("../../models/User/get_product.js");
 const insert = require("../../models/User/insertReviewModel.js");
 const getReview = require("../../models/User/getReviewModel.js");
 
@@ -35,7 +35,6 @@ controller.showDetailProduct = async (req, res) => {
     res.status(500).send("Error fetching data: " + error.message);
   }
 };
-
 
 controller.showDetailProductVer2 = async (req, res) => {
   const user = req.session.user;
@@ -90,7 +89,6 @@ controller.showDetailProductVer2 = async (req, res) => {
     res.status(500).send("Error fetching product data: " + error.message);
   }
 };
-
 
 controller.insertReview = async (req, res) => {
   try {
@@ -157,5 +155,55 @@ controller.getReview = async (req, res) => {
     res.status(500).json({ message: "An unexpected error occurred." });
   }
 };
+controller.getSameProduct = async (req, res) => {
+  const user = req.session.user;
+  const categoryId = req.params.category || 1; // Lấy ID sản phẩm từ route hoặc mặc định là 1
+  const quantity = req.query.quantity||3;
+  console.log("id product:",  quantity);
+
+  try {
+    // Lấy dữ liệu sản phẩm từ model
+    const products = await getSameProduct(categoryId,quantity); // Dữ liệu trả về dạng { dataProduct: [...] }
+
+    if (!products || products.listProducts.length === 0) {
+      return res.status(404).send("No products found");
+    }
+
+    // Xử lý từng sản phẩm trong mảng
+    products.listProducts.forEach((item) => {
+      // Xử lý imagepath thành mảng các ảnh
+      const folderPath = path.join(
+        __dirname,
+        "../../../public",
+        item.imagepath
+      ); // Đường dẫn tới folder ảnh
+      console.log(folderPath);
+      try {
+        const imageFiles = fs
+          .readdirSync(folderPath) // Lấy danh sách file trong folder
+          .filter((file) => /\.(jpg|jpeg|png|gif|webp)$/i.test(file)) // Chỉ lấy file ảnh
+          .map((file) => `${item.imagepath}/${file}`); // Tạo URL đầy đủ cho từng ảnh
+
+        item.imagepath = imageFiles; // Gán mảng ảnh vào trường imagepath
+      } catch (err) {
+        console.error(`Lỗi đọc folder ảnh ${folderPath}:`, err);
+        item.imagepath = []; // Nếu lỗi, gán mảng rỗng
+      }
+    });
+
+    // Trả về dữ liệu đã xử lý
+    res.json({
+      success: true,
+      data: products.listProducts, // Trả về mảng sản phẩm đã xử lý
+    });
+  } catch (error) {
+    console.error("Error fetching product data:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching product data: " + error.message,
+    });
+  }
+};
+
 
 module.exports = controller;

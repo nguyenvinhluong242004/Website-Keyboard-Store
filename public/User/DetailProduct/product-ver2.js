@@ -12,13 +12,24 @@ document.addEventListener("DOMContentLoaded", function () {
       imagePath: "",
       getDB: window.data,
       type_money: "đ",
+      isToggleForm: false,
+      rating: 0, // Lưu đánh giá cuối cùng
+      hoverRating: 0, // Giá trị khi hover lên cái sao
+      sameProducts: [],
+      quantity: 4,
     },
     methods: {
-      cong(){
+      hoverStar(index) {
+        this.hoverRating = index; // Cập nhật hover
+      },
+      setRating(index) {
+        this.rating = index; // Lưu rating khi click
+      },
+      cong() {
         this.quanlity += 1;
       },
-      tru(){
-        if(this.quanlity>1){
+      tru() {
+        if (this.quanlity > 1) {
           this.quanlity -= 1;
         }
       },
@@ -32,8 +43,12 @@ document.addEventListener("DOMContentLoaded", function () {
           throw new Error("Giá trị nhập vào phải là số.");
         }
 
-        return amount
-          .toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+        // Chuyển đổi thành số (nếu không phải là số)
+        amount = Number(amount);
+        return amount.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
       },
 
       changeMainImage(image) {
@@ -72,6 +87,30 @@ document.addEventListener("DOMContentLoaded", function () {
         this.images = this.getDB.imagepath;
         this.mainImage = this.images[0];
       },
+      toggleForm() {
+        this.isToggleForm = !this.isToggleForm;
+      },
+      async fetchRandomProductSame(category) {
+        try {
+          // Gửi request tới API
+          const response = await fetch(
+            `/detail-product/instock/same-product/${category}?quantity=${this.quantity}`
+          );
+
+          if (!response.ok) {
+            throw new Error(`Lỗi API: ${response.statusText}`);
+          }
+
+          // Chuyển đổi dữ liệu sang JSON
+          const data = await response.json();
+
+          // Gán danh sách sản phẩm trả về vào một biến trong Vue (ví dụ: products)
+          this.sameProducts = data.data || [];
+          console.log("sanr pham random", this.sameProducts);
+        } catch (error) {
+          console.error("Lỗi khi lấy danh sách sản phẩm:", error.message);
+        }
+      },
     },
     computed: {
       // formattedDescription() {
@@ -83,12 +122,10 @@ document.addEventListener("DOMContentLoaded", function () {
       formattedArriveDate() {
         return this.formatDate(this.getDB.estimatearrive);
       },
-      formattedMoney() {
-        return this.formatCurrencyVN(this.getDB.currentprice);
-      },
     },
     mounted() {
       this.getImages();
+      this.fetchRandomProductSame(1);
     },
   });
 });

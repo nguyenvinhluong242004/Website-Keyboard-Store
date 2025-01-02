@@ -34,7 +34,39 @@ const getProduct = async (id, visibleCount = 1) => {
         client.release();
     }
 };
+const getSameProduct = async (categoryId,quantity) => {
+    if (!categoryId || isNaN(categoryId) || categoryId <= 0) {
+        throw new Error('ID sản phẩm không hợp lệ.');
+    }
+
+    const client = await pool.connect();
+    try {
+        // Query để lấy dữ liệu từ cơ sở dữ liệu
+        const result = await client.query(`
+            SELECT * 
+            FROM public.product p
+            WHERE p.categoryid = $1
+            ORDER BY RANDOM()
+            LIMIT $2
+        `, [categoryId,quantity]); 
+
+        if (result.rows.length === 0) {
+            throw new Error('Không tìm thấy sản phẩm.');
+        }
+
+        return {
+            listProducts: result.rows
+        };
+    } catch (error) {
+        console.error('Lỗi truy vấn:', error.message);
+        console.error('Chi tiết lỗi:', error.stack);
+        throw new Error('Có lỗi xảy ra khi lấy dữ liệu.');
+    } finally {
+        client.release();
+    }
+};
 
 module.exports = {
     getProduct,
+    getSameProduct
 };
