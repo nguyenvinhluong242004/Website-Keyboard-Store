@@ -5,6 +5,7 @@ const apiImageController = require("../../app/controllers/User/getApiImageContro
 
 
 router.get('/instock/:id', detailProductController.showDetailProductVer2);
+router.get('/instock/same-product/:category', detailProductController.getSameProduct);
 router.get('/instock/image/api', apiImageController.createApi.bind(apiImageController));
 router.get('/instock/image_detail_product/api', apiImageController.createApiForDetail.bind(apiImageController));
 router.get('/instock/review/api',detailProductController.getReview);

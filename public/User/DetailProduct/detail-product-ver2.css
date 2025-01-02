@@ -228,7 +228,6 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #c9cacb;
   margin-top: 7%;
   align-items: center;
   height: 20%;
@@ -245,9 +244,10 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-top: 50px;
 }
 .product {
-  width: 30%;
+  width: 20%;
   border-radius: 3%;
   position: relative;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
 }
 .recommend-img {
   width: 100%; /* Đảm bảo thẻ chứa ảnh chiếm toàn bộ chiều rộng của phần tử */
@@ -268,11 +268,13 @@ input[type="number"]::-webkit-inner-spin-button {
   border-radius: 3px;
   top: 3%;
   left: 2%;
+  font-size: 10px;
+  padding: 5px;
 }
 .name-product {
   font-family: "Baloo", sans-serif;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 100%;
   width: 70%;
 }
 .product-infor {
@@ -281,4 +283,222 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .prodcut-price {
   font-family: "Baloo", sans-serif;
+  font-size: small;
+}
+
+
+/* Review */
+.book-review {
+  position: relative;
+  width: 1300px;
+  padding: 20px;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: start;
+  /* border: 1px solid #919191; */
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+.book-review-title {
+  width: 100%;
+  height: 35px;
+
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.book-review-rate,
+.book-review-btn-review {
+  width: 50%;
+  height: 170px;
+  display: flex;
+  align-items: center;
+}
+
+.book-review-rate {
+  justify-content: start;
+}
+
+.book-review-btn-review {
+  justify-content: center;
+}
+
+.book-review-rate-overall {
+  width: 200px;
+  margin-right: 20px;
+}
+
+.rate-digit {
+  height: 75px;
+
+  text-align: center;
+
+  font-size: 60px;
+}
+
+.rate-star {
+  display: flex;
+  justify-content: space-between;
+
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.rate-based-on {
+  margin-top: 5px;
+  text-align: center;
+
+  color: rgb(140, 140, 140);
+}
+
+.book-review-rate-detail {
+  width: 400px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rate-each {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-bar {
+  width: 200px;
+  height: 10px;
+
+  margin-left: 10px;
+  margin-right: 10px;
+
+  border-radius: 10px;
+
+  background: rgb(233, 233, 233);
+}
+
+.rating-bar-fill {
+  height: 100%;
+
+  border-radius: 10px;
+  background: rgb(241, 189, 0);
+}
+
+.rate-num {
+  width: 60px;
+}
+
+.book-review .fa-solid.fa-star {
+  color: rgb(241, 189, 0);
+}
+
+.book-review .fa-regular.fa-star {
+  color: rgb(199, 199, 199);
+}
+
+.your-review-form {
+  border-top: 1px solid rgb(199, 199, 199);
+
+  width: 100%;
+
+  margin-top: 15px;
+  padding: 15px 20px;
+  padding-bottom: 5px;
+}
+
+.form-star-rating {
+  display: flex;
+  gap: 5px;
+}
+
+.review-image {
+  width: 150px;
+  height: 150px;
+
+  border: 2px dashed rgb(199, 199, 199);
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: rgb(199, 199, 199);
+  font-size: 45px;
+}
+
+.reviews {
+  position: relative;
+  width: 100%;
+  border-top: 1px solid rgb(199, 199, 199);
+  margin-top: 15px;
+  padding: 15px 20px;
+}
+
+.book-btn-review{
+  position: absolute;
+  border-radius: 5px;
+  border: none;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.review {
+  width: 100%;
+
+  padding: 10px 0px;
+
+  display: flex;
+
+  border-bottom: 1px solid rgb(199, 199, 199);
+}
+
+.review-avatar-ctn {
+  width: 80px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.review-avatar {
+  width: 50px;
+  height: 50px;
+
+  border-radius: 100px;
+
+  overflow: hidden;
+}
+
+.review-content-ctn {
+  width: 100%;
+  padding: 10px;
+}
+
+.review-rate-star {
+  width: 200px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  font-size: 10px;
+}
+
+.review-date {
+  font-size: 10px;
+  color: rgb(199, 199, 199);
+}
+
+.review-content-text {
+  margin: 10px 0px;
+}
+
+.review-content-images {
+  display: flex;
+  flex-flow: row wrap;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
 }
