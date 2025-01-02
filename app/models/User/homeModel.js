@@ -16,7 +16,7 @@ const getProducts = async (visibleCount) => {
             LIMIT $1
         `, [visibleCount]);
 
-        // Thêm ảnh đầu tiên vào từng sản phẩm
+        // Thêm ảnh đầu tiên, cập nhật productname và href cho từng sản phẩm
         const productsWithImages = await Promise.all(dataResult.rows.map(async (product) => {
             const folderPath = path.join(__dirname, '../../../public', product.imagepath);
             try {
@@ -27,6 +27,16 @@ const getProducts = async (visibleCount) => {
                 console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
                 product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
             }
+
+            // Thêm tiền tố vào productname dựa trên type
+            if (product.type === 1) {
+                product.productname = `[Instock] ${product.productname}`;
+                product.href = `/detail-product/instock/${product.productid}`;
+            } else if (product.type === 2) {
+                product.productname = `[GroupBy] ${product.productname}`;
+                product.href = `/detail-group-by/${product.productid}`;
+            }
+
             return product;
         }));
 
