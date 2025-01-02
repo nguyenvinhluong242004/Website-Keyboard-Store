@@ -8,6 +8,8 @@ const homeController = {
             const salesProduct = await getProducts(visibleCount);
             const trendingProduct = await getProducts(visibleCount);
 
+            console.log(newProduct);
+
             const maxProduct = 10;
             const keycapProducts = await getKeycap(maxProduct);
             const kitProducts = await getKit(maxProduct);
