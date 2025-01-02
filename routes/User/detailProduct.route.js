@@ -10,5 +10,6 @@ router.get('/instock/image/api', apiImageController.createApi.bind(apiImageContr
 router.get('/instock/image_detail_product/api', apiImageController.createApiForDetail.bind(apiImageController));
 router.get('/instock/review/api',detailProductController.getReview);
 router.post('/insert/review',  detailProductController.insertReview);
+router.get('/image-product/api/:id', detailProductController.getImageProduct);
 
 module.exports = router;

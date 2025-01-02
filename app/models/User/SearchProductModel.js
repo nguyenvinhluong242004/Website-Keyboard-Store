@@ -30,6 +30,24 @@ const searchProduct = async (search, visibleCount) => {
     }
 };
 
+const checkGroupByProduct = async (productid) => {
+    const client = await pool.connect();
+    try {
+        const result = await client.query(`
+            SELECT *
+            FROM public.product
+            WHERE productid = $1 And type = 2
+        `, [productid]);
+        return result.rows.length > 0;
+    } catch (error) {
+        console.error('Error querying!', error);
+        res.status(500).json({ error: 'Error fetching data.' });
+    } finally {
+        client.release();
+    }
+};
+
 module.exports = {
     searchProduct,
+    checkGroupByProduct
 };
