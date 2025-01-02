@@ -1,4 +1,4 @@
-const {searchProduct} = require('../../models/User/SearchProductModel');
+const {searchProduct, checkGroupByProduct} = require('../../models/User/SearchProductModel');
 
 const controller ={}
 
@@ -23,6 +23,18 @@ controller.searchProduct = async (req, res) => {
     try {
         const data = await searchProduct(search, visibleCount);
         res.json(data);
+    } catch (error) {
+        res.status(500).send('Error fetching: ' + error.message);
+    }
+}
+
+controller.checkGroupByProduct = async (req, res) => {
+    const productid = req.query.productid;
+    console.log('productid', productid);
+
+    try {
+        const result = await checkGroupByProduct(productid);
+        res.json(result);
     } catch (error) {
         res.status(500).send('Error fetching: ' + error.message);
     }

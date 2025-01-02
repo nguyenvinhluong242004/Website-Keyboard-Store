@@ -25,10 +25,27 @@ export default {
         },
         imagePoster() {
             if (this.products && this.products.length > 0) {
-                return this.products[0].imagepath + '/1.jpg';
-            } else {
-                return ''; // Return a default value or an empty string
-            }
+                if (this.product.type === 'Kit Phim') {
+                     return '/category/kitPhim.jpg';
+                 }
+                 else if (this.product.type === 'Kecap') {
+                     return '/category/kecap.jpg';
+                 }
+                 else if (this.product.type === 'Switch') {
+                     return '/category/switch.jpg';
+                 }
+                 else if (this.product.type === 'Accessories') {
+                     return '/category/phuKien.jpg';
+                 }
+                 else if (this.product.type === 'GroupBy Product') {
+                     return '/category/kecap.jpg';
+                 }
+                 else if (this.product.type === 'Search Product') {
+                     return '/category/kitPhim.jpg';
+                 }
+             } else {
+                 return ''; // Return a default value or an empty string
+             }
         }
     },
 

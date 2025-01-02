@@ -9,14 +9,14 @@ const getKeCap = async (req, res) => {
         const resultSum = await client.query(`
             SELECT COUNT(*) FROM public.product p
             JOIN public.Category c ON p.categoryid = c.categoryid
-            WHERE c.categoryname = 'Kecap'
+            WHERE c.categoryname = 'Keycaps'
             `)
 
         // Query to get data from database
         const result = await client.query(`
             SELECT p.* FROM public.product p
             JOIN public.Category c ON p.categoryid = c.categoryid
-            WHERE c.categoryname = 'Kecap'
+            WHERE c.categoryname = 'Keycaps'
             LIMIT $1
         `, [visibleCount]);
         return {

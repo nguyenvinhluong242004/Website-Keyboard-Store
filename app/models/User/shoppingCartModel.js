@@ -1,4 +1,6 @@
 const pool = require('../../config/database'); // Kết nối đến cơ sở dữ liệu
+const fs = require('fs');
+const path = require('path');
 
 class shoppingCartModel {
 
@@ -101,7 +103,7 @@ class shoppingCartModel {
     static async getAllProductsInCart(UserID) {
         try {
             const query = `
-                SELECT p.productid, p.productname, p.oldprice, p.currentprice, p.imagepath, p.categoryid, p.quantity as total, s.quantity
+                SELECT p.productid, p.productname, p.oldprice, p.currentprice, p.imagepath, p.categoryid, p.quantity as total, s.quantity, p.type
                 FROM ShoppingCart s
                 JOIN Product p ON s.productid = p.productid
                 WHERE s.userid = $1;
@@ -110,7 +112,20 @@ class shoppingCartModel {
             const result = await pool.query(query, [UserID]);
 
             if (result.rows.length > 0) {
-                return result.rows; // Trả về danh sách các sản phẩm trong giỏ hàng
+                // Duyệt qua danh sách sản phẩm để thêm đường dẫn ảnh đầu tiên
+                const productsWithImages = await Promise.all(result.rows.map(async (product) => {
+                    const folderPath = path.join(__dirname, '../../../public', product.imagepath);
+                    try {
+                        const files = fs.readdirSync(folderPath);
+                        const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                        product.firstImage = imageFiles.length > 0 ? `${product.imagepath}/${imageFiles[0]}` : '/path/to/default-image.jpg';
+                    } catch (err) {
+                        console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                        product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
+                    }
+                    return product;
+                }));
+                return productsWithImages;
             } else {
                 return []; // Nếu không có sản phẩm nào trong giỏ hàng
             }
