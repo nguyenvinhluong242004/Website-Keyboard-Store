@@ -34,6 +34,7 @@
   font-weight: bold;
 }
 .name {
+  font-family: "Baloo", sans-serif;
   font-size: 30px;
   font-weight: bold;
   width: 100%;
@@ -145,23 +146,32 @@
   justify-content: center;
   padding: 10px;
 }
+
 .grid-container {
-  margin-top: 20px;
-  display: grid; /* Sử dụng grid layout */
-  grid-template-columns: 22% 22% 22% 22%; /* 3 cột với kích thước đều nhau */
-  gap: 4%; /* Khoảng cách giữa các ô */
-  width: 100%; /* Chiều rộng của lưới */
+  display: flex;
+  flex-wrap: wrap;
+  gap:4%;
 }
 
+/* .grid-container {
+  margin-top: 20px;
+  display: grid; 
+  grid-template-columns: 22% 22% 22% 22%; 
+  gap: 4%; 
+  width: 100%; 
+} */
+
 .grid-item {
-  width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của ô */
-  height: 100%; /* Ảnh chiếm toàn bộ chiều cao của ô */
+  margin-top: 4%;
+  width: 22%; /* Ảnh chiếm toàn bộ chiều rộng của ô */
+  height: 10%; /* Ảnh chiếm toàn bộ chiều cao của ô */
   object-fit: cover; /* Giữ tỷ lệ ảnh, cắt bớt nếu cần */
+  cursor: pointer;
 }
-.main-image{
+.main-image {
   border-radius: 3px;
 }
-.mainIMG{
+.mainIMG {
   border-radius: 3px;
 }
 
@@ -196,7 +206,7 @@
   font-size: 15px;
   font-weight: bold;
 }
-.input-quantity-contai{
+.input-quantity-contai {
   display: flex;
   justify-content: space-between;
   width: 30%;
@@ -212,7 +222,8 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
   text-align: center;
 }
-.tru,.cong{
+.tru,
+.cong {
   border: 1px solid black;
   border-radius: 2px;
   display: flex;
@@ -222,7 +233,7 @@ input[type="number"]::-webkit-inner-spin-button {
   height: 20%;
   cursor: pointer;
 }
-.input-quantity{
+.input-quantity {
   display: flex;
   justify-content: center;
   text-align: center;
@@ -253,12 +264,13 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 20%;
   border-radius: 3%;
   position: relative;
-  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
 }
 .recommend-img {
   width: 100%; /* Đảm bảo thẻ chứa ảnh chiếm toàn bộ chiều rộng của phần tử */
   height: auto; /* Cho phép chiều cao tự động điều chỉnh theo tỷ lệ của ảnh */
   display: flex;
+  box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }
 .recommend-img img {
   border-radius: 3px;
@@ -286,12 +298,12 @@ input[type="number"]::-webkit-inner-spin-button {
 .product-infor {
   display: flex;
   justify-content: space-between;
+  padding: 2%;
 }
 .prodcut-price {
   font-family: "Baloo", sans-serif;
   font-size: small;
 }
-
 
 /* Review */
 .book-review {
@@ -441,7 +453,7 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 15px 20px;
 }
 
-.book-btn-review{
+.book-btn-review {
   position: absolute;
   border-radius: 5px;
   border: none;

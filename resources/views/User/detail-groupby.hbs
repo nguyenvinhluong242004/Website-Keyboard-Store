@@ -2,8 +2,8 @@
   <div class="row">
 
     <div class="col-md-7">
-      <div >
-        <img :src="mainImage" class="main-image" alt="Main" width="100%" />
+      <div class="main-image">
+        <img :src="mainImage" class="mainIMG" alt="Main" width="100%" />
       </div>
 
       <div class="grid-container">
@@ -13,58 +13,60 @@
           :key="index"
           @click="changeMainImage(image)"
         >
-          <img
-            :src="image"
-            :alt="'Ảnh ' + (index + 1)"
-            width="150px"
-            height="100px"
-            style="border-radius: 4px;"
-          />
+          <div class="item-image">
+            <img :src="image" :alt="'Ảnh ' + (index + 1)" />
+          </div>
+
         </div>
       </div>
+
     </div>
 
-    <div class="col-md-4">
-      <div class="name" v-text="getDB.productname"></div>
+    <div class="col-md-5">
+      <div class="name">[[getDB.productname]]</div>
 
-      <div>
-        <div class="card-body group_by rounded">GROUP BY</div>
-        <div class="time mt-3">End date:</div>
-        <div class="time">[[formattedEndDate]]</div>
+      <div class="group_by">GROUP BY</div>
+
+      <div class="flex-enddate">
+        End date: [[formattedEndDate]]
       </div>
 
-      
+      <div class="estimated-arrive">
+        Estimated Arrival: [[formattedArriveDate]]
+      </div>
 
-      <div class="price mt-4">
+      <div class="price">
         <div class="price-text">Price :</div>
-        <div class="money">[[getDB.currentprice]]</div>
-        <div class="symbol">$</div>
+        <div class="money">[[formatCurrencyUSD(getDB.currentprice)]]</div>
       </div>
-
+{{!-- 
       <div class="kit">Kit</div>
-      <select
-        id="mySelect"
-        style="width: 200px; border: 2px solid #000000; border-radius: 5px"
-      >
+
+      <select id="mySelect" class="type-product">
         <option value="option1">Base</option>
         <option value="option2" selected>Numpad</option>
         <option value="option3">Full</option>
-      </select>
+      </select> --}}
 
-      <div class="fw-bold mt-5">Quantily</div>
-      <input
-        type="number"
-        v-model="quanlity"
-        min="1"
-        style="width: 40px; border: 2px solid #000000; border-radius: 5px"
-      />
+      <div class="quantity">Quantily</div>
+      <div class="input-quantity-contai">
+        <div class="tru" @click="tru">-</div>
+        <input
+          type="number"
+          v-model="quanlity"
+          min="1"
+          class="input-quantity"
+        />
+        <div class="cong" @click="cong">
+          +
+        </div>
 
-      <div class="card-body fw-bold rounded flex_quan time_arrival mt-5">
-        Estimated Arrival: [[formattedArriveDate]]
       </div>
-      <button @click="addToCart" class="cart fw-bold mt-5 text-white">
-        Thêm vào giỏ hàng
+
+      <button @click="addToCart" class="add-to-cart">
+        ADD TO CART
       </button>
+      <hr />
       <div class="description" @click="toggleContent">
         Description
         <i
@@ -73,7 +75,7 @@
         ></i>
       </div>
       <div class="content" v-show="isContentVisible">
-       [[getDB.description]]
+        [[getDB.description]]
       </div>
       <hr />
       <div class="Specifications" @click="toggleCheck">
@@ -88,13 +90,41 @@
     </div>
 
   </div>
+  <div class="recom">
+    <div class="product-same">Recommended Products</div>
+    <div class="container-same-product">
+      <div class="product" v-for="item, index in sameProducts" :key="index">
+        <div class="recommend-img" @click="gotoDetai(item.productid)">
+          <img :src="item.imagepath[0]" alt="recommend" />
+          <div class="status"> ON SALE!</div>
+        </div>
+        <div class="product-infor">
+          <div class="name-product">
+            [[item.productname]]
+          </div>
+          <div class="prodcut-price">
+            <div
+              style="color:rgb(170, 170, 170);text-decoration: line-through;"
+            >
+              [[formatCurrencyUSD(getDB.oldprice)]]
+            </div>
+            <div style="color: green;">
+
+              [[formatCurrencyUSD(item.currentprice)]]
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
   <div class="flex_back">
-    <button class="back" @click="showMess">BACK</button>
+    <button class="back" @click="goToGroupbyPage">BACK</button>
   </div>
 
 </div>
 
 <script>
-  window.data = JSON.parse('{{{data}}}');
-  window.idGroupby ={{idGroupby}};
+  window.data = JSON.parse('{{{data}}}'); window.idProduct ={{idProduct}};
 </script>
