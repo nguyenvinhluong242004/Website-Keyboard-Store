@@ -128,7 +128,7 @@
                     <input type="checkbox" class="select-item" data-product-id="${item.productid}" 
                         data-price="${item.currentprice}" data-quantity="${item.quantity}" onclick="updateTotalPrice()"
                         style="margin: auto; margin-right: 7px;" ${isUnavailable ? 'disabled' : ''}>
-                    <img onclick="getItem(${item.productid})" src="${item.imagepath}/1.jpg" style="cursor: pointer;" alt="Product" class="me-3">
+                    <img onclick="getItem(${item.productid})" src="${item.firstImage}" style="cursor: pointer; width: 100px; aspect-ratio: 1 / 1; object-fit: cover;" alt="Product" class="me-3">
                     <div class="w-100">
                         <h6>${item.productname}</h6>
                         <div class="d-flex">
