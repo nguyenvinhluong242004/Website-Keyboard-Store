@@ -38,19 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const options = { year: "numeric", month: "2-digit", day: "2-digit" }; // Định dạng ngày/tháng/năm
         return date.toLocaleDateString("vi-VN", options); // Ví dụ: 27/12/2024
       },
-      formatCurrencyVN(amount) {
+      formatCurrencyUSD(amount) {
         if (isNaN(amount)) {
-          throw new Error("Giá trị nhập vào phải là số.");
+            throw new Error("Giá trị nhập vào phải là số.");
         }
-
-        // Chuyển đổi thành số (nếu không phải là số)
-        amount = Number(amount);
-        return amount.toLocaleString("vi-VN", {
-          style: "currency",
-          currency: "VND",
-        });
-      },
-
+        return amount.toLocaleString("en-US", { style: "currency", currency: "USD" });
+    },
       changeMainImage(image) {
         this.mainImage = image;
       },
@@ -111,6 +104,9 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error("Lỗi khi lấy danh sách sản phẩm:", error.message);
         }
       },
+      gotoDetai(url){
+        window.location.href = `/detail-product/instock/${url}`;
+      }
     },
     computed: {
       // formattedDescription() {
