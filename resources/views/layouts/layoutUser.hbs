@@ -39,24 +39,24 @@
 </head>
 <body class = "bg-secondary-subtle min-height-100">
     <!-- Header -->
-    <header id="header" class="text-white py-3 w-100 m-0" style="background-color: black;">
+    <header id="header" class="text-white py-3 w-100 m-0" style="background-color: rgb(40, 85, 136);">
         <div class="container-fluid mx-0">
             <div class="row align-items-center">
                 <div class="col-3 text-center align-items-center">
-                    <h1 class="h3">Mechanical Store</h1>
+                    <h1>Mechanical Store</h1>
                 </div>
-                <div class="col-5">
+                <div class="col-6">
                     <nav class="nav justify-content-center">
                         <a class="nav-link text-black fs-4 text-white" href="/">Home</a>
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-black fs-4 text-white" href="#" id="instockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Instock
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="instockDropdown">
-                                <li><a class="dropdown-item fs-5" href="/kitPhim">Kit Phim</a></li>
-                                <li><a class="dropdown-item fs-5" href="/keCap">Keycap</a></li>
-                                <li><a class="dropdown-item fs-5" href="/switch">Switch</a></li>
-                                <li><a class="dropdown-item fs-5" href="/accessories">Accessories</a></li>
+                            <ul class="dropdown-menu text-end" style="width:50px;" aria-labelledby="instockDropdown">
+                                <li v-for="(category, index) in categorys" :key="index">
+                                  <a class="dropdown-item fs-5" href="/kitPhim">[[category.name]]</a>
+                                  {{!-- mỗi category là id: , path:(link ảnh), name:  --}}
+                                </li>
                             </ul>
                         </div>
                         <a class="nav-link text-black fs-4 text-white" href="/group-by-product">GroupBy</a>
@@ -64,7 +64,7 @@
                         <a class="nav-link text-black fs-4 text-white" href="/service">Service</a>
                     </nav>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                     <div class="d-flex align-items-center">
                         <div class="col-7" style="margin-right: 7px;">
                             <input type="text" class="form-control me-2" placeholder="Search" v-model="searchQuery" @keyup.enter="search">

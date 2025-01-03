@@ -26,7 +26,7 @@ const subscribeNewsletter = require('./subscribeNewsletter.route');
 
 const shoppingCartRouter = require('./shoppingCart.route');
 const paymentRouter = require('./payment.route');
-const pathImg = require('./pathImage.route');
+const Fetch = require('./pathImage.route');
 
 const errorProductNotFoundRouter = require('./errorProductNotFound.route');
 
@@ -78,7 +78,7 @@ router.use('/payment', paymentRouter);
 
 //get path image
 
-router.use('/api', pathImg);
+router.use('/api', Fetch);
 
 
 module.exports = router;

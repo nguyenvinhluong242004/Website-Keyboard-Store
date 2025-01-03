@@ -1,5 +1,5 @@
 const { getPathImage } = require("../../models/User/apiImage.js");
-const { getLastProduct } = require("../../models/User/apiImage.js");
+const { getLastProduct,getcategory } = require("../../models/User/apiImage.js");
 
 
 const controller ={}
@@ -29,6 +29,16 @@ controller.indexLastProduct = async (req, res) => {
         } else {
             res.status(404).json({ message: 'Product not found' }); // Nếu không tìm thấy, trả về lỗi 404
         }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' }); // Xử lý lỗi server
+    }
+};
+controller.allcategory = async (req, res) => {
+    try {
+        const allcategory = await getcategory(); // Gọi hàm getPathImage từ model
+        res.status(200).json({ success:true, data:allcategory });
+       
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' }); // Xử lý lỗi server

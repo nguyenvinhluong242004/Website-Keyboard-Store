@@ -68,5 +68,20 @@ const getLastProduct = async () => {
     return null;
   } 
 };
+const getcategory = async () => {
+  try {
+    await pool.connect();
+    
+    const res = await pool.query('SELECT categoryid as id,imagepath as path, categoryname as name FROM category');
+    if (res.rows.length > 0) {
+      return res.rows;
+    } else {
+      throw new Error('Product not found');
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  } 
+};
 
-module.exports = { getImagesFromDirectory,getPathImage,getLastProduct};
+module.exports = { getImagesFromDirectory,getPathImage,getLastProduct,getcategory};
