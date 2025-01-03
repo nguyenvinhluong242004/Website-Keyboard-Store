@@ -46,7 +46,7 @@
     <div class="product-list" id="product-list">
         {{#each allProducts.data}}
         <div class="product-card">
-            <img src="{{this.imagepath}}/1.jpg" alt="{{this.productname}}" class="product-image">
+            <img src="{{this.firstImage}}" alt="{{this.productname}}" class="product-image">
 
             <div class="product-details">
                 <p class="product-name">[ {{this.status}} ] {{this.productname}}</p>
@@ -86,6 +86,5 @@
     </div>
 
     <div class="pagination" id="pagination">
-        
     </div>
 </div>
