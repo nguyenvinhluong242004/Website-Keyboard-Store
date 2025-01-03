@@ -23,9 +23,31 @@ const getAllProducts = async () => {
                 public.brand b ON p.brandid = b.brandid
         `);
 
+        // Thêm trường firstImage vào từng sản phẩm
+        const products = dataResult.rows.map(product => {
+            const productDir = path.join(__dirname, '../../../public', product.imagepath || '');
+            
+            let firstImage = null;
+            try {
+                if (fs.existsSync(productDir)) {
+                    const files = fs.readdirSync(productDir); // Lấy danh sách file trong thư mục
+                    if (files.length > 0) {
+                        firstImage = `${product.imagepath}/${files[0]}`; // Đường dẫn ảnh đầu tiên
+                    }
+                }
+            } catch (err) {
+                console.error(`Lỗi khi đọc thư mục của sản phẩm ${product.productid}:`, err);
+            }
+
+            return {
+                ...product,
+                firstImage: firstImage || null, // Gán đường dẫn hoặc null nếu không có ảnh
+            };
+        });
+
         return {
             totalProducts: parseInt(totalResult.rows[0].count, 10),
-            data: dataResult.rows,
+            data: products,
         };
     } catch (error) {
         console.error('Lỗi truy vấn tất cả sản phẩm:', error);
@@ -190,9 +212,37 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
         const totalProductsResult = await client.query(countQuery, countQueryParams);
         const totalProducts = parseInt(totalProductsResult.rows[0].count, 10);
 
+        // return {
+        //     totalProducts,
+        //     data: result.rows,
+        // };
+
+        const products = result.rows.map(product => {
+            const productDir = path.join(__dirname, '../../../public', product.imagepath || '');
+            
+            let firstImage = null;
+            try {
+                if (fs.existsSync(productDir)) {
+                    const files = fs.readdirSync(productDir); // Lấy danh sách file trong thư mục
+                    if (files.length > 0) {
+                        firstImage = `${product.imagepath}/${files[0]}`; // Đường dẫn ảnh đầu tiên
+                    }
+                }
+            } catch (err) {
+                console.error(`Lỗi khi đọc thư mục của sản phẩm ${product.productid}:`, err);
+            }
+
+            return {
+                ...product,
+                firstImage: firstImage || null, // Gán đường dẫn hoặc null nếu không có ảnh
+            };
+        });
+
+        console.log(products)
+
         return {
             totalProducts,
-            data: result.rows,
+            data: products,
         };
     } catch (error) {
         console.error('Lỗi truy vấn lọc sản phẩm:', error);

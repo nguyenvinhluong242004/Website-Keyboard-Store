@@ -25,7 +25,7 @@ function renderProducts(products) {
             const productCard = document.createElement('div');
             productCard.classList.add('product-card');
             productCard.innerHTML = `
-                <img src="${product.imagepath}/1.jpg" alt="${product.productname}" class="product-image">
+                <img src="${product.firstImage}" alt="${product.productname}" class="product-image">
                 <div class="product-details">
                     <p class="product-name">[ ${product.status} ] ${product.productname}</p>
                     <div class="product-info">
@@ -135,4 +135,4 @@ document.getElementById('sort-button').addEventListener('click', () => fetchProd
 document.getElementById('sort-button2').addEventListener('click', () => fetchProducts(1));
 
 // Fetch initial products on page load
-//fetchProducts(1);
+fetchProducts(1);

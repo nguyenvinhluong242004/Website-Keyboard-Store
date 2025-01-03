@@ -10,6 +10,8 @@ const productController = {
             const brands = await getBrands();
             const categories = await getCategories();
 
+            // console.log(allProducts)
+
             res.render("Admin/productList", {
                 layout: 'layoutAdmin', 
                 title: 'Product List',
@@ -17,9 +19,9 @@ const productController = {
                     <link rel="stylesheet" href="/Admin/Product/productList.css">
                     <script defer type="module" src="/Admin/Product/productFilter.js"></script>
                 `,
-                allProducts,
-                brands,
-                categories,
+                // allProducts,
+                // brands,
+                // categories,
             });
         } catch (error) {
             console.error("Error rendering product list page:", error);
