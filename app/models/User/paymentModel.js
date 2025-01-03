@@ -35,10 +35,24 @@ const placeOrder = async (orderData) => {
 
         for (let i = 0; i < orderData.cartItems.length; i++) {
             const item = orderData.cartItems[i];
-            await client.query(`
-                INSERT INTO public.orderdetail (orderid, numericalorder, productid, quantity, unitprice, groupbyid)
-                VALUES ($1, $2, $3, $4, $5, $6)
-            `, [orderId, i + 1, item.productid, item.quantity, item.currentprice, null]);
+            if (parseFloat(item.type) ===  1)
+            {
+                await client.query(`
+                    INSERT INTO public.orderdetail (orderid, numericalorder, productid, quantity, unitprice, groupbyid)
+                    VALUES ($1, $2, $3, $4, $5, $6)
+                `, [orderId, i + 1, item.productid, item.quantity, item.currentprice, null]);
+            }
+            else if (parseFloat(item.type) === 2)
+            {
+                const groupById = await client.query(`
+                    SELECT groupbyid FROM public.groupbyproduct WHERE productid = $1
+                `, [item.productid]);
+
+                await client.query(`
+                    INSERT INTO public.orderdetail (orderid, numericalorder, productid, quantity, unitprice, groupbyid)
+                    VALUES ($1, $2, $3, $4, $5, $6)
+                `, [orderId, i + 1, item.productid, item.quantity, item.currentprice, groupById.rows[0].groupbyid]);
+            }
         }
 
         await client.query('COMMIT');

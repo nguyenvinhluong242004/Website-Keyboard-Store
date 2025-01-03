@@ -9,14 +9,14 @@ const getKitPhim = async (req, res) => {
         const resultSum = await client.query(`
             SELECT COUNT(*) FROM public.product p
             JOIN public.Category c ON p.categoryid = c.categoryid
-            WHERE c.categoryname = 'Keyboards'
+            WHERE c.categoryname = 'Keyboards' AND p.type IS NOT NULL            
             `)
         
         // Query to get data from database
         const result = await client.query(`
             SELECT p.* FROM public.product p
             JOIN public.Category c ON p.categoryid = c.categoryid
-            WHERE c.categoryname = 'Keyboards'
+            WHERE c.categoryname = 'Keyboards' AND p.type IS NOT NULL
             LIMIT $1
         `, [visibleCount]);
         return {

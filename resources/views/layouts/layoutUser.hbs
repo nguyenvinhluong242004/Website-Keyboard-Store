@@ -55,7 +55,9 @@
                                 <li><a class="dropdown-item fs-5" href="/kitPhim">Kit Phim</a></li>
                                 <li><a class="dropdown-item fs-5" href="/keCap">Keycap</a></li>
                                 <li><a class="dropdown-item fs-5" href="/switch">Switch</a></li>
-                                <li><a class="dropdown-item fs-5" href="/accessories">Accessories</a></li>
+                                <li><a class="dropdown-item fs-5" href="/deskpads">Deskpads</a></li>
+                                <li><a class="dropdown-item fs-5" href="/supplies">Supplies</a></li>
+                                <li><a class="dropdown-item fs-5" href="/merch">Merch</a></li>
                             </ul>
                         </div>
                         <a class="nav-link text-black fs-4 text-white" href="/group-by-product">GroupBy</a>
@@ -101,19 +103,23 @@
                 <div class="col-4 text-center">
                     <h1 class="">Newsletter</h1>
                     <h4 style="color: #C8B8B8;">Stay updated by sending your email to receive information:</h4>
-                    <form @submit.prevent="subscribeNewsletter">
-                        <div class="row w-100">
+                    
+                    <div class="row w-100">
+                        <form @submit.prevent="subscribeNewsletter"></form>
                             <div class="col-12 mb-2">
                                 <input type="email" class="form-control mx-auto" style="max-width: 75%;" placeholder="Enter your email" v-model="newsletterEmail" @blur="validateEmail" required>
                             </div>
                             <div class="col-12 mb-2">
                                 <button class="btn mx-auto" style="max-width: 25%; background-color: #E2AC21" type="submit">Subscribe</button>
                             </div>
-                            <div class="col-12">
-                                <button class="btn btn-secondary" @click="toggleDarkMode" style="max-width: 50%; background-color: #E2AC21 padding: 1rem 2rem; font-size: 1.25rem;">Dark Mode</button>
-                            </div>
+                        </form>
+                        <div class="col-12">
+                            <button class="btn btn-secondary" @click="toggleDarkMode" style="max-width: 50%; background-color: #E2AC21 padding: 1rem 2rem; font-size: 1.25rem;">Dark Mode</button>
                         </div>
-                    </form>
+                    </div>
+                   
+
+                    
                 </div>
                 <div class="col-4 text-center">
                     <h1>Follow Us</h1>
