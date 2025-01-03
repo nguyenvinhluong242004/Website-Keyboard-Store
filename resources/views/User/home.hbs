@@ -174,86 +174,34 @@
             <h2 class="section-title">Sản phẩm được quan tâm</h2>
             <div class="tab-box">
                 <button class="tab-btn active">Được quan tâm</button>
-                <button class="tab-btn">Kit phím</button>
-                <button class="tab-btn">Keycap</button>
-                <button class="tab-btn">Switch</button>
+                <button class="tab-btn">Keyboards</button>
+                <button class="tab-btn">Keycaps</button>
+                <button class="tab-btn">Switchs</button>
+                <button class="tab-btn">Deskpads</button>
+                <button class="tab-btn">Supplies</button>
+                <button class="tab-btn">Merch</button>
             </div>
         </div>
         <div class="content-box">
             <div class="content active">
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899"
-                        alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
+                {{#each trendingProduct.data}}
+                <a href="{{this.href}}" class="card-link">
+                    <img src="{{this.firstImage}}" alt="Card Image" class="card-image">
+                    <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                    <h2 class="card-title">{{this.productname}}</h2>
                     <div class="card-bottom">
                         <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
+                            <span class="old-price">${{this.oldprice}}</span>
+                            <span class="current-price">${{this.currentprice}}</span>
                         </div>
                         <button onclick="handleAddToCart(event, '{{this.productid}}')"
                             class="add-cart material-symbols-rounded">add_shopping_cart</button>
                     </div>
                 </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899"
-                        alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button onclick="handleAddToCart(event, '{{this.productid}}')"
-                            class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899"
-                        alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button onclick="handleAddToCart(event, '{{this.productid}}')"
-                            class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899"
-                        alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button onclick="handleAddToCart(event, '{{this.productid}}')"
-                            class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
-                <a href="#" class="card-link">
-                    <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899"
-                        alt="Card Image" class="card-image">
-                    <p class="badge kit">Kit Set</p>
-                    <h2 class="card-title">Lorem ipsum, dolor sit amet consectetur adipisicing elit</h2>
-                    <div class="card-bottom">
-                        <div class="price">
-                            <span class="old-price">$25.00</span>
-                            <span class="current-price">$18.00</span>
-                        </div>
-                        <button onclick="handleAddToCart(event, '{{this.productid}}')"
-                            class="add-cart material-symbols-rounded">add_shopping_cart</button>
-                    </div>
-                </a>
+                {{/each}}
             </div>
             <div class="content">
-                {{#each kitProducts}}
+                {{#each keyboardProducts}}
                 <a href="{{this.href}}" class="card-link">
                     <img src="{{this.firstImage}}" alt="Card Image" class="card-image">
                     <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
@@ -288,6 +236,57 @@
             </div>
             <div class="content">
                 {{#each switchProducts}}
+                <a href="{{this.href}}" class="card-link">
+                    <img src="{{this.firstImage}}" alt="Card Image" class="card-image">
+                    <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                    <h2 class="card-title">{{this.productname}}</h2>
+                    <div class="card-bottom">
+                        <div class="price">
+                            <span class="old-price">${{this.oldprice}}</span>
+                            <span class="current-price">${{this.currentprice}}</span>
+                        </div>
+                        <button onclick="handleAddToCart(event, '{{this.productid}}')"
+                            class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                    </div>
+                </a>
+                {{/each}}
+            </div>
+            <div class="content">
+                {{#each deskpadProducts}}
+                <a href="{{this.href}}" class="card-link">
+                    <img src="{{this.firstImage}}" alt="Card Image" class="card-image">
+                    <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                    <h2 class="card-title">{{this.productname}}</h2>
+                    <div class="card-bottom">
+                        <div class="price">
+                            <span class="old-price">${{this.oldprice}}</span>
+                            <span class="current-price">${{this.currentprice}}</span>
+                        </div>
+                        <button onclick="handleAddToCart(event, '{{this.productid}}')"
+                            class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                    </div>
+                </a>
+                {{/each}}
+            </div>
+            <div class="content">
+                {{#each suppliesProducts}}
+                <a href="{{this.href}}" class="card-link">
+                    <img src="{{this.firstImage}}" alt="Card Image" class="card-image">
+                    <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
+                    <h2 class="card-title">{{this.productname}}</h2>
+                    <div class="card-bottom">
+                        <div class="price">
+                            <span class="old-price">${{this.oldprice}}</span>
+                            <span class="current-price">${{this.currentprice}}</span>
+                        </div>
+                        <button onclick="handleAddToCart(event, '{{this.productid}}')"
+                            class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                    </div>
+                </a>
+                {{/each}}
+            </div>
+            <div class="content">
+                {{#each merchProducts}}
                 <a href="{{this.href}}" class="card-link">
                     <img src="{{this.firstImage}}" alt="Card Image" class="card-image">
                     <p class="badge {{this.categoryname}}">{{this.categoryname}}</p>
