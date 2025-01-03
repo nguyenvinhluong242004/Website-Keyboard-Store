@@ -7,6 +7,7 @@ new Vue({
         estimatedDeliveryDate: '',
         subtotal: 0.00,
         total: 5.00,
+        typeProduct: 'instock'
     },
     delimiters: ['[[', ']]'],
     methods: {
@@ -17,8 +18,6 @@ new Vue({
         async fecthAddress(){
             const response = await axios.get(`/payment/api/get-address?userid=${this.user.userid}`); // Get data from the server
             this.address = response.data.address;
-
-            console.log(this.address);
         },
         calculateEstimatedDeliveryDate() {
             const currentDate = new Date();
