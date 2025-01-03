@@ -12,4 +12,5 @@ html[data-bs-theme="light"] {
 html[data-bs-theme="dark"] .bg-secondary-subtle {
     background-color: #333333;
     color: #ffffff;
+    
 }
