@@ -15,6 +15,7 @@ const searchProduct = async (search, visibleCount) => {
         const result = await client.query(`
             SELECT *
             FROM public.product
+            JOIN public.category ON product.categoryid = category.categoryid
             WHERE productname ILIKE $1
             LIMIT $2
         `, [`%${search}%`, visibleCount]);

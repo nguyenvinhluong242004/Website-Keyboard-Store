@@ -15,9 +15,10 @@ const getGroupByProduct = async (req, res) => {
         
         // Query to get data from database
         const result = await client.query(`
-            SELECT p.* 
+            SELECT * 
             FROM public.groupbyproduct g
             JOIN public.product p ON g.productid = p.productid
+            JOIN public.category c ON p.categoryid = c.categoryid
             WHERE g.enddate >= CURRENT_DATE AND p.type IS NOT NULL
             LIMIT $1
         `, [visibleCount]);
