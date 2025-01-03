@@ -3,7 +3,7 @@
 
     <div class="col-md-7">
       <div class="main-image">
-        <img :src="mainImage" alt="Main" width="100%" />
+        <img :src="mainImage" class="mainIMG" alt="Main" width="100%" />
       </div>
 
       <div class="grid-container">
@@ -27,13 +27,11 @@
 
       <div>
         <div class="group_by">LIMITED INSTOCK</div>
-        <div class="time mt-3">End date:</div>
-        <div class="time">[[formattedEndDate]]</div>
       </div>
 
       <div class="price mt-4">
         <div class="price-text">Price :</div>
-        <div class="money">[[formatCurrencyVN(getDB.currentprice)]]</div>
+        <div class="money">[[formatCurrencyUSD(getDB.currentprice)]]</div>
       </div>
 
       <div class="kit">Kit</div>
@@ -58,10 +56,7 @@
         </div>
 
       </div>
-
-      <div class="card-body fw-bold rounded flex_quan time_arrival mt-5">
-        Estimated Arrival: [[formattedArriveDate]]
-      </div>
+      
       <button @click="addToCart" class="cart fw-bold mt-5 text-white">
         Thêm vào giỏ hàng
       </button>
@@ -93,7 +88,7 @@
     <div class="product-same">Recommended Products</div>
     <div class="container-same-product" >
       <div class="product" v-for= "item, index in sameProducts" :key="index">
-        <div class="recommend-img">
+        <div class="recommend-img" @click="gotoDetai(item.productid)">
           <img :src="item.imagepath[0]" alt="recommend" />
           <div class="status"> ON SALE!</div>
         </div>
@@ -105,12 +100,12 @@
             <div
               style="color:rgb(170, 170, 170);text-decoration: line-through;"
             >
-                [[formatCurrencyVN(getDB.oldprice)]]
+                [[formatCurrencyUSD(getDB.oldprice)]]
             </div>
             <div style="color: green;">
             
 
-              [[formatCurrencyVN(item.currentprice)]]
+              [[formatCurrencyUSD(item.currentprice)]]
             </div>
           </div>
         </div>
@@ -120,7 +115,7 @@
     </div>
   </div>
   <div class="flex_back">
-    <button class="back" @click="showMess">BACK</button>
+    <button class="back" @click="goBack">BACK</button>
   </div>
   {{! Phần reivew  }}
   <div class="book-review mt-5">

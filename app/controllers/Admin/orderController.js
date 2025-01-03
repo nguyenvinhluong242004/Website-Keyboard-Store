@@ -13,26 +13,34 @@ controller.order = async (req, res) => {
   });
 };
 
-controller.createGroupBy = async (req, res) => {
+controller.createProduct = async (req, res) => {
   try {
-    const { pathimage,description, productname, currentprice, quantity, branchid, categoryid } = req.body;
-    const result = await Order.insertGroupBy(
-      pathimage,
+    const { description, productname, currentprice, quantity, branchid, categoryid, type } = req.body;
+
+    const result = await Order.insertProduct(
       description,
       productname,
       currentprice,
       quantity,
       branchid,
-      categoryid
+      categoryid,
+      type
     );
-    console.log("Result from insertGroupBy:", result); // Log kết quả từ model
 
-    if (result.success) {
+    const path = `/image/${result.productid}`;
+    console.log( 'tao then folder:',path);
+
+    const resultUpdate = await Order.updateProduct(result.productid,path);
+
+    console.log("Result from insertGroupBy:", resultUpdate); // Log kết quả từ model
+
+    if (result.success && resultUpdate.success) {
       // Trả về productid nếu thành công
       res.status(201).json({
         success: true,
         message: "GroupBy created successfully!",
         productid: result.productid,
+        pathImage: path,
       });
     } else {
       // Nếu không thành công, trả về thông báo lỗi
@@ -82,7 +90,10 @@ controller.getType = async (req, res) => {
   
   try {
     // Lấy tham số query 'typeName' từ URL (VD: /route?typeName=example) typeName
-    const typeName = req.query.typeName || 'Keycap';
+    const typeName = req.query.typeName;
+    if(!typeName){
+      console.log('Loi o controller lay id type');
+    }
 
     console.log('typename:',typeName);
 
@@ -124,13 +135,15 @@ controller.getBrand = async (req, res) => {
 
 controller.upImage = async (req, res) => {
   console.log('vao controller!!!');
+  
   try {
     // Kiểm tra file có tồn tại không
     if (!req.file) {
       return res.status(400).json({ message: 'Không có file được upload.' });
     }
 
-    const filePath = `/image/${req.body.productInfo}`; // Đường dẫn file trên server
+    const filePath = `${req.body.productInfo}`; // Đường dẫn file trên server
+    console.log('file path trong controller:',filePath);
 
     // Trả về thông tin cho frontend hoặc xử lý thêm (lưu vào DB)
     res.status(200).json({
