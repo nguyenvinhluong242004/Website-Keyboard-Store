@@ -20,7 +20,7 @@ export default {
                         <span class="old-price">$ {{ formatPrice(product.oldprice) }}</span>
                         <span class="current-price">$ {{ formatPrice(product.currentprice) }}</span>
                     </div>
-                    <button @click="addToCart" class="add-cart material-symbols-rounded">add_shopping_cart</button>
+                    <button @click.stop.prevent="addToCart" class="add-cart material-symbols-rounded">add_shopping_cart</button>
                 </div>
             </a>
         </div>
@@ -66,4 +66,3 @@ export default {
         this.fetchHref();
     }
 };
-

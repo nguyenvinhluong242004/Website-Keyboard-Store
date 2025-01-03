@@ -34,8 +34,14 @@ export default {
                  else if (this.product.type === 'Switch') {
                      return '/category/switch.jpg';
                  }
-                 else if (this.product.type === 'Accessories') {
-                     return '/category/phuKien.jpg';
+                 else if (this.product.type === 'Deskpads') {
+                     return '/category/deskpads.jpg';
+                 }
+                 else if (this.product.type === 'Supplies') {
+                      return '/category/supplies.jpg';
+                 }
+                 else if (this.product.type === 'Merch') {
+                     return '/category/merch.jpg';
                  }
                  else if (this.product.type === 'GroupBy Product') {
                      return '/category/kecap.jpg';
@@ -74,11 +80,27 @@ export default {
             this.product.quantity = data.totalProducts;
             this.loading = false;
         },
-        async fetchAccessories(){
+        async fetchDeskpads(){
             this.loading = true;
-            const response = await axios.get(`/accessories/api/get-accessories?visibleCount=${this.visibleCount}`); // Get data from the server
+            const response = await axios.get(`/deskpads/api/get-deskpads?visibleCount=${this.visibleCount}`); // Get data from the server
             const data = response.data;
-            this.products = data.dataAccessories;
+            this.products = data.dataDeskpads;
+            this.product.quantity = data.totalProducts;
+            this.loading = false;
+        },
+        async fetchSupplies(){
+            this.loading = true;
+            const response = await axios.get(`/supplies/api/get-supplies?visibleCount=${this.visibleCount}`); // Get data from the server
+            const data = response.data;
+            this.products = data.dataSupplies;
+            this.product.quantity = data.totalProducts;
+            this.loading = false;
+        },
+        async fetchMerch(){
+            this.loading = true;
+            const response = await axios.get(`/merch/api/get-merch?visibleCount=${this.visibleCount}`); // Get data from the server
+            const data = response.data;
+            this.products = data.dataMerch;
             this.product.quantity = data.totalProducts;
             this.loading = false;
         },
@@ -142,7 +164,13 @@ export default {
                 this.fetchSwitch();
             }
             else if (this.product.type === 'Accessories') {
-                this.fetchAccessories();
+                this.fetchDeskpads();
+            }
+            else if (this.product.type === 'Supplies') {
+                this.fetchSupplies();
+            }
+            else if (this.product.type === 'Merch') {
+                this.fetchMerch();
             }
             else if (this.product.type === 'GroupBy Product') {
                 this.fetchGroupByProduct();
@@ -179,8 +207,14 @@ export default {
         else if (this.product.type === 'Switch') {
             this.fetchSwitch();
         }
-        else if (this.product.type === 'Accessories') {
-            this.fetchAccessories();
+        else if (this.product.type === 'Deskpads') {
+            this.fetchDeskpads();
+        }
+        else if (this.product.type === 'Supplies') {
+            this.fetchSupplies();
+        }
+        else if (this.product.type === 'Merch') {
+            this.fetchMerch();
         }
         else if (this.product.type === 'GroupBy Product') {
             this.fetchGroupByProduct();
@@ -207,7 +241,7 @@ export default {
                 <div class="row">
                     <div class="col-9">
                         <span class="text-danger me-2">{{ product.type }}</span>
-                        <span class="text-success ms-2">Số lượng có: {{ product.quantity }}</span>
+                        <span class="text-success ms-2">Amount: {{ product.quantity }}</span>
                     </div>
                     <filter-product @filter-change="filterProducts" />
                 </div>
@@ -217,7 +251,7 @@ export default {
                 <product-card v-for="product in visibleProducts" :key="product.productid" :product="product" :type="productType" @add-to-cart="addToCart"></product-card>
             </div>
             <div class="text-center my-4">
-                <button class="btn btn-secondary" @click="loadMore">Xem thêm sản phẩm</button>
+                <button class="btn btn-secondary" @click="loadMore">Load More</button>
             </div>
         </div>
     </div>

@@ -18,25 +18,17 @@
         </div>
         <div class="card-body">
             <div v-for="item in cartItems" :key="item.productid" class="cart-item border p-3 d-flex align-items-start mb-2">
-                <img :src="`${item.imagepath}/1.jpg`" alt="Product" class="me-3" style="width: 100px; height: 100px;">
+                <img :src="item.firstImage" alt="Product" class="me-3" style="width: 100px; height: 100px;">
                 <div class="w-100">
-                    <h6>[[ item.productname ]]</h6>
-                    <p class="text-danger fw-bold">[[ item.currentprice ]]</p>
+                    <h6 class = "fw-bold">[[ item.productname ]]</h6>
+                    <p class="text-danger fw-bold">$ [[ item.currentprice ]]</p>
                     <p>Quantity: [[ item.quantity ]]</p>
+                    <p class="text-success fw-bold">
+                        <span v-if="item.type === 1">Instock</span>
+                        <span v-else-if="item.type === 2">GroupBy</span>
+                    </p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Type Product Method -->
-    <div class="card mb-4">
-        <div class="card-header">
-            Type Product
-        </div>
-        <div class="card-body">
-            <p><strong>
-                
-            </p>
         </div>
     </div>
 
