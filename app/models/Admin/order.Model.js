@@ -1,18 +1,41 @@
 const pool = require("../../config/database");
 
-const insertGroupBy = async (pathimage,description, productname, currentprice, quantity,  brandid, categoryid) => {
+const insertProduct = async (description, productname, currentprice, quantity,  brandid, categoryid, type) => {
   const client = await pool.connect();
   try {
     const query = `
-      INSERT INTO public.product (imagepath,description, productname, currentprice, quantity,  brandid, categoryid)
+      INSERT INTO public.product (description, productname, currentprice, quantity,  brandid, categoryid, type)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING productid 
     `;
-    const values = [pathimage,description, productname, currentprice, quantity, brandid, categoryid];
+    const values = [description, productname, currentprice, quantity, brandid, categoryid, type];
 
     const result = await client.query(query, values);
 
     return { success: true, productid: result.rows[0].productid }; 
+  } catch (error) {
+    console.error("Lỗi khi chèn dữ liệu vào bảng product:", error);
+    return { success: false, error: error.message };
+  } finally {
+    client.release(); // Đóng kết nối
+  }
+};
+const updateProduct = async (id,path) => {
+  const client = await pool.connect();
+
+
+
+  try {
+    const query = `
+      UPDATE public.product
+      SET imagepath = $2
+      WHERE productid = $1;
+    `;
+    const values = [id,path];
+
+    const result = await client.query(query, values);
+
+    return { success: true}; 
   } catch (error) {
     console.error("Lỗi khi chèn dữ liệu vào bảng product:", error);
     return { success: false, error: error.message };
@@ -106,4 +129,4 @@ const brandid = async (brandName) => {
   
   
 
-module.exports = { insertGroupBy,insertGroupByProduct,typeid,brandid };
+module.exports = { insertProduct,updateProduct,insertGroupByProduct,typeid,brandid };
