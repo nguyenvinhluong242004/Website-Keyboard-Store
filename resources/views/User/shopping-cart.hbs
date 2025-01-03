@@ -192,10 +192,28 @@
 
 
     function placeOrder() {
+        const checkboxes = document.querySelectorAll(".select-item:checked");
+
+        const cartItemCheck =[]
+
+        checkboxes.forEach(checkbox => {
+            const productId = checkbox.getAttribute("data-product-id");
+            const item = cartItemsMoveToPayment.find(item => parseFloat(item.productid) === parseFloat(productId));
+            if (item) {
+                cartItemCheck.push(item);
+            }
+        });
+
+        if (cartItemCheck.length === 0) {
+            $('#notificationMessage').text('Vui lòng chọn sản phẩm cần mua'); // Cập nhật nội dung thông báo
+            $('#notificationModal').modal('show');   // Hiển thị modal
+            return;
+        }
         // Redirect to the payment page with cart items
-        const cartItems = JSON.stringify(cartItemsMoveToPayment);
+        const cartItems = JSON.stringify(cartItemCheck);
         console.log(cartItems);
-        console.log(cartItemsMoveToPayment);
+        console.log(cartItemCheck);
+        
         window.location.href = `/payment?cartItems=${encodeURIComponent(cartItems)}`;
     }
 

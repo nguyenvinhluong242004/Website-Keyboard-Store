@@ -13,7 +13,9 @@ const authLoginGGRouter = require('./authLoginGG.route');
 const kitPhimRouter = require('./kitPhim.route');
 const keCapRouter = require('./keCap.route');
 const switchRouter = require('./switch.route');
-const accessoriesRouter = require('./accessories.route');
+const deskpadsRouter = require('./deskpads.route');
+const suppliesRouter = require('./supplies.route');
+const merchRouter = require('./merch.route');
 const groupByRouter = require('./groupby.route');
 const serviceRouter = require('./service.route'); 
 const introductionRouter = require('./introduction.route');
@@ -53,7 +55,9 @@ router.use('/auth/google', authLoginGGRouter); // Đăng nhập với Google
 router.use('/kitPhim', kitPhimRouter); // Kit phim
 router.use('/keCap', keCapRouter); // Ke Cap
 router.use('/switch', switchRouter); // Switch
-router.use('/accessories', accessoriesRouter); // Phụ kiện
+router.use('/deskpads', deskpadsRouter); // Phụ kiện
+router.use('/supplies', suppliesRouter); // Bàn phím
+router.use('/merch', merchRouter); // Merch
 router.use('/group-by-product', groupByRouter); // Nhóm sản phẩm
 router.use('/service', serviceRouter); // Dịch vụ
 router.use('/introduction', introductionRouter); // Giới thiệu

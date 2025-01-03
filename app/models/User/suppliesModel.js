@@ -1,27 +1,27 @@
 const pool = require('../../config/database');
 
-const getAccessories = async (req, res) => {
+const getSupplies = async (req, res) => {
     const visibleCount = req.query.visibleCount || 12;
 
     const client = await pool.connect();
     try {
-        //Query to get the sum of products 'Kit Phim' in the database
+        //Query to get the sum of products 'Supplies' in the database
         const resultSum = await client.query(`
             SELECT COUNT(*) FROM public.product p
             JOIN public.Category c ON p.categoryid = c.categoryid
-            WHERE c.categoryname = 'Deskpads'
+            WHERE c.categoryname = 'Supplies' AND p.type IS NOT NULL
             `)
         
         // Query to get data from database
         const result = await client.query(`
             SELECT p.* FROM public.product p
             JOIN public.Category c ON p.categoryid = c.categoryid
-            WHERE c.categoryname = 'Deskpads'
+            WHERE c.categoryname = 'Supplies' AND p.type IS NOT NULL
             LIMIT $1
         `, [visibleCount]);
         return {
             totalProducts: resultSum.rows[0].count,
-            dataAccessories: result.rows
+            dataSupplies: result.rows
         };
     } catch (error) {
         console.error('Lỗi truy vấn!', error);
@@ -32,5 +32,5 @@ const getAccessories = async (req, res) => {
 };
 
 module.exports = {
-    getAccessories,
+    getSupplies,
 };
