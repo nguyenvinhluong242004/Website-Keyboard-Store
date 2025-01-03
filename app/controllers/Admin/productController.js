@@ -1,4 +1,7 @@
-const { getAllProducts, getBrands, getCategories, getFilteredProducts, isProductExist, addProduct } = require('../../models/Admin/productModel');
+const fs = require('fs');
+const path = require('path');
+
+const { getAllProducts, getBrands, getCategories, getFilteredProducts, isProductExist, addProduct, saveImage } = require('../../models/Admin/productModel');
 
 const productController = {
     productList: async (req, res) => {
@@ -85,8 +88,9 @@ const productController = {
 
     addProduct: async (req, res) => {
         try {
-            //console.log(req.body);
-            const { name, listedPrice, adjustedPrice, type, quantity, brand, specification, description, images } = req.body;
+            const { name, listedPrice, adjustedPrice, type, quantity, brand, specification, description} = req.body;
+
+            console.log(req.body)
     
             // Kiểm tra xem sản phẩm đã tồn tại chưa
             const isExist = await isProductExist(name);
@@ -104,7 +108,6 @@ const productController = {
                 brand,
                 specification,
                 description,
-                images,
             });
     
             res.status(201).json({ message: 'Product added successfully', productId });
@@ -112,6 +115,22 @@ const productController = {
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Server error' });
+        }
+    },
+
+    addImages: async (req, res) => {
+        try {
+            // Lấy productId và image từ req.body
+            const { productId, image } = req.body;
+    
+            // Gọi model để lưu ảnh
+            const imagePath = await saveImage(productId, image); // Lưu ảnh và nhận đường dẫn ảnh
+    
+            // Trả về kết quả cho client
+            res.status(200).json({ message: 'Ảnh đã được lưu!', imagePath: `/image/${productId}/${imagePath}` });
+        } catch (error) {
+            console.error('Lỗi khi lưu ảnh:', error);
+            res.status(500).json(error); // Trả lỗi từ model về frontend
         }
     },
 };

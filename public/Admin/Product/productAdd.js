@@ -35,8 +35,9 @@ document.querySelector('.submit-button').addEventListener('click', async (event)
     const specification = document.getElementById('specification').value.trim();
     const description = document.getElementById('description').value.trim();
 
-    // Thu thập danh sách URL của các ảnh
     const images = imageSlots.map((slot) => slot.url).filter((url) => url !== null);
+
+    console.log(images);
 
     // Kiểm tra các trường bắt buộc
     if (!name || !type || !brand || !listedPrice || !adjustedPrice || !specification || !description || quantity <= 0) {
@@ -61,7 +62,6 @@ document.querySelector('.submit-button').addEventListener('click', async (event)
                 brand,
                 specification,
                 description,
-                images,
             }),
         });
 
@@ -69,6 +69,37 @@ document.querySelector('.submit-button').addEventListener('click', async (event)
 
         if (response.ok) {
             alert('Thêm sản phẩm thành công!');
+            const productId = result.productId; // Nhận productId từ kết quả API
+        
+            // Gửi từng ảnh một
+            for (let i = 0; i < images.length; i++) {
+                const imageFile = images[i]; // Đây là đối tượng file (File) từ input file
+        
+                // Tạo FormData để gửi ảnh lên server
+                const formData = new FormData();
+                formData.append('productId', productId);
+                formData.append('image', imageFile); // Thêm file vào FormData
+        
+                console.log("formData", formData); // Kiểm tra FormData
+        
+                try {
+                    const imageResponse = await fetch('/Admin/product/addImages', {
+                        method: 'POST',
+                        body: formData,
+                    });
+        
+                    const imageResult = await imageResponse.json();
+        
+                    if (imageResponse.ok) {
+                        console.log(`Ảnh ${i + 1} đã được thêm thành công!`);
+                    } else {
+                        console.error(`Có lỗi khi thêm ảnh ${i + 1}:`, imageResult.message);
+                    }
+                } catch (error) {
+                    console.error(`Lỗi khi gửi ảnh ${i + 1}:`, error);
+                }
+            }
+        
             // Reset form và hình ảnh sau khi thêm thành công
             resetFormAndImages();
         } else if (result.message === 'Product already exists') {

@@ -23,8 +23,6 @@ const insertProduct = async (description, productname, currentprice, quantity,  
 const updateProduct = async (id,path) => {
   const client = await pool.connect();
 
-
-
   try {
     const query = `
       UPDATE public.product
