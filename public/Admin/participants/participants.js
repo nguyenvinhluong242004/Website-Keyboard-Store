@@ -14,7 +14,9 @@ new Vue({
       shipPrice:30,
       participants: [],
       page: 1, 
-      pageRegister: 1, 
+      pageRegister: 0,
+      pageDetailRegister:1,
+      perPageDetailRegister:3,
       perPage: 3,
       perPageRegister: 3,
       totalPages: 1, 
@@ -37,6 +39,7 @@ new Vue({
 
       detaiRegister:[],
       allProductRegiser:[],
+      per:1,
       
     };
   },
@@ -62,6 +65,41 @@ new Vue({
   },
   
   methods: {
+    deleteForm() {
+      axios.put(`/admin/detail-participants/update/${this.idGroupby}`)
+        .then(response => {
+          if (response.data.success) {
+            alert(`Product with ID ${this.idGroupby} delete form successfully`);
+            // Thực hiện hành động khác nếu cần
+          } else {
+            console.error('Failed to delete product:', response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting product:', error);
+        });
+    },
+    closeForm() {
+      axios.put(`/admin/detail-participants/close/${this.idGroupby}`)
+        .then(response => {
+          if (response.data.success) {
+            alert(`Product with ID ${this.idGroupby} close form successfully`);
+            // Thực hiện hành động khác nếu cần
+          } else {
+            console.error('Failed to delete product:', response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting product:', error);
+        });
+    },
+    handleInput(event) {
+      if (this.perPageRegister < 1) {
+        this.perPageRegister = 1; // Nếu người dùng cố nhập nhỏ hơn 1, giá trị sẽ tự sửa thành 1
+      }
+      this.perPageRegister = event.target.value;
+      this. fetchRegister();
+    },
     async searchV2(){
       this.pageRegister = 1;
       this.search();
@@ -195,7 +233,9 @@ new Vue({
 
     fetchParticipants() {
       return new Promise((resolve, reject) => {
-        fetch(`/admin/detail-participants/api?page=${this.page}&perPage=${this.perPage}&orderby=${this.sort}`)
+        const url = `/admin/detail-participants/api?page=${this.page}&perPage=${this.perPage}&orderby=${this.sort}`;
+        console.log('url participants: ',url);
+        fetch(url)
           .then((response) => {
             if (!response.ok) {
               reject("Failed to fetch data");
@@ -204,6 +244,7 @@ new Vue({
           })
           .then((data) => {
             this.participants = data.allProductGroupBy;
+            console.log('participants:',this.participants);
             this.totalPages = data.totalPages;
             resolve(data); 
           })
@@ -217,7 +258,9 @@ new Vue({
 
     fetchRegister() {
       return new Promise((resolve, reject) => {
-        fetch(`/admin/detail-participants/api/register?page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`)
+        const url = `/admin/detail-participants/api/register?page=${this.pageRegister}&perPage=${this.perPageRegister}&id=${this.idGroupby}`;
+        console.log(url);
+        fetch(url)
           .then((response) => {
             if (!response.ok) {
               return reject("Failed to fetch data");
@@ -273,7 +316,9 @@ new Vue({
 
       this.selectedIndexRegister = index ||0;
       return new Promise((resolve, reject) => {
-        fetch(`/admin/detail-participants/api/detailRegister?page=${this.page}&perPage=${this.perPage}&id=${orderID}`)
+       const  url = `/admin/detail-participants/api/detailRegister?groupbyID=${this.idGroupby}&id=${orderID}`;
+       console.log(url);
+        fetch(url)
           .then((response) => {
             if (!response.ok) {
               return reject("Failed to fetch data");
@@ -336,7 +381,7 @@ new Vue({
         this.detailProduct.name=item.productname;
         this.detailProduct.price=item.currentprice;
         this.detailProduct.close=item.enddate;
-        this.detailProduct.quanlity=item.currentparticipants;
+        this.detailProduct.quanlity=item.quantity;
         this.detailProduct.expected=item.estimatearrive;
         this.detailProduct.brand=item.brandname;
         this.detailProduct.describe=item.description;
@@ -358,4 +403,5 @@ new Vue({
         } 
     },
   },
+ 
 });

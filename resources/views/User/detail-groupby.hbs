@@ -39,14 +39,14 @@
         <div class="price-text">Price :</div>
         <div class="money">[[formatCurrencyUSD(getDB.currentprice)]]</div>
       </div>
-{{!-- 
+      {{! 
       <div class="kit">Kit</div>
 
       <select id="mySelect" class="type-product">
         <option value="option1">Base</option>
         <option value="option2" selected>Numpad</option>
         <option value="option3">Full</option>
-      </select> --}}
+      </select> }}
 
       <div class="quantity">Quantily</div>
       <div class="input-quantity-contai">
@@ -63,9 +63,15 @@
 
       </div>
 
-      <button @click="addToCart" class="add-to-cart">
-        ADD TO CART
+      <button
+        @click="addToCart"
+        class="add-to-cart"
+        :disabled="isSoldOut"
+        :class="{'sold-out': isSoldOut}"
+      >
+        [[isSoldOut ? "SOLD OUT" : "ADD TO CART"]]
       </button>
+
       <hr />
       <div class="description" @click="toggleContent">
         Description

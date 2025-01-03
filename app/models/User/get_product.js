@@ -66,7 +66,8 @@ const getSameProduct = async (categoryId,quantity) => {
     }
 };
 
+
 module.exports = {
     getProduct,
-    getSameProduct
+    getSameProduct,
 };

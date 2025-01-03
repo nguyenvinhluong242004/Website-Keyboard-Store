@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { _isDomSupported } = require("chart.js/helpers");
-const { getProduct,getSameProduct } = require("../../models/User/get_product.js");
+const { getProduct,getSameProduct,deleteForm } = require("../../models/User/get_product.js");
 const insert = require("../../models/User/insertReviewModel.js");
 const getReview = require("../../models/User/getReviewModel.js");
 
@@ -248,6 +248,47 @@ controller.getSameProduct = async (req, res) => {
     });
   }
 };
+controller.deleteForm = async (req, res) => {
+  const user = req.session.user; // Lấy thông tin người dùng từ session
+  const { id } = req.params; // Lấy id từ URL params
+
+  // Kiểm tra người dùng
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized: User not logged in.",
+    });
+  }
+
+  try {
+    // Xóa sản phẩm trong cơ sở dữ liệu (giả sử sử dụng ORM hoặc query)
+    const result = await deleteForm(id); // Gọi hàm deleteForm để xóa sản phẩm
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: `Product with ID ${id} not found.`,
+      });
+    }
+
+    // Trả về phản hồi thành công
+    res.status(200).json({
+      success: true,
+      message: `Product with ID ${id} has been deleted successfully.`,
+    });
+
+  } catch (error) {
+    // Ghi lỗi và trả về phản hồi lỗi
+    console.error("Error deleting product:", error.message);
+    console.error("Error stack:", error.stack); // Thêm chi tiết lỗi để debug
+    res.status(500).json({
+      success: false,
+      message: "Error deleting product: " + error.message,
+    });
+  }
+};
+
+
 
 
 module.exports = controller;

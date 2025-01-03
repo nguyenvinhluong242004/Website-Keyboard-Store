@@ -554,3 +554,15 @@ input[type="number"]::-webkit-inner-spin-button {
 
   margin-bottom: 20px;
 }
+
+/* Khi hết hàng */
+.add-to-cart.sold-out {
+  background-color: #d3d3d3; /* Màu xám cho nút khi hết hàng */
+  color: #888; /* Màu chữ xám nhạt */
+  cursor: not-allowed; /* Thay đổi con trỏ chuột khi hết hàng */
+}
+
+/* Thêm hiệu ứng cho nút */
+.add-to-cart:disabled {
+  cursor: not-allowed; /* Chỉnh con trỏ chuột */
+}
