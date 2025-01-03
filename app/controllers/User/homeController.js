@@ -1,4 +1,4 @@
-const { getProducts, getPosters, getKeycap, getKit, getAccessories, getSwitch, } = require('../../models/User/homeModel');
+const {     getProducts, getKeycaps, getKeyboards,getDeskpads, getSupplies, getMerch, getSwitchs, getPosters, } = require('../../models/User/homeModel');
 
 const homeController = {
     home: async (req, res) => {
@@ -9,10 +9,12 @@ const homeController = {
             const trendingProduct = await getProducts(visibleCount);
 
             const maxProduct = 10;
-            const keycapProducts = await getKeycap(maxProduct);
-            const kitProducts = await getKit(maxProduct);
-            const accessoriesProducts = await getAccessories(maxProduct);
-            const switchProducts = await getSwitch(maxProduct);
+            const keycapProducts = await getKeycaps(maxProduct);
+            const deskpadProducts = await getDeskpads(maxProduct);
+            const suppliesProducts = await getSupplies(maxProduct);
+            const switchProducts = await getSwitchs(maxProduct);
+            const keyboardProducts = await getKeyboards(maxProduct);
+            const merchProducts = await getMerch(maxProduct);
 
             const topNewProduct = newProduct.data.slice(0, 10);
             const bottomNewProduct = newProduct.data.slice(10, 20);
@@ -39,9 +41,11 @@ const homeController = {
                 bottomSalesProduct,
                 trendingProduct,
                 keycapProducts,
-                kitProducts,
-                accessoriesProducts,
+                deskpadProducts,
+                suppliesProducts,
                 switchProducts,
+                keyboardProducts,
+                merchProducts,
                 poster,
             });
         } catch (error) {

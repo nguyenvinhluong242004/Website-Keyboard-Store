@@ -52,27 +52,7 @@ const getProducts = async (visibleCount) => {
     }
 };
 
-const getKeycap = async (maxCount) => {
-    const client = await pool.connect();
-    try {
-        const dataResult = await client.query(`
-            SELECT p.*, c.categoryname
-            FROM public.product p
-            JOIN public.category c ON p.categoryid = c.categoryid
-            WHERE p.categoryid = 1
-            LIMIT $1
-        `, [maxCount]);
-
-        return dataResult.rows; // Trả về danh sách sản phẩm
-    } catch (error) {
-        console.error('Lỗi truy vấn Keycap:', error);
-        throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
-    }
-};
-
-const getKit = async (maxCount) => {
+const getKeycaps = async (maxCount) => {
     const client = await pool.connect();
     try {
         const dataResult = await client.query(`
@@ -83,16 +63,82 @@ const getKit = async (maxCount) => {
             LIMIT $1
         `, [maxCount]);
 
-        return dataResult.rows; // Trả về danh sách sản phẩm
+        const productsWithImages = await Promise.all(dataResult.rows.map(async (product) => {
+            const folderPath = path.join(__dirname, '../../../public', product.imagepath);
+            try {
+                const files = fs.readdirSync(folderPath);
+                const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                product.firstImage = imageFiles.length > 0 ? `${product.imagepath}/${imageFiles[0]}` : '/path/to/default-image.jpg';
+            } catch (err) {
+                console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
+            }
+
+            // Thêm tiền tố vào productname dựa trên type
+            if (product.type === 1) {
+                product.productname = `[Instock] ${product.productname}`;
+                product.href = `/detail-product/instock/${product.productid}`;
+            } else if (product.type === 2) {
+                product.productname = `[GroupBy] ${product.productname}`;
+                product.href = `/detail-group-by/${product.productid}`;
+            }
+
+            return product;
+        }));
+
+        return productsWithImages;
     } catch (error) {
-        console.error('Lỗi truy vấn Keycap:', error);
+        console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
     } finally {
         client.release();
     }
 };
 
-const getAccessories = async (maxCount) => {
+const getKeyboards = async (maxCount) => {
+    const client = await pool.connect();
+    try {
+        const dataResult = await client.query(`
+            SELECT p.*, c.categoryname
+            FROM public.product p
+            JOIN public.category c ON p.categoryid = c.categoryid
+            WHERE p.categoryid = 1
+            LIMIT $1
+        `, [maxCount]);
+
+        const productsWithImages = await Promise.all(dataResult.rows.map(async (product) => {
+            const folderPath = path.join(__dirname, '../../../public', product.imagepath);
+            try {
+                const files = fs.readdirSync(folderPath);
+                const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                product.firstImage = imageFiles.length > 0 ? `${product.imagepath}/${imageFiles[0]}` : '/path/to/default-image.jpg';
+            } catch (err) {
+                console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
+            }
+
+            // Thêm tiền tố vào productname dựa trên type
+            if (product.type === 1) {
+                product.productname = `[Instock] ${product.productname}`;
+                product.href = `/detail-product/instock/${product.productid}`;
+            } else if (product.type === 2) {
+                product.productname = `[GroupBy] ${product.productname}`;
+                product.href = `/detail-group-by/${product.productid}`;
+            }
+
+            return product;
+        }));
+
+        return productsWithImages;
+    } catch (error) {
+        console.error('Lỗi truy vấn sản phẩm:', error);
+        throw error; // Ném lỗi để controller xử lý
+    } finally {
+        client.release();
+    }
+};
+
+const getSwitchs = async (maxCount) => {
     const client = await pool.connect();
     try {
         const dataResult = await client.query(`
@@ -103,16 +149,39 @@ const getAccessories = async (maxCount) => {
             LIMIT $1
         `, [maxCount]);
 
-        return dataResult.rows; // Trả về danh sách sản phẩm
+        const productsWithImages = await Promise.all(dataResult.rows.map(async (product) => {
+            const folderPath = path.join(__dirname, '../../../public', product.imagepath);
+            try {
+                const files = fs.readdirSync(folderPath);
+                const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                product.firstImage = imageFiles.length > 0 ? `${product.imagepath}/${imageFiles[0]}` : '/path/to/default-image.jpg';
+            } catch (err) {
+                console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
+            }
+
+            // Thêm tiền tố vào productname dựa trên type
+            if (product.type === 1) {
+                product.productname = `[Instock] ${product.productname}`;
+                product.href = `/detail-product/instock/${product.productid}`;
+            } else if (product.type === 2) {
+                product.productname = `[GroupBy] ${product.productname}`;
+                product.href = `/detail-group-by/${product.productid}`;
+            }
+
+            return product;
+        }));
+
+        return productsWithImages;
     } catch (error) {
-        console.error('Lỗi truy vấn Keycap:', error);
+        console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
     } finally {
         client.release();
     }
 };
 
-const getSwitch = async (maxCount) => {
+const getDeskpads = async (maxCount) => {
     const client = await pool.connect();
     try {
         const dataResult = await client.query(`
@@ -123,9 +192,118 @@ const getSwitch = async (maxCount) => {
             LIMIT $1
         `, [maxCount]);
 
-        return dataResult.rows; // Trả về danh sách sản phẩm
+        const productsWithImages = await Promise.all(dataResult.rows.map(async (product) => {
+            const folderPath = path.join(__dirname, '../../../public', product.imagepath);
+            try {
+                const files = fs.readdirSync(folderPath);
+                const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                product.firstImage = imageFiles.length > 0 ? `${product.imagepath}/${imageFiles[0]}` : '/path/to/default-image.jpg';
+            } catch (err) {
+                console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
+            }
+
+            // Thêm tiền tố vào productname dựa trên type
+            if (product.type === 1) {
+                product.productname = `[Instock] ${product.productname}`;
+                product.href = `/detail-product/instock/${product.productid}`;
+            } else if (product.type === 2) {
+                product.productname = `[GroupBy] ${product.productname}`;
+                product.href = `/detail-group-by/${product.productid}`;
+            }
+
+            return product;
+        }));
+
+        return productsWithImages;
     } catch (error) {
-        console.error('Lỗi truy vấn Keycap:', error);
+        console.error('Lỗi truy vấn sản phẩm:', error);
+        throw error; // Ném lỗi để controller xử lý
+    } finally {
+        client.release();
+    }
+};
+
+const getSupplies = async (maxCount) => {
+    const client = await pool.connect();
+    try {
+        const dataResult = await client.query(`
+            SELECT p.*, c.categoryname
+            FROM public.product p
+            JOIN public.category c ON p.categoryid = c.categoryid
+            WHERE p.categoryid = 5
+            LIMIT $1
+        `, [maxCount]);
+
+        const productsWithImages = await Promise.all(dataResult.rows.map(async (product) => {
+            const folderPath = path.join(__dirname, '../../../public', product.imagepath);
+            try {
+                const files = fs.readdirSync(folderPath);
+                const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                product.firstImage = imageFiles.length > 0 ? `${product.imagepath}/${imageFiles[0]}` : '/path/to/default-image.jpg';
+            } catch (err) {
+                console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
+            }
+
+            // Thêm tiền tố vào productname dựa trên type
+            if (product.type === 1) {
+                product.productname = `[Instock] ${product.productname}`;
+                product.href = `/detail-product/instock/${product.productid}`;
+            } else if (product.type === 2) {
+                product.productname = `[GroupBy] ${product.productname}`;
+                product.href = `/detail-group-by/${product.productid}`;
+            }
+
+            return product;
+        }));
+
+        return productsWithImages;
+    } catch (error) {
+        console.error('Lỗi truy vấn sản phẩm:', error);
+        throw error; // Ném lỗi để controller xử lý
+    } finally {
+        client.release();
+    }
+};
+
+const getMerch = async (maxCount) => {
+    const client = await pool.connect();
+    try {
+        const dataResult = await client.query(`
+            SELECT p.*, c.categoryname
+            FROM public.product p
+            JOIN public.category c ON p.categoryid = c.categoryid
+            WHERE p.categoryid = 6
+            LIMIT $1
+        `, [maxCount]);
+
+        const productsWithImages = await Promise.all(dataResult.rows.map(async (product) => {
+            const folderPath = path.join(__dirname, '../../../public', product.imagepath);
+            try {
+                const files = fs.readdirSync(folderPath);
+                const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                product.firstImage = imageFiles.length > 0 ? `${product.imagepath}/${imageFiles[0]}` : '/path/to/default-image.jpg';
+            } catch (err) {
+                console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                product.firstImage = '/path/to/default-image.jpg'; // Ảnh mặc định nếu xảy ra lỗi
+            }
+
+            // Thêm tiền tố vào productname dựa trên type
+            if (product.type === 1) {
+                product.productname = `[Instock] ${product.productname}`;
+                product.href = `/detail-product/instock/${product.productid}`;
+            } else if (product.type === 2) {
+                product.productname = `[GroupBy] ${product.productname}`;
+                product.href = `/detail-group-by/${product.productid}`;
+            }
+
+            return product;
+        }));
+
+        return productsWithImages;
+    } catch (error) {
+        console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
     } finally {
         client.release();
@@ -156,9 +334,11 @@ const getPosters = async () => {
 
 module.exports = {
     getProducts,
-    getKeycap,
-    getKit,
-    getAccessories,
-    getSwitch,
+    getKeycaps,
+    getKeyboards,
+    getDeskpads,
+    getSupplies,
+    getMerch,
+    getSwitchs,
     getPosters,
 };
