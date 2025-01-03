@@ -9,12 +9,21 @@ export default {
             href: ''
         };
     },
+    computed: {
+        productNameWithPrefix() {
+            if (this.type === 'GroupBy Product') {
+                return `[GroupBy] ${this.product.productname}`;
+            } else {
+                return `[Instock] ${this.product.productname}`;
+            }
+        }
+    },
     template: `
         <div class="col-md-4 mb-4 card-item">
             <a :href="href" class="card-link">
                 <img :src="firstImage" alt="Card Image" class="card-image">
                 <p class="badge" :class="product.categoryname">{{ product.categoryname }}</p>
-                <h2 class="card-title">{{ product.productname }}</h2>
+                <h2 class="card-title">{{ productNameWithPrefix }}</h2>
                 <div class="card-bottom">
                     <div class="price">
                         <span class="old-price">$ {{ formatPrice(product.oldprice) }}</span>

@@ -14,7 +14,7 @@ const getKitPhim = async (req, res) => {
         
         // Query to get data from database
         const result = await client.query(`
-            SELECT p.* FROM public.product p
+            SELECT * FROM public.product p
             JOIN public.Category c ON p.categoryid = c.categoryid
             WHERE c.categoryname = 'Keyboards' AND p.type IS NOT NULL
             LIMIT $1
