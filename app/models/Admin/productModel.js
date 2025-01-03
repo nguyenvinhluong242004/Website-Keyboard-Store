@@ -1,4 +1,6 @@
 const pool = require('../../config/database');
+const fs = require('fs');
+const path = require('path');
 
 const getAllProducts = async () => {
     const client = await pool.connect();
@@ -201,7 +203,7 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
 };
 
 // Hàm thêm sản phẩm vào database
-const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, brand, specification, description, images }) => {
+const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, brand, specification, description}) => {
     const client = await pool.connect();
     try {
         // Random estimatearrive từ 1 đến 7
@@ -231,17 +233,19 @@ const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, br
         }
         const brandid = brandResult.rows[0].brandid;
 
+        const productType = 1;
+
         // Chèn thông tin sản phẩm vào bảng product
         const insertProductQuery = `
             INSERT INTO public.product (
                 productname, specification, oldprice, currentprice, estimatearrive, 
-                description, categoryid, brandid, quantity
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                description, categoryid, brandid, quantity, type
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING productid
         `;
         const productParams = [
             name, specification, listedPrice, adjustedPrice, estimatearrive,
-            description, categoryid, brandid, quantity
+            description, categoryid, brandid, quantity, productType
         ];
         const result = await client.query(insertProductQuery, productParams);
         const productId = result.rows[0].productid;
@@ -254,15 +258,6 @@ const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, br
             WHERE productid = $2
         `;
         await client.query(updateImagePathQuery, [imagePath, productId]);
-
-        // Chèn ảnh vào bảng product_images (nếu có)
-        if (images && images.length > 0) {
-            const insertImagesQuery = `
-                INSERT INTO public.product_images (productid, imageurl)
-                VALUES ($1, unnest($2::text[]))
-            `;
-            await client.query(insertImagesQuery, [productId, images]);
-        }
 
         return { productId };
     } catch (error) {
@@ -292,6 +287,38 @@ const isProductExist = async (name) => {
     }
 };
 
+const saveImage = (productId, image) => {
+    return new Promise((resolve, reject) => {
+        try {
+            if (!image || !productId) {
+                return reject({ message: 'Thiếu thông tin cần thiết hoặc file ảnh!' });
+            }
+
+            // Tạo thư mục cho sản phẩm nếu chưa tồn tại
+            const dir = path.join(__dirname, '../../../public/image', productId);
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+                console.log(`Tạo thư mục: ${dir}`);
+            }
+
+            // Chuyển đổi base64 thành buffer và lưu thành file
+            const base64Data = image.split(',')[1]; // Tách phần base64 ra
+            const buffer = Buffer.from(base64Data, 'base64'); // Chuyển đổi base64 thành buffer
+
+            // Tạo tên file duy nhất
+            const fileName = `${Date.now()}-${Math.round(Math.random() * 1E9)}.jpg`; // Bạn có thể thay đổi phần mở rộng tùy ý
+            const filePath = path.join(dir, fileName); // Đường dẫn để lưu file
+
+            // Lưu file vào thư mục
+            fs.writeFileSync(filePath, buffer); // Lưu file
+
+            resolve(filePath); // Trả về đường dẫn của ảnh đã lưu
+        } catch (error) {
+            reject({ message: 'Có lỗi xảy ra khi lưu ảnh!', error });
+        }
+    });
+};
+
 module.exports = {
     getAllProducts,
     getBrands,
@@ -299,4 +326,5 @@ module.exports = {
     getFilteredProducts,
     addProduct,
     isProductExist,
+    saveImage,
 };

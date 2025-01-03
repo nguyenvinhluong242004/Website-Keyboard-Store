@@ -72,6 +72,9 @@ app.engine('hbs', expressHandlebars.engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views')); // Đặt thư mục views
 
+// app.use(express.json({ limit: '10mb' }));
+// app.use(express.urlencoded({ limit: '10mb', extended: true }));
+
 
 // // Helper handlebars paging
 // Handlebars.registerHelper('gt', function (a, b) {
