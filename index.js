@@ -64,7 +64,7 @@ app.engine('hbs', expressHandlebars.engine({
             }
             return result;
         },
-        isToggleForm: (value, condition) => {
+        isSoldOut: (value, condition) => {
             return value === condition ? 'true' : 'false';
         }
     }

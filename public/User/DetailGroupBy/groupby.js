@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
       hoverRating: 0, // Giá trị khi hover lên cái sao
       sameProducts: [],
       quantity: 4,
+      isSoldOut:false,
     },
     methods: {
       hoverStar(index) {
@@ -83,8 +84,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       },
       getImages() {
+        console.log(this.getDB);
         this.images = this.getDB.imagepath;
         this.mainImage = this.images[0];
+        this.isSoldOut = this.getDB.quantity ===0 ? true:false;
+        console.log('sanr pham het hangf',this.isSoldOut);
       },
       toggleForm() {
         this.isToggleForm = !this.isToggleForm;

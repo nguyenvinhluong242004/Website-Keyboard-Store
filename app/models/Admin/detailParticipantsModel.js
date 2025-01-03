@@ -16,6 +16,7 @@ const getListGroupBy = async (page, perPage,orderby) => {
       `
       SELECT 
         p.imagepath,
+        p.quantity,
         p.productname,
         p.currentprice,
         g.enddate,
@@ -32,7 +33,7 @@ const getListGroupBy = async (page, perPage,orderby) => {
       JOIN public.category c on p.categoryid = c.categoryid
 
       JOIN public.brand b on b.brandid = p.brandid
-
+      where p.type = 2
       ORDER BY ${orderby}
       LIMIT $1 OFFSET $2
      
@@ -100,11 +101,11 @@ const getListRegister = async (page, perPage, id) => {
     list.release();
   }
 };
-const getDetailRegister = async (page, perPage, orderid) => {
+const getDetailRegister = async (orderid,gbID) => {
   const list = await pool.connect();
   try {
   
-    const offset = (page - 1) * perPage;
+    //const offset = (page - 1) * perPage;
 
 
     const totalRegister = await list.query(
@@ -118,10 +119,10 @@ const getDetailRegister = async (page, perPage, orderid) => {
       FROM  public.orders o 
       JOIN public.orderdetail d on d.orderid=o.orderid 
       JOIN groupbyproduct p on p.groupbyid = d.groupbyid
-      WHERE o.orderid = $3
-      LIMIT $1 OFFSET $2
+      WHERE o.orderid = $1 and p.groupbyid = $2
+      --LIMIT $1 OFFSET $2
     `,
-      [perPage, offset, orderid]
+      [ orderid,gbID]
     );
 
     const allProduct = await list.query(
@@ -130,10 +131,10 @@ const getDetailRegister = async (page, perPage, orderid) => {
       FROM  public.orders o 
       JOIN public.orderdetail d on d.orderid=o.orderid 
 	    JOIN product p on p.productid = d.productid
-      WHERE o.orderid = $3
-      LIMIT $1 OFFSET $2
+      WHERE o.orderid = $1 and d.groupbyid =$2
+      --LIMIT $1 OFFSET $2
     `,
-      [perPage, offset, orderid]
+      [orderid,gbID]
     );
 
     return {
@@ -148,6 +149,68 @@ const getDetailRegister = async (page, perPage, orderid) => {
     throw error;
   } finally {
     list.release();
+  }
+};
+const deleteForm = async (id) => {
+  const client = await pool.connect(); // Kết nối đến cơ sở dữ liệu
+  try {
+      // Thực hiện truy vấn cập nhật
+      const result = await client.query(`
+          UPDATE product
+          SET type = NULL
+          WHERE productid = $1
+      `, [id]);
+
+      // Kiểm tra kết quả nếu không có dòng nào bị ảnh hưởng
+      if (result.rowCount === 0) {
+          throw new Error(`Không tìm thấy sản phẩm với ID: ${id}`);
+      }
+
+      // Trả về kết quả thành công
+      return {
+          success: true,
+          message: `Đã xóa loại sản phẩm cho sản phẩm có ID ${id}`,
+      };
+  } catch (error) {
+      // Ghi log lỗi chi tiết
+      console.error('Lỗi truy vấn:', error.message);
+      console.error('Chi tiết lỗi:', error.stack);
+
+      // Quăng lỗi để xử lý bên ngoài nếu cần
+      throw new Error(`Có lỗi xảy ra khi cập nhật sản phẩm: ${error.message}`);
+  } finally {
+      client.release(); // Giải phóng kết nối
+  }
+};
+const closeForm = async (id) => {
+  const client = await pool.connect(); // Kết nối đến cơ sở dữ liệu
+  try {
+      // Thực hiện truy vấn cập nhật
+      const result = await client.query(`
+          UPDATE product
+          SET quantity = 0
+          WHERE productid = $1
+      `, [id]);
+
+      // Kiểm tra kết quả nếu không có dòng nào bị ảnh hưởng
+      if (result.rowCount === 0) {
+          throw new Error(`Không tìm thấy sản phẩm với ID: ${id}`);
+      }
+
+      // Trả về kết quả thành công
+      return {
+          success: true,
+          message: `Đã xóa loại sản phẩm cho sản phẩm có ID ${id}`,
+      };
+  } catch (error) {
+      // Ghi log lỗi chi tiết
+      console.error('Lỗi truy vấn:', error.message);
+      console.error('Chi tiết lỗi:', error.stack);
+
+      // Quăng lỗi để xử lý bên ngoài nếu cần
+      throw new Error(`Có lỗi xảy ra khi cập nhật sản phẩm: ${error.message}`);
+  } finally {
+      client.release(); // Giải phóng kết nối
   }
 };
 
@@ -198,5 +261,7 @@ module.exports =
   getListGroupBy, 
   getListRegister,
   getDetailRegister,
-  searchRegister
+  searchRegister,
+  deleteForm,
+  closeForm
 };

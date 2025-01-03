@@ -156,8 +156,8 @@
           </div>
 
           <div class="par-btn">
-            <button class="delete-form">Delete form</button>
-            <button class="close-form">Close form</button>
+            <button class="delete-form" @click="deleteForm">Delete form</button>
+            <button class="close-form" @click="closeForm">Close form</button>
           </div>
 
         </div>
@@ -223,12 +223,15 @@
         </div>
       </div>
 
-      <div  class="bot-pagi">
-        <div class="par-pagi">
+      <div  class="bot-pagi-bot">
+        <div class="handle-input-bot">
+          <input class="handle-input" type="number" v-model="perPageRegister" min="1" @input="handleInput">
+        </div>
+        <div class="par-pagi-bot">
           <div class="pagination">
-            <button class="btn-pre" @click="changePageRegister(pageRegister - 1)" :disabled="pageRegister === 1">Previous</button>
+            <button class="page-item" @click="changePageRegister(pageRegister - 1)" :disabled="pageRegister === 1">Previous</button>
             <div class="l">Page <span v-text="pageRegister"></span> of <span v-text="totalPagesRegister"></div>
-            <button class="btn-nex" @click="changePageRegister(pageRegister + 1)" :disabled="pageRegister === totalPages">Next</button>
+            <button class="page-item" @click="changePageRegister(pageRegister + 1)" :disabled="pageRegister === totalPages">Next</button>
           </div> 
         </div>
       </div>
@@ -298,11 +301,11 @@
         </div>
 
         <div class="col-hd">
-          Product Price
+          Quatity
         </div>
 
         <div class="col-hd">
-          Quatity
+          Product Price
         </div>
 
         <div class="col-hd">

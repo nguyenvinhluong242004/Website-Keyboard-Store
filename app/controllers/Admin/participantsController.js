@@ -22,6 +22,67 @@ controller.showParticipants = async (req, res) => {
     res.status(500).send("Error fetching participants data.");
   }
 };
+controller.deleteForm = async (req, res) => {
+  const { id } = req.params; // Lấy id từ URL params
+  try {
+    // Xóa sản phẩm trong cơ sở dữ liệu (giả sử sử dụng ORM hoặc query)
+    const result = await moduleParticipants.deleteForm(id); // Gọi hàm deleteForm để xóa sản phẩm
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: `Product with ID ${id} not found.`,
+      });
+    }
+
+    // Trả về phản hồi thành công
+    res.status(200).json({
+      success: true,
+      message: `Product with ID ${id} has been deleted successfully.`,
+    });
+
+  } catch (error) {
+    // Ghi lỗi và trả về phản hồi lỗi
+    console.error("Error deleting product:", error.message);
+    console.error("Error stack:", error.stack); // Thêm chi tiết lỗi để debug
+    res.status(500).json({
+      success: false,
+      message: "Error deleting product: " + error.message,
+    });
+  }
+
+};
+controller.closeForm = async (req, res) => {
+  const { id } = req.params; // Lấy id từ URL params
+  console.log('ma no chuw id laf :', id);
+  try {
+    // Xóa sản phẩm trong cơ sở dữ liệu (giả sử sử dụng ORM hoặc query)
+    const result = await moduleParticipants.closeForm(id); // Gọi hàm deleteForm để xóa sản phẩm
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: `Product with ID ${id} not found.`,
+      });
+    }
+
+    // Trả về phản hồi thành công
+    res.status(200).json({
+      success: true,
+      message: `Product with ID ${id} has been deleted successfully.`,
+    });
+
+  } catch (error) {
+    // Ghi lỗi và trả về phản hồi lỗi
+    console.error("Error deleting product:", error.message);
+    console.error("Error stack:", error.stack); // Thêm chi tiết lỗi để debug
+    res.status(500).json({
+      success: false,
+      message: "Error deleting product: " + error.message,
+    });
+  }
+
+};
 
 
 controller.getGroupBy = async (req, res) => {
@@ -134,16 +195,13 @@ controller.getRegisterExport = async (req, res) => {
 
 controller.getDetailRegister = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; 
-    const perPage = parseInt(req.query.perPage) || 5; 
+    // const page = parseInt(req.query.page) || 1; 
+    // const perPage = parseInt(req.query.perPage) || 5; 
+    const gbID = req.query.groupbyID || 1;
     const orderid = parseInt(req.query.id) || 1;
 
 
-    const listDetailRegister = await moduleParticipants.getDetailRegister(
-      page,
-      perPage,
-      orderid
-    );
+    const listDetailRegister = await moduleParticipants.getDetailRegister(orderid,gbID);
 
     listDetailRegister.allRegister.forEach((item) => {
       item.orderdate = moment(item.orderdate).format("YYYY-MM-DD");
@@ -152,7 +210,7 @@ controller.getDetailRegister = async (req, res) => {
       item.estimatearrive = moment(item.estimatearrive).format("YYYY-MM-DD");
     });
 
-    console.log('fdffffff',listDetailRegister);
+    console.log('danh sachs chi tiet nguowif dang kis',listDetailRegister);
 
     res.json({
       allRegister: listDetailRegister.allRegister,
