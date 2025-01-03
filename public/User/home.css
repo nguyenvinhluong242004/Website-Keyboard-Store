@@ -79,7 +79,7 @@
     border-radius: 50px;
 }
 
-.card-link .badge.Keycap {
+.card-link .badge.Keycaps {
     color: #b22485;
     background: #f7dff5;
 }
@@ -87,13 +87,21 @@
     color: #b25a2b;
     background: #ffe3d2;
 }
-.card-link .badge.Accessories {
+.card-link .badge.Keyboards {
     color: #2b85b2;
     background: #d2f4ff; 
 }
-.card-link .badge.Kit-Phim {
+.card-link .badge.Deskpads {
     color: #6f3fb2;
     background: #ecdfff;
+}
+.card-link .badge.Supplies {
+    color: #1b5e20; /* Màu chữ xanh lá đậm */
+    background: #c8e6c9; /* Nền xanh lá nhạt */
+}
+.card-link .badge.Merch {
+    color: #3e2723; /* Màu chữ nâu đậm */
+    background: #ffccbc; /* Nền cam nhạt */
 }
 
 
