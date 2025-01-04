@@ -34,7 +34,7 @@ class ConfirmPassController {
 
         const rs = await accountModel.findAccountByEmailTypeEmail(req.session.email);
         if (!rs){
-            res.status(200).json({ success: false, message: 'Không có tài khoản ứng với email này (Email).' });
+            return res.status(200).json({ success: false, message: 'Không có tài khoản ứng với email này (Email).' });
         }
 
 
