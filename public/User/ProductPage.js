@@ -25,7 +25,7 @@ export default {
         },
         imagePoster() {
             if (this.products && this.products.length > 0) {
-                if (this.product.type === 'Kit Phim') {
+                if (this.product.type === 'Keyboards') {
                      return '/category/kitPhim.jpg';
                  }
                  else if (this.product.type === 'Kecap') {
@@ -154,7 +154,7 @@ export default {
         },
         loadMore() {
             this.visibleCount += 12;
-            if (this.product.type === 'Kit Phim') {
+            if (this.product.type === 'Keyboards') {
                 this.fetchKitPhim();
             }
             else if (this.product.type === 'Kecap') {
@@ -198,7 +198,7 @@ export default {
         },
     },
     mounted() {
-        if (this.product.type === 'Kit Phim') {
+        if (this.product.type === 'Keyboards') {
             this.fetchKitPhim();
         }
         else if (this.product.type === 'Kecap') {
