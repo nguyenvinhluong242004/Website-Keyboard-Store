@@ -26,16 +26,15 @@ class ConfirmPassController {
     // [POST] /confirm-mail/send-code/api
     async sendCode(req, res){
 
-        const rs = await accountModel.findAccountByEmailTypeEmail(req.body.email.toString());
-        if (!rs){
-            res.status(200).json({ success: false, message: 'Không có tài khoản ứng với email này (Email).' });
-        }
-
-
         if (req.body.status){ // status: true --> lấy từ input
             console.log("yes")
             req.session.email = req.body.email.toString(); // Lấy email từ yêu cầu
             console.log(req.body.email.toString());
+        }
+
+        const rs = await accountModel.findAccountByEmailTypeEmail(req.session.email);
+        if (!rs){
+            res.status(200).json({ success: false, message: 'Không có tài khoản ứng với email này (Email).' });
         }
 
 
