@@ -1,6 +1,6 @@
 const { getPathImage } = require("../../models/User/apiImage.js");
-const { getLastProduct,getcategory } = require("../../models/User/apiImage.js");
-
+const { getLastProduct,getcategory,getreview,sendreview } = require("../../models/User/apiImage.js");
+const moment = require('moment');
 
 const controller ={}
 
@@ -44,5 +44,48 @@ controller.allcategory = async (req, res) => {
         res.status(500).json({ message: 'Server error' }); // Xử lý lỗi server
     }
 };
+
+controller.review = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const reviews = await getreview(id); // Gọi hàm getPathImage từ model
+
+        // Sửa định dạng ngày tháng trong reviews
+        const formattedReviews = reviews.map(review => ({
+            ...review,
+            date: moment(review.date).format('YYYY-MM-DD'), // Định dạng ngày theo yêu cầu
+        }));
+
+        res.status(200).json({ success: true, data: formattedReviews });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' }); // Xử lý lỗi server
+    }
+};
+controller.giveReview = async (req, res) => {
+    const { Rating, Id, Review } = req.body;
+    console.log('Rating:', Rating); // Số sao được chọn
+    console.log('Review:', Review); // Nội dung đánh giá
+    console.log('ID:', Id); // Nội dung đánh giá
+    
+    try {
+      // Gửi review và lấy kết quả (ví dụ: reviewId hoặc thông tin gì đó)
+      const result = await sendreview(Rating, Id, Review);
+  
+      if (result && result.success) {
+        // Trả về thông tin chi tiết về review vừa gửi
+        res.status(200).json({
+          success:true,
+          message: 'Gửi review thành công!',
+        });
+      } else {
+        res.status(400).json({ message: 'Không thể gửi review!' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' }); // Xử lý lỗi server
+    }
+  };
+  
 
 module.exports = controller;

@@ -22,7 +22,7 @@
 
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="name">[[getDB.productname]]</div>
 
       <div>
@@ -33,14 +33,6 @@
         <div class="price-text">Price :</div>
         <div class="money">[[formatCurrencyUSD(getDB.currentprice)]]</div>
       </div>
-
-      <div class="kit">Kit</div>
-
-      <select id="mySelect" class="type-product">
-        <option value="option1">Base</option>
-        <option value="option2" selected>Numpad</option>
-        <option value="option3">Full</option>
-      </select>
 
       <div class="fw-bold mt-5">Quantily</div>
       <div class="input-quantity-contai">
@@ -56,7 +48,7 @@
         </div>
 
       </div>
-      
+
       <button @click="addToCart" class="cart fw-bold mt-5 text-white">
         Thêm vào giỏ hàng
       </button>
@@ -86,8 +78,8 @@
   </div>
   <div class="recom">
     <div class="product-same">Recommended Products</div>
-    <div class="container-same-product" >
-      <div class="product" v-for= "item, index in sameProducts" :key="index">
+    <div class="container-same-product">
+      <div class="product" v-for="item, index in sameProducts" :key="index">
         <div class="recommend-img" @click="gotoDetai(item.productid)">
           <img :src="item.imagepath[0]" alt="recommend" />
           <div class="status"> ON SALE!</div>
@@ -100,10 +92,9 @@
             <div
               style="color:rgb(170, 170, 170);text-decoration: line-through;"
             >
-                [[formatCurrencyUSD(getDB.oldprice)]]
+              [[formatCurrencyUSD(getDB.oldprice)]]
             </div>
             <div style="color: green;">
-            
 
               [[formatCurrencyUSD(item.currentprice)]]
             </div>
@@ -117,205 +108,226 @@
   <div class="flex_back">
     <button class="back" @click="goBack">BACK</button>
   </div>
-  {{! Phần reivew  }}
-  <div class="book-review mt-5">
-    <div class="book-review-title">Đánh giá sản phẩm</div>
 
-    <div class="book-review-rate">
-      <div class="book-review-rate-overall">
-        <div class="rate-digit">5</div>
-        <div class="rate-star">
-          <i
-            :class="
-                i <= 5 ? 'fa-solid fa-star' : 'fa-regular fa-star'
+  <div id="overlay" class="overlay"></div>
+
+  <!-- Toast Notification -->
+  <div
+    id="toast"
+    class="toast position-fixed top-50 start-50 translate-middle"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="toast-body text-center">
+      Đánh giá của bạn đã được gửi thành công!
+    </div>
+  </div>
+
+  {{! Phần reivew  }}
+  <div class="book-review-container">
+    <div class="book-review mt-5">
+      <div class="book-review-title">Đánh giá sản phẩm</div>
+
+      <div class="book-review-rate">
+        <div class="book-review-rate-overall">
+          <div class="rate-digit">[[averageRating]]</div>
+          <div class="rate-star">
+            <i
+              :class="
+                i <= [[averageRating]]? 'fa-solid fa-star' : 'fa-regular fa-star'
               "
+              v-for="i in 5"
+              :key="i"
+            ></i>
+          </div>
+          <div class="rate-based-on">[[reviews.length]]</div>
+        </div>
+
+      </div>
+
+      <div class="book-review-rate-detail">
+        <div class="rate-each">
+
+          <i class="fa-solid fa-star" v-for="i in 5" :key="i"></i>
+          <div class="rating-bar">
+            <div
+              class="rating-bar-fill"
+              :style="{ width:  calculateStarPercentage(5) + '%' }"
+            ></div>
+          </div>
+          <div class="rate-num">[[countStarReviews(5)]]</div>
+
+        </div>
+
+        <div class="rate-each">
+          <i
+            :class="i <= 4 ? 'fa-solid fa-star' : 'fa-regular fa-star'"
             v-for="i in 5"
             :key="i"
           ></i>
-        </div>
-        <div class="rate-based-on">3</div>
-      </div>
-
-    </div>
-
-    <div class="book-review-rate-detail">
-      <div class="rate-each">
-
-        <i class="fa-solid fa-star" v-for="i in 5" :key="i"></i>
-        <div class="rating-bar">
-          <div class="rating-bar-fill" :style="{ width: 80 + '%' }"></div>
-        </div>
-        <div class="rate-num">34</div>
-
-      </div>
-
-      <div class="rate-each">
-        <i
-          :class="i <= 4 ? 'fa-solid fa-star' : 'fa-regular fa-star'"
-          v-for="i in 5"
-          :key="i"
-        ></i>
-        <div class="rating-bar">
-          <div class="rating-bar-fill" :style="{ width: 45 + '%' }"></div>
-        </div>
-        <div class="rate-num">4</div>
-      </div>
-
-      <div class="rate-each">
-        <i
-          :class="i <= 3 ? 'fa-solid fa-star' : 'fa-regular fa-star'"
-          v-for="i in 5"
-          :key="i"
-        ></i>
-        <div class="rating-bar">
-          <div class="rating-bar-fill" :style="{ width: 63 + '%' }"></div>
-        </div>
-        <div class="rate-num">3</div>
-      </div>
-
-      <div class="rate-each">
-        <i
-          :class="i <= 2 ? 'fa-solid fa-star' : 'fa-regular fa-star'"
-          v-for="i in 5"
-          :key="i"
-        ></i>
-        <div class="rating-bar">
-          <div class="rating-bar-fill" :style="{ width: 23 + '%' }"></div>
-        </div>
-        <div class="rate-num">2</div>
-      </div>
-
-      <div class="rate-each">
-        <i
-          :class="i <= 1 ? 'fa-solid fa-star' : 'fa-regular fa-star'"
-          v-for="i in 5"
-          :key="i"
-        ></i>
-        <div class="rating-bar">
-          <div class="rating-bar-fill" :style="{ width: 65 + '%' }"></div>
-        </div>
-        <div class="rate-num">1</div>
-      </div>
-
-    </div>
-
-    <!-- Nút để bật đánh giá -->
-    <div class="book-review-btn-review">
-      <!-- <div> Vui lòng đăng nhập để viết đánh giá </div> -->
-      <button
-        type="button"
-        :class="isToggleForm ? 'btn btn-danger' : 'btn btn-outline-primary'"
-        @click="toggleForm"
-      >
-        <i
-          :class=" isToggleForm ? 'fa-solid fa-xmark me-1' : 'fa-solid fa-pen me-1' "
-        ></i>
-        [[toggleForm? "Hủy đánh giá" : "Viết đánh giá"]]
-      </button>
-    </div>
-
-    <!-- Form nhận xét của user -->
-    <div class="your-review-form" v-if="isToggleForm">
-      <form action="/" method="post" enctype="multipart/form-data">
-        <div class="mb-3">
-          <label class="form-label fw-bold">Đánh giá</label>
-          <div class="form-star-rating">
-            <i
-              v-for="i in 5"
-              :key="i"
-              :class="{
-                  'fa-solid fa-star': i <= (hoverRating || rating),
-                  'fa-regular fa-star': i > (hoverRating || rating),
-                }"
-              @mouseenter="hoverStar(i)"
-              @mouseleave="hoverStar(0)"
-              @click="setRating(i)"
-            ></i>
+          <div class="rating-bar">
+            <div
+              class="rating-bar-fill"
+              :style="{ width: calculateStarPercentage(4) + '%' }"
+            ></div>
           </div>
-          <input type="hidden" v-model="rating" name="Rating" />
+          <div class="rate-num">[[countStarReviews(4)]]</div>
         </div>
 
-        <div class="mb-3">
-          <label for="Review" class="form-label fw-bold">Nhận xét</label>
-          <textarea
-            name="Review"
-            class="form-control"
-            id="Review"
-            rows="3"
-            style="resize: none"
-          ></textarea>
+        <div class="rate-each">
+          <i
+            :class="i <= 3 ? 'fa-solid fa-star' : 'fa-regular fa-star'"
+            v-for="i in 5"
+            :key="i"
+          ></i>
+          <div class="rating-bar">
+            <div
+              class="rating-bar-fill"
+              :style="{ width: calculateStarPercentage(3) + '%' }"
+            ></div>
+          </div>
+          <div class="rate-num">[[countStarReviews(3)]]</div>
         </div>
 
-        <div class="mb-4">
-          <label for="Images" class="form-label fw-bold">Hình ảnh</label>
-          <div class="review-image"><i class="fa-solid fa-plus"></i></div>
+        <div class="rate-each">
+          <i
+            :class="i <= 2 ? 'fa-solid fa-star' : 'fa-regular fa-star'"
+            v-for="i in 5"
+            :key="i"
+          ></i>
+          <div class="rating-bar">
+            <div
+              class="rating-bar-fill"
+              :style="{ width: calculateStarPercentage(2) + '%' }"
+            ></div>
+          </div>
+          <div class="rate-num">[[countStarReviews(2)]]</div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
-      </form>
-    </div>
+        <div class="rate-each">
+          <i
+            :class="i <= 1 ? 'fa-solid fa-star' : 'fa-regular fa-star'"
+            v-for="i in 5"
+            :key="i"
+          ></i>
+          <div class="rating-bar">
+            <div
+              class="rating-bar-fill"
+              :style="{ width: calculateStarPercentage(1) + '%' }"
+            ></div>
+          </div>
+          <div class="rate-num">[[countStarReviews(1)]]</div>
+        </div>
 
-    <!-- Các đánh giá -->
-    <div class="reviews">
-      <div class="review">
-        <!-- avatar -->
-        <div class="review-avatar-ctn">
-          <div class="review-avatar">
-            <img
-              src="/image/1/EmeraldGreen_WK_1512x.jpg"
-              class="w-100 h-100"
-              alt="avatar"
-            />
+      </div>
+
+      <!-- Nút để bật đánh giá -->
+      <div class="book-review-btn-review">
+        <!-- <div> Vui lòng đăng nhập để viết đánh giá </div> -->
+        <button
+          type="button"
+          :class="isToggleForm ? 'btn btn-danger' : 'btn btn-outline-primary'"
+          @click="toggleForm"
+        >
+          <i
+            :class=" isToggleForm ? 'fa-solid fa-xmark me-1' : 'fa-solid fa-pen me-1' "
+          ></i>
+          [[ isToggleForm ? 'Hủy đánh giá' : 'Viết đánh giá' ]]
+        </button>
+      </div>
+
+      <!-- Form nhận xét của user -->
+      <div class="your-review-form" v-if="isToggleForm">
+        <form @submit.prevent="submitReview">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Rating</label>
+            <div class="form-star-rating">
+              <i
+                v-for="i in 5"
+                :key="i"
+                :class="{
+              'fa-solid fa-star': i <= (hoverRating || rating),
+              'fa-regular fa-star': i > (hoverRating || rating),
+            }"
+                @mouseenter="hoverStar(i)"
+                @mouseleave="hoverStar(0)"
+                @click="setRating(i)"
+              ></i>
+            </div>
+            <input type="hidden" v-model="rating" name="Rating" />
+            <input type="hidden" v-model="idproduct" name="Id" />
+          </div>
+
+          <div class="mb-3">
+            <label for="Review" class="form-label fw-bold">Comment</label>
+            <textarea
+              name="Review"
+              class="form-control"
+              id="Review"
+              rows="3"
+              style="resize: none"
+              v-model="comment"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+        </form>
+      </div>
+
+      <!-- Các đánh giá -->
+      <div class="reviews">
+        <!-- Dấu hiệu loading -->
+        <div
+          v-if="isloadingreview"
+          class="d-flex justify-content-center align-items-center"
+          style="color:rgb(0, 115, 255)"
+        >
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
 
-        <!-- phần review bên trái + phản hồi -->
-        <div class="review-content-ctn">
-          <div class="review-name">Minh</div>
-          <div class="review-rate-star">
-            <i
-              :class="
-                  i <= 5 ? 'fa-solid fa-star' : 'fa-regular fa-star'
+        <div class="review" v-for="(review, index) in reviews.slice(0,visibleReviews)" :key="index">
+          <div
+            class="d-flex justify-content-center align-items-center rounded-circle bg-primary text-white mt-2"
+            style="width: 2vw; height: 2vw; overflow: hidden"
+          >
+            <span class="text-truncate w-100 text-center">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+
+          <!-- phần review bên trái + phản hồi -->
+          <div class="review-content-ctn">
+            <div class="review-name">[[review.email]]</div>
+            <div class="review-rate-star">
+              <i
+                :class="
+                  i <= [[review.stars]] ? 'fa-solid fa-star' : 'fa-regular fa-star'
                 "
-              v-for="i in 5"
-              :key="i"
-            ></i>
-          </div>
-          <div class="review-date">4</div>
-          <div class="review-content-text">
-            <br />
-            alo alo
-          </div>
-
-          <!-- <div class="review-content-images">
-
-              <div class="image-ctn">
-                <img :src="images[1]" alt="review image" />
-              </div>
-              <div class="image-ctn">
-                <img :src="images[1]" alt="review image" />
-              </div>
-              <div class="image-ctn">
-                <img :src="images[1]" alt="review image" />
-              </div>
-            </div> -->
-
-          <div class="review-respond">
-            <div class="fw-bold mb-2">Phản hồi của cửa hàng</div>
-            Shop rất vui vì nhận được đánh giá.
+                v-for="i in 5"
+                :key="i"
+              ></i>
+            </div>
+            <div class="review-date">[[review.date]]</div>
+            <div class="review-content-text">
+              [[review.comment]]
+            </div>
           </div>
         </div>
+        <!-- Nút Xem thêm với Bootstrap -->
+        <button
+          v-if="reviews.length > visibleReviews"
+          @click="showMore"
+          class="btn btn-primary text-center"
+        >
+          Xem thêm
+        </button>
+
       </div>
 
-      {{!-- <button
-        v-if="reviews.length > visibleReviews"
-        @click="showMore"
-        class="book-btn-review"
-      >
-        Xem thêm
-      </button> --}}
     </div>
-
   </div>
 
 </div>
