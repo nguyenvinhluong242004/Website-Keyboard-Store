@@ -72,7 +72,8 @@ document.addEventListener("DOMContentLoaded", function () {
           method: "POST",
           contentType: "application/json",
           data: JSON.stringify({
-            ProductID: this.idGroupby,
+            ProductID: this.getDB.productid,
+            Quantity: this.quanlity,
           }),
           success: function (response) {
             // Xử lý khi gọi API thành công
@@ -123,17 +124,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const response = await fetch(url);
 
-          if (!response.ok) {
-            return response.json();
-          }
+          console.log('review',response);
           
           // Chuyển đổi dữ liệu sang JSON
           const data = await response.json();
           console.log(data);
+          if(data.success){
+            this.isloadingreview = false;
+            this.reviews = data.data || [];
+          }
 
           // Gán danh sách sản phẩm trả về vào một biến trong Vue (ví dụ: products)
-          this.isloadingreview = false;
-          this.reviews = data.data || [];
         } catch (error) {
           console.error("Lỗi khi lấy reviews:", error.message);
         }
