@@ -88,6 +88,12 @@ new Swiper('.banner-wrapper', {
         1024: {
             slidesPerView: 1  // Màn hình lớn sẽ hiển thị 3 thẻ
         },
+    },
+
+    // Autoplay
+    autoplay: {
+        delay: 4000,  // Thời gian chuyển slide (4 giây)
+        disableOnInteraction: false // Tiếp tục tự động chạy ngay cả khi người dùng tương tác
     }
 });
 
