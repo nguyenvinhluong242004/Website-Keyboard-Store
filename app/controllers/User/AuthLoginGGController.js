@@ -21,9 +21,6 @@ class AuthLoginGGController {
                 return res.redirect('/login');
             }
 
-            // Xử lý khi đã đăng nhập thành công
-            console.log('Thông tin tài khoản Google:', user);
-
             const result = await AccountModel.findAccountByEmailAndGoogleID(user.email, user.googleId);
 
             if (result) {

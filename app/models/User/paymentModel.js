@@ -3,9 +3,8 @@ const pool = require('../../config/database');
 const getAddress = async (userid) => {
     userid = parseInt(userid);
 
-    const client = await pool.connect();
     try {
-        const result = await client.query(`
+        const result = await pool.query(`
             SELECT * FROM public.Address
             WHERE userid = $1
         `, [userid]);
@@ -15,17 +14,14 @@ const getAddress = async (userid) => {
     } catch (error) {
         console.error('Error querying!', error);
         throw new Error('Error fetching data.');
-    } finally {
-        client.release();
     }
 }
 
 const placeOrder = async (orderData) => {
-    const client = await pool.connect();
 
     try {
-        await client.query('BEGIN');
-        const orderResult = await client.query(`
+        await pool.query('BEGIN');
+        const orderResult = await pool.query(`
             INSERT INTO public.orders (userid, userpaid, totalamount, orderdate, orderstatus, paymentmethod)
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING orderid
@@ -37,31 +33,29 @@ const placeOrder = async (orderData) => {
             const item = orderData.cartItems[i];
             if (parseFloat(item.type) ===  1)
             {
-                await client.query(`
+                await pool.query(`
                     INSERT INTO public.orderdetail (orderid, numericalorder, productid, quantity, unitprice, groupbyid)
                     VALUES ($1, $2, $3, $4, $5, $6)
                 `, [orderId, i + 1, item.productid, item.quantity, item.currentprice, null]);
             }
             else if (parseFloat(item.type) === 2)
             {
-                const groupById = await client.query(`
+                const groupById = await pool.query(`
                     SELECT groupbyid FROM public.groupbyproduct WHERE productid = $1
                 `, [item.productid]);
 
-                await client.query(`
+                await pool.query(`
                     INSERT INTO public.orderdetail (orderid, numericalorder, productid, quantity, unitprice, groupbyid)
                     VALUES ($1, $2, $3, $4, $5, $6)
                 `, [orderId, i + 1, item.productid, item.quantity, item.currentprice, groupById.rows[0].groupbyid]);
             }
         }
 
-        await client.query('COMMIT');
+        await pool.query('COMMIT');
     } catch (error) {
-        await client.query('ROLLBACK');
+        await pool.query('ROLLBACK');
         console.error('Error querying!', error);
         throw new Error('Error creating order.');
-    } finally {
-        client.release();
     }
 }
 

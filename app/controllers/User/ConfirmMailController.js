@@ -27,9 +27,7 @@ class ConfirmPassController {
     async sendCode(req, res){
 
         if (req.body.status){ // status: true --> lấy từ input
-            console.log("yes")
             req.session.email = req.body.email.toString(); // Lấy email từ yêu cầu
-            console.log(req.body.email.toString());
         }
 
         const rs = await accountModel.findAccountByEmailTypeEmail(req.session.email);
@@ -39,10 +37,6 @@ class ConfirmPassController {
 
 
         req.session.code = Math.floor(100000 + Math.random() * 900000); // Tạo mã xác thực ngẫu nhiên
-
-        console.log('Email:', req.session.email);
-        console.log('Email User:', process.env.EMAIL_USER);
-        console.log('Email Password:', process.env.EMAIL_PASS);
 
         // Gửi mã xác thực qua email
         transporter.sendMail({

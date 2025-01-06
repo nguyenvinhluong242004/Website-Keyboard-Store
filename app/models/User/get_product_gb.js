@@ -1,10 +1,10 @@
 const pool = require('../../config/database');
 
 const getGroupByProduct = async (id, visibleCount = 1) => {
-    const client = await pool.connect();
+
     try {
         // Query to get data from database
-        const result = await client.query(`
+        const result = await pool.query(`
             SELECT * 
             FROM public.product p 
             JOIN public.groupbyproduct g ON g.productid = p.productid
@@ -18,8 +18,6 @@ const getGroupByProduct = async (id, visibleCount = 1) => {
     } catch (error) {
         console.error('Lỗi truy vấn!', error);
         throw new Error('Có lỗi xảy ra khi lấy dữ liệu.');
-    } finally {
-        client.release();
     }
 };
 
