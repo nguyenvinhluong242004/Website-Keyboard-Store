@@ -20,7 +20,6 @@ class ResetPassController {
     // [POST] /reset-password/api
     async callAPIResetPass(req, res){
         const { newPassword, confirmNewPassword, verificationCode, timeCode } = req.body; // Lấy email, mật khẩu mới và mã xác thực từ yêu cầu
-        console.log(req.session.email, newPassword, confirmNewPassword, verificationCode, timeCode, req.session.code);
         try {
             // Kiểm tra tài khoản có tồn tại và mã xác thực đúng
             const existingUser = await AccountModel.findAccountByEmail(req.session.email);

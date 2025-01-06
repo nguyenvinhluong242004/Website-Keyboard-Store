@@ -11,7 +11,6 @@ const controller = {};
 controller.showDetailProduct = async (req, res) => {
   idProduct = req.params.id || 1;
 
-  console.log("id product:", idProduct);
   const user = req.session.user;
   try {
     // Lấy dữ liệu từ model
@@ -39,7 +38,6 @@ controller.showDetailProduct = async (req, res) => {
 controller.showDetailProductVer2 = async (req, res) => {
   const user = req.session.user;
   const id = req.params.id || 1; // Lấy ID sản phẩm từ route hoặc mặc định là 1
-  console.log("id product:", id);
 
   try {
     // Lấy dữ liệu sản phẩm từ model
@@ -56,7 +54,6 @@ controller.showDetailProductVer2 = async (req, res) => {
       "../../../public",
       product.imagepath
     );
-    console.log("Folder path:", folderPath);
 
     try {
       // Đọc danh sách file ảnh trong thư mục
@@ -66,7 +63,6 @@ controller.showDetailProductVer2 = async (req, res) => {
         .map((file) => `${product.imagepath}/${file}`); // Tạo URL đầy đủ cho từng ảnh
 
       product.imagepath = imageFiles; // Gán mảng ảnh vào `imagepath`
-      console.log("Product data:", product);
     } catch (err) {
       console.error(`Lỗi đọc folder ảnh ${folderPath}:`, err);
       product.imagepath = []; // Nếu lỗi, gán mảng rỗng
@@ -91,9 +87,7 @@ controller.showDetailProductVer2 = async (req, res) => {
 };
 
 controller.getImageProduct = async (req, res) => {
-  console.log("getImageProduct");
   const id = req.params.id || 1; // Lấy ID sản phẩm từ route hoặc mặc định là 1
-  console.log("id product:", id);
 
   try {
     // Lấy dữ liệu sản phẩm từ model
@@ -110,7 +104,6 @@ controller.getImageProduct = async (req, res) => {
       "../../../public",
       product.imagepath
     );
-    console.log("Folder path:", folderPath);
 
     try {
       // Đọc danh sách file ảnh trong thư mục
@@ -120,7 +113,6 @@ controller.getImageProduct = async (req, res) => {
         .map((file) => `${product.imagepath}/${file}`); // Tạo URL đầy đủ cho từng ảnh
 
       product.imagepath = imageFiles; // Gán mảng ảnh vào `imagepath`
-      console.log("Product data:", product);
     } catch (err) {
       console.error(`Lỗi đọc folder ảnh ${folderPath}:`, err);
       product.imagepath = []; // Nếu lỗi, gán mảng rỗng
@@ -138,11 +130,7 @@ controller.insertReview = async (req, res) => {
   try {
     const { productid, email, reviewdate, comment, stars } = req.body;
 
-    console.log(req.body);
-
     const result = await insert(productid, email, reviewdate, comment, stars);
-
-    console.log("Result from insertGroupBy:", result); // Log kết quả từ model
 
     if (result.success) {
       // Trả về productid nếu thành công
@@ -168,8 +156,6 @@ controller.getReview = async (req, res) => {
   const id = req.query.id || 1;
   try {
     const result = await getReview(id);
-
-    console.log("Result from getReview:", result); // Log kết quả từ model
 
     if (result.success) {
       const formattedReviews = result.reviews.map((review) => ({
@@ -203,7 +189,6 @@ controller.getSameProduct = async (req, res) => {
   const user = req.session.user;
   const categoryId = req.params.category || 1; // Lấy ID sản phẩm từ route hoặc mặc định là 1
   const quantity = req.query.quantity||3;
-  console.log("id product:",  quantity);
 
   try {
     // Lấy dữ liệu sản phẩm từ model
@@ -221,7 +206,6 @@ controller.getSameProduct = async (req, res) => {
         "../../../public",
         item.imagepath
       ); // Đường dẫn tới folder ảnh
-      console.log(folderPath);
       try {
         const imageFiles = fs
           .readdirSync(folderPath) // Lấy danh sách file trong folder

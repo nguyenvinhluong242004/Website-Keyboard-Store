@@ -40,7 +40,7 @@ const getImagesFromDirectory = (directory) => {
 
 const getPathImage = async (idProduct) => {
   try {
-    await pool.connect();
+    
 
     const res = await pool.query(
       "SELECT imagepath FROM product WHERE productid = $1",
@@ -58,7 +58,7 @@ const getPathImage = async (idProduct) => {
 };
 const getLastProduct = async () => {
   try {
-    await pool.connect();
+    
 
     const res = await pool.query("SELECT count(*) as last FROM product");
     if (res.rows.length > 0) {
@@ -73,7 +73,7 @@ const getLastProduct = async () => {
 };
 const getcategory = async () => {
   try {
-    await pool.connect();
+    
 
     const res = await pool.query(
       "SELECT categoryid as id,imagepath as path, categoryname as name FROM category"
@@ -90,7 +90,7 @@ const getcategory = async () => {
 };
 const getreview = async (id) => {
   try {
-    await pool.connect();
+    
 
     const res = await pool.query(
       `SELECT email, reviewdate as date, comment, stars

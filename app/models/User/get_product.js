@@ -9,10 +9,9 @@ const getProduct = async (id, visibleCount = 1) => {
         throw new Error('Số lượng hiển thị không hợp lệ.');
     }
 
-    const client = await pool.connect();
     try {
         // Query để lấy dữ liệu từ cơ sở dữ liệu
-        const result = await client.query(`
+        const result = await pool.query(`
             SELECT * 
             FROM public.product p
             WHERE p.productid = $1
@@ -30,19 +29,16 @@ const getProduct = async (id, visibleCount = 1) => {
         console.error('Lỗi truy vấn:', error.message);
         console.error('Chi tiết lỗi:', error.stack);
         throw new Error('Có lỗi xảy ra khi lấy dữ liệu.');
-    } finally {
-        client.release();
-    }
+    } 
 };
 const getSameProduct = async (categoryId,quantity) => {
     if (!categoryId || isNaN(categoryId) || categoryId <= 0) {
         throw new Error('ID sản phẩm không hợp lệ.');
     }
 
-    const client = await pool.connect();
     try {
         // Query để lấy dữ liệu từ cơ sở dữ liệu
-        const result = await client.query(`
+        const result = await pool.query(`
             SELECT * 
             FROM public.product p
             WHERE p.categoryid = $1
@@ -61,9 +57,7 @@ const getSameProduct = async (categoryId,quantity) => {
         console.error('Lỗi truy vấn:', error.message);
         console.error('Chi tiết lỗi:', error.stack);
         throw new Error('Có lỗi xảy ra khi lấy dữ liệu.');
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 

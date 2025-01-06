@@ -7,7 +7,6 @@ const controller = {};
 controller.showDetailGroupby = async (req, res) => {
     const user = req.session.user;
     const id = req.params.id || 1; // Lấy ID sản phẩm từ route hoặc mặc định là 1
-    console.log("id product:", id);
   
     try {
       // Lấy dữ liệu sản phẩm từ model
@@ -24,7 +23,6 @@ controller.showDetailGroupby = async (req, res) => {
         "../../../public",
         product.imagepath
       );
-      console.log("Folder path:", folderPath);
   
       try {
         // Đọc danh sách file ảnh trong thư mục
@@ -34,7 +32,6 @@ controller.showDetailGroupby = async (req, res) => {
           .map((file) => `${product.imagepath}/${file}`); // Tạo URL đầy đủ cho từng ảnh
   
         product.imagepath = imageFiles; // Gán mảng ảnh vào `imagepath`
-        console.log("Product data:", product);
       } catch (err) {
         console.error(`Lỗi đọc folder ảnh ${folderPath}:`, err);
         product.imagepath = []; // Nếu lỗi, gán mảng rỗng
