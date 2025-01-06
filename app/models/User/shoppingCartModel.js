@@ -106,7 +106,8 @@ class shoppingCartModel {
                 SELECT p.productid, p.productname, p.oldprice, p.currentprice, p.imagepath, p.categoryid, p.quantity as total, s.quantity, p.type
                 FROM ShoppingCart s
                 JOIN Product p ON s.productid = p.productid
-                WHERE s.userid = $1;
+                WHERE s.userid = $1
+                ORDER BY p.productid;
             `;
 
             const result = await pool.query(query, [UserID]);
