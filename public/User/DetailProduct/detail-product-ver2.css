@@ -256,7 +256,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .container-same-product {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 5%;
   margin-top: 50px;
 }
@@ -306,9 +306,14 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* Review */
+.book-review-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 .book-review {
   position: relative;
-  width: 1300px;
+  width: 100%;
   padding: 20px;
   display: flex;
   flex-flow: row wrap;
@@ -326,20 +331,21 @@ input[type="number"]::-webkit-inner-spin-button {
   font-weight: bold;
 }
 
-.book-review-rate,
 .book-review-btn-review {
   width: 50%;
   height: 170px;
   display: flex;
   align-items: center;
+  justify-content: start;
 }
 
 .book-review-rate {
   justify-content: start;
-}
-
-.book-review-btn-review {
-  justify-content: center;
+  width: 50%;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
 }
 
 .book-review-rate-overall {
@@ -371,7 +377,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .book-review-rate-detail {
-  width: 400px;
+  width: 50%;
   height: 140px;
   display: flex;
   flex-direction: column;
@@ -419,9 +425,8 @@ input[type="number"]::-webkit-inner-spin-button {
   border-top: 1px solid rgb(199, 199, 199);
 
   width: 100%;
-
   margin-top: 15px;
-  padding: 15px 20px;
+
   padding-bottom: 5px;
 }
 
@@ -450,7 +455,6 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 100%;
   border-top: 1px solid rgb(199, 199, 199);
   margin-top: 15px;
-  padding: 15px 20px;
 }
 
 .book-btn-review {
@@ -519,4 +523,32 @@ input[type="number"]::-webkit-inner-spin-button {
   gap: 10px;
 
   margin-bottom: 20px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Làm mờ nền */
+  z-index: 1040; /* Đảm bảo overlay hiển thị trên tất cả các phần tử khác */
+  display: none; /* Ban đầu không hiển thị */
+}
+
+/* Toast ở giữa màn hình */
+.toast {
+  z-index: 1050; /* Đảm bảo Toast hiển thị trên overlay */
+  display: none; /* Ban đầu không hiển thị */
+  animation: slideDown 0.5s ease-out; /* Hiệu ứng thả xuống */
+}
+
+/* Animation để thả toast từ trên xuống */
+@keyframes slideDown {
+  0% {
+    transform: translate(-50%, -100%);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
 }

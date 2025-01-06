@@ -69,7 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
           method: "POST",
           contentType: "application/json",
           data: JSON.stringify({
-            ProductID: this.idGroupby,
+            ProductID: this.getDB.productid,
+            Quantity:this.quanlity,
           }),
           success: function (response) {
             // Xử lý khi gọi API thành công

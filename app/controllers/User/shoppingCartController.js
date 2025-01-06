@@ -18,7 +18,7 @@ class ShoppingCartController {
     // [POST] /shopping-cart/add
     async add(req, res) {
         const { ProductID, Quantity = 1 } = req.body; // Lấy email và password từ request
-        console.log(ProductID, Quantity);
+        console.log( 'sản phẩm thêm vào giỏ hàng:',ProductID, Quantity);
 
         if (Quantity < 1) {
             return res.json({ success: false, message: 'Số lượng sản phẩm thêm vào không hợp lệ' });

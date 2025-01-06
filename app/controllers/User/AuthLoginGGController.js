@@ -2,7 +2,7 @@ const AccountModel = require('../../models/User/accountModel');
 const passport = require('../../config/passport');
 
 class AuthLoginGGController {
-    
+
     // [GET] /auth/google
     LoginGoogle(req, res, next) {
         passport.authenticate('google', {
@@ -21,17 +21,21 @@ class AuthLoginGGController {
                 return res.redirect('/login');
             }
 
-            // Xử lý khi đã đăng nhập thành công
-            console.log('Thông tin tài khoản Google:', user);
-
             const result = await AccountModel.findAccountByEmailAndGoogleID(user.email, user.googleId);
 
             if (result) {
                 console.log('Đăng nhập lại thành công');
             } else {
                 console.log('Chưa có dữ liệu');
-                // Thêm tài khoản mới vào cơ sở dữ liệu
-                await AccountModel.addUserIntoDataBase(user.displayName, user.email, user.googleId, 'Google');
+                const rs = await AccountModel.findAccountByEmailTypeEmail(user.email);
+                if (!rs) {
+                    // Thêm tài khoản mới vào cơ sở dữ liệu
+                    await AccountModel.addUserIntoDataBase(user.displayName, user.email, user.googleId, 'Google');
+                }
+                else {
+                    return res.redirect('/login');
+                }
+
             }
 
             const data_ = await AccountModel.getInforAccountByEmail(user.email);

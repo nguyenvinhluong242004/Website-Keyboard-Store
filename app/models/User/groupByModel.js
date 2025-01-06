@@ -3,10 +3,9 @@ const pool = require('../../config/database');
 const getGroupByProduct = async (req, res) => {
     const visibleCount = req.query.visibleCount || 12;
 
-    const client = await pool.connect();
     try {
         //Query to get the sum of products 'Kit Phim' in the database
-        const resultSum = await client.query(`
+        const resultSum = await pool.query(`
             SELECT COUNT(*)
             FROM public.groupbyproduct g
             JOIN public.product p ON g.productid = p.productid
@@ -14,7 +13,7 @@ const getGroupByProduct = async (req, res) => {
             `)
         
         // Query to get data from database
-        const result = await client.query(`
+        const result = await pool.query(`
             SELECT * 
             FROM public.groupbyproduct g
             JOIN public.product p ON g.productid = p.productid
@@ -29,8 +28,6 @@ const getGroupByProduct = async (req, res) => {
     } catch (error) {
         console.error('Lỗi truy vấn!', error);
         res.status(500).json({ error: 'Có lỗi xảy ra khi lấy dữ liệu.' });
-    } finally {
-        client.release();
     }
 };
 

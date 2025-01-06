@@ -30,7 +30,6 @@ controller.searchProduct = async (req, res) => {
 
 controller.checkGroupByProduct = async (req, res) => {
     const productid = req.query.productid;
-    console.log('productid', productid);
 
     try {
         const result = await checkGroupByProduct(productid);

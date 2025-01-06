@@ -3,12 +3,12 @@ const path = require('path');
 const fs = require('fs');
 
 const getProducts = async (visibleCount) => {
-    const client = await pool.connect();
+
     try {
         // Lấy tổng số sản phẩm
-        const totalResult = await client.query(`SELECT COUNT(*) FROM public.product`);
+        const totalResult = await pool.query(`SELECT COUNT(*) FROM public.product`);
         // Lấy dữ liệu sản phẩm
-        const dataResult = await client.query(`
+        const dataResult = await pool.query(`
             SELECT p.*, c.categoryname
             FROM public.product p
             JOIN public.category c ON p.categoryid = c.categoryid
@@ -47,15 +47,13 @@ const getProducts = async (visibleCount) => {
     } catch (error) {
         console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const getKeycaps = async (maxCount) => {
-    const client = await pool.connect();
+
     try {
-        const dataResult = await client.query(`
+        const dataResult = await pool.query(`
             SELECT p.*, c.categoryname
             FROM public.product p
             JOIN public.category c ON p.categoryid = c.categoryid
@@ -90,15 +88,13 @@ const getKeycaps = async (maxCount) => {
     } catch (error) {
         console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const getKeyboards = async (maxCount) => {
-    const client = await pool.connect();
+
     try {
-        const dataResult = await client.query(`
+        const dataResult = await pool.query(`
             SELECT p.*, c.categoryname
             FROM public.product p
             JOIN public.category c ON p.categoryid = c.categoryid
@@ -133,15 +129,12 @@ const getKeyboards = async (maxCount) => {
     } catch (error) {
         console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
     }
 };
 
 const getSwitchs = async (maxCount) => {
-    const client = await pool.connect();
     try {
-        const dataResult = await client.query(`
+        const dataResult = await pool.query(`
             SELECT p.*, c.categoryname
             FROM public.product p
             JOIN public.category c ON p.categoryid = c.categoryid
@@ -176,15 +169,13 @@ const getSwitchs = async (maxCount) => {
     } catch (error) {
         console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const getDeskpads = async (maxCount) => {
-    const client = await pool.connect();
+
     try {
-        const dataResult = await client.query(`
+        const dataResult = await pool.query(`
             SELECT p.*, c.categoryname
             FROM public.product p
             JOIN public.category c ON p.categoryid = c.categoryid
@@ -219,15 +210,13 @@ const getDeskpads = async (maxCount) => {
     } catch (error) {
         console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const getSupplies = async (maxCount) => {
-    const client = await pool.connect();
+
     try {
-        const dataResult = await client.query(`
+        const dataResult = await pool.query(`
             SELECT p.*, c.categoryname
             FROM public.product p
             JOIN public.category c ON p.categoryid = c.categoryid
@@ -262,15 +251,13 @@ const getSupplies = async (maxCount) => {
     } catch (error) {
         console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
     }
 };
 
 const getMerch = async (maxCount) => {
-    const client = await pool.connect();
+
     try {
-        const dataResult = await client.query(`
+        const dataResult = await pool.query(`
             SELECT p.*, c.categoryname
             FROM public.product p
             JOIN public.category c ON p.categoryid = c.categoryid
@@ -305,19 +292,17 @@ const getMerch = async (maxCount) => {
     } catch (error) {
         console.error('Lỗi truy vấn sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const getPosters = async () => {
-    const client = await pool.connect();
+
     try {
         // Lấy tổng số poster (có thể bỏ qua nếu không cần)
-        const totalResult = await client.query(`SELECT COUNT(*) FROM public.poster`);
+        const totalResult = await pool.query(`SELECT COUNT(*) FROM public.poster`);
         
         // Sửa câu truy vấn để chỉ lấy 4 poster đầu tiên
-        const dataResult = await client.query(`SELECT * FROM public.poster LIMIT 4`);
+        const dataResult = await pool.query(`SELECT * FROM public.poster LIMIT 4`);
 
         return {
             totalPosters: parseInt(totalResult.rows[0].count, 10),
@@ -326,8 +311,6 @@ const getPosters = async () => {
     } catch (error) {
         console.error('Lỗi truy vấn poster:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
     }
 };
 
