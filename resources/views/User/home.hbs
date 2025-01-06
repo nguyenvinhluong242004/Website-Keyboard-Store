@@ -4,30 +4,15 @@
         <div class="banner-container-home swiper">
             <div class="banner-wrapper">
                 <ul class="banner-list swiper-wrapper" style="padding: 0; margin-bottom: 0;">
+                    {{#each bannerProducts.data}}
                     <li class="banner-item swiper-slide">
-                        <a href="#" class="banner-link">
-                            <img src="https://cdn.shopify.com/s/files/1/0059/0630/1017/files/V1-Russian-2.jpg?v=1687247899"
+                        <a href="{{this.href}}" class="banner-link">
+                            <img src="{{this.firstImage}}"
                                 alt="Banner Image" class="banner-image">
                         </a>
                     </li>
-                    <li class="banner-item swiper-slide">
-                        <a href="#" class="banner-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg"
-                                alt="Banner Image" class="banner-image">
-                        </a>
-                    </li>
-                    <li class="banner-item swiper-slide">
-                        <a href="#" class="banner-link">
-                            <img src="https://th.bing.com/th/id/R.5e67ab55cddf7a394db3926beff284ca?rik=g4opCZ9FmWuhqw&pid=ImgRaw&r=0"
-                                alt="Banner Image" class="banner-image">
-                        </a>
-                    </li>
-                    <li class="banner-item swiper-slide">
-                        <a href="#" class="banner-link">
-                            <img src="https://i.pinimg.com/736x/6a/79/fd/6a79fdfc290a16ca8f98a6b0f519e77c.jpg"
-                                alt="Banner Image" class="banner-image">
-                        </a>
-                    </li>
+                    {{/each}}
+                    
                 </ul>
 
                 <div class="swiper-pagination"></div>
@@ -38,7 +23,7 @@
         <div class="banner-other">
             {{#each poster.data}}
             <div class="banner-kit banner-item">
-                <a href="#" class="banner-link">
+                <a href="{{this.productlink}}" class="banner-link">
                     <img src="{{this.imagepath}}" alt="Banner Kit Image" class="banner-image">
                 </a>
             </div>
@@ -167,7 +152,6 @@
             </div>
         </div>
     </section>
-
 
     <section class="trending-products">
         <div class="container-home">

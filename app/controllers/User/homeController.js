@@ -7,6 +7,7 @@ const homeController = {
             const newProduct = await getProducts(visibleCount);
             const salesProduct = await getProducts(visibleCount);
             const trendingProduct = await getProducts(visibleCount);
+            const bannerProducts = await getProducts(visibleCount);
 
             const maxProduct = 10;
             const keycapProducts = await getKeycaps(maxProduct);
@@ -47,6 +48,7 @@ const homeController = {
                 keyboardProducts,
                 merchProducts,
                 poster,
+                bannerProducts,
             });
         } catch (error) {
             console.error("Error rendering home page:", error);
