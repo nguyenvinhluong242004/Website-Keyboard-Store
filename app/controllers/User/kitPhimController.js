@@ -5,7 +5,7 @@ const controller ={}
 // Render Kit Phim
 controller.showKitPhim = (req, res) => {
     const user = req.session.user;
-    res.render('User/ProductPage', {layout: 'layoutUser', title: 'Kit Phim',
+    res.render('User/ProductPage', {layout: 'layoutUser', title: 'Keyboards',
         customHead: `
         <link rel="stylesheet" href="User/ProductPage.css">
         <script defer type="module" src="User/KitPhim/kitPhim.js"></script>

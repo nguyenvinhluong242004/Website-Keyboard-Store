@@ -4,7 +4,7 @@ new Vue({
     el: '#app',
     render: h => h(ProductPage, {
         props: {
-            productType: 'Kit Phim'
+            productType: 'Keyboards'
         }
     })
 });
