@@ -49,6 +49,13 @@ const placeOrder = async (orderData) => {
                     VALUES ($1, $2, $3, $4, $5, $6)
                 `, [orderId, i + 1, item.productid, item.quantity, item.currentprice, groupById.rows[0].groupbyid]);
             }
+
+            await pool.query(`
+                UPDATE public.product
+                SET quantity = quantity - $1
+                WHERE productid = $2
+            `, [item.quantity, item.productid]);
+
         }
 
         await pool.query('COMMIT');
