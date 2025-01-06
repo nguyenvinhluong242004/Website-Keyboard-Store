@@ -48,7 +48,6 @@ class CustomerListController {
                     <td>${customer.phone}</td>
                     <td>
                         <button class="btn btn-sm btn-primary view-details" data-id="${customer.userid}">View Details</button>
-                        <button class="btn btn-sm btn-danger delete-customer" data-id="${customer.userid}">Delete</button>
                     </td>
                 </tr>
             `;

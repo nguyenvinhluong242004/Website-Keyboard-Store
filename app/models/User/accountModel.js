@@ -1,4 +1,6 @@
 const pool = require('../../config/database'); // Kết nối đến cơ sở dữ liệu
+const fs = require('fs');
+const path = require('path');
 
 class accountModel {
     /**
@@ -170,6 +172,100 @@ class accountModel {
             throw new Error('Lỗi truy vấn cơ sở dữ liệu');
         }
     }
+
+    static async getAllOrdersForUser(userid) {
+        try {
+            const result = await pool.query(
+                `SELECT 
+                    o.orderid,
+                    o.userid,
+                    o.userpaid,
+                    o.totalamount,
+                    o.orderdate,
+                    o.orderstatus,
+                    o.paymentmethod,
+                    od.numericalorder,
+                    p.productid,
+                    p.productname,
+                    od.quantity,
+                    od.unitprice,
+                    p.imagepath,
+                    p.description,
+                    p.type
+                FROM orders o
+                JOIN orderdetail od ON o.orderid = od.orderid
+                JOIN product p ON od.productid = p.productid
+                WHERE o.userid = $1`,
+                [userid]
+            );
+
+            if (result.rows.length > 0) {
+                const orders = [];
+                let currentOrder = null;
+
+                for (const row of result.rows) {
+                    // Nếu đơn hàng chưa được thêm vào list, tạo một đơn hàng mới
+                    if (!currentOrder || currentOrder.orderid !== row.orderid) {
+                        if (currentOrder) {
+                            orders.push(currentOrder); // Thêm đơn hàng hiện tại vào danh sách
+                        }
+
+                        // Tạo đối tượng đơn hàng mới
+                        currentOrder = {
+                            orderid: row.orderid,
+                            userid: row.userid,
+                            userpaid: row.userpaid,
+                            totalamount: row.totalamount,
+                            orderdate: row.orderdate,
+                            orderstatus: row.orderstatus,
+                            paymentmethod: row.paymentmethod,
+                            products: [] // Danh sách các sản phẩm trong đơn hàng
+                        };
+                    }
+
+                    // Lấy đường dẫn hình ảnh đầu tiên cho sản phẩm
+                    const folderPath = path.join(__dirname, '../../../public', row.imagepath);
+                    let firstImage = '/path/to/default-image.jpg'; // Mặc định nếu không tìm thấy hình ảnh
+
+                    try {
+                        const files = fs.readdirSync(folderPath);
+                        const imageFiles = files.filter(file => /\.(jpg|jpeg|png|gif|webp)$/i.test(file));
+                        firstImage = imageFiles.length > 0 ? `${row.imagepath}/${imageFiles[0]}` : firstImage;
+                    } catch (err) {
+                        console.error(`Không thể đọc thư mục ảnh: ${folderPath}`, err);
+                    }
+
+                    // Thêm thông tin chi tiết sản phẩm vào mảng products
+                    currentOrder.products.push({
+                        numericalorder: row.numericalorder,
+                        productid: row.productid,
+                        productname: row.productname,
+                        quantity: row.quantity,
+                        type: row.type,
+                        unitprice: row.unitprice,
+                        imagepath: row.imagepath,
+                        firstimage: firstImage,  // Đưa đường dẫn ảnh đầu tiên vào
+                        description: row.description
+                    });
+                }
+
+                // Đảm bảo thêm đơn hàng cuối cùng vào danh sách
+                if (currentOrder) {
+                    orders.push(currentOrder);
+                }
+
+                return orders;
+            } else {
+                return []; // Nếu không có đơn hàng nào
+            }
+
+        } catch (err) {
+            console.error('Lỗi truy vấn cơ sở dữ liệu!', err);
+            throw new Error('Lỗi truy vấn cơ sở dữ liệu');
+        }
+    }
+
+
 
     static async addOrUpdateAddress(id, userid, province, district, ward, street) {
         const client = await pool.connect();

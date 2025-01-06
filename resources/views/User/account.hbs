@@ -11,7 +11,8 @@
         <div class="col-md-3">
             <div class="card shadow-sm mb-4" style="height: 100%; min-height: 360px;">
                 <div class="card-body-ac text-center" style="height: 120px; border-bottom: 1px solid black;">
-                    <img src="image/default/image.png" alt="Avatar người dùng" class="rounded-circle mb-2" style="height: 75px;">
+                    <img src="image/default/image.png" alt="Avatar người dùng" class="rounded-circle mb-2"
+                        style="height: 75px;">
                     <h5 class="card-title" id="txtname"></h5>
                 </div>
                 <div>
@@ -81,7 +82,22 @@
                     <h5 class="mb-0">Quản lý đơn hàng</h5>
                 </div>
                 <div class="card-body">
-                    <p>Hiển thị danh sách đơn hàng tại đây.</p>
+                    <table id="order-table" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Ngày đặt</th>
+                                <th>Tình trạng</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Tổng số tiền</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Nội dung đơn hàng sẽ được thêm ở đây -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -139,14 +155,53 @@
         </div>
     </div>
 
+    <!-- Modal xem chi tiết đơn hàng -->
+    <div class="modal fade" id="order-detail-modal" tabindex="-1" aria-labelledby="orderDetailModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailModalLabel">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <strong>Mã đơn hàng:</strong> <span id="modal-order-id"></span><br>
+                        <strong>Ngày đặt:</strong> <span id="modal-order-date"></span><br>
+                        <strong>Tình trạng:</strong> <span id="modal-order-status"></span><br>
+                        <strong>Phương thức thanh toán:</strong> <span id="modal-payment-method"></span><br>
+                        <strong>Tổng số tiền:</strong> <span id="modal-total-amount"></span><br>
+                    </div>
+                    <hr>
+                    <h6>Danh sách sản phẩm:</h6>
+                    <div id="modal-products-list" class="d-flex flex-wrap">
+                        <!-- Danh sách sản phẩm sẽ được hiển thị ở đây -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function getItem(productId, type) {
+        if (type === 1) {
+            window.location.href = `/detail-product/instock/${productId}`;
+        }
+        else if (type === 2) {
+            window.location.href = `/detail-group-by/${productId}`;
+        }
+    }
     $(document).ready(function () {
         let section = 'accountInfo';
         let dataUser = {};
         let addressList = [];
+        let orderList = [];
 
         // Hiển thị danh sách địa chỉ
         function renderAddressList() {
@@ -286,13 +341,81 @@
                     }
                 });
             } else if (section === 'orderManagement') {
-                $.get('/account/get-orders/api', function (data) {
-                    if (data.success) {
-                        console.log(data.orders);
+                $.ajax({
+                    url: '/account/get-orders/api',
+                    method: 'GET',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        orderList = response.data; // Dữ liệu trả về từ API
+                        const tableBody = $("#order-table tbody");
+                        tableBody.empty(); // Xóa nội dung cũ nếu có
+                        console.log(orderList)
+                        orderList.forEach((order, index) => {
+                            const row = `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${order.orderid}</td>
+                                    <td>${new Date(order.orderdate).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}</td>
+                                    <td>${order.orderstatus}</td>
+                                    <td>${order.paymentmethod}</td>
+                                    <td>$${order.totalamount.toFixed(2)}</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm view-detail-btn" data-order='${index}'>
+                                            Xem chi tiết
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            tableBody.append(row);
+                        });
+
+                        // Xử lý nút "Xem chi tiết"
+                        $(".view-detail-btn").on("click", function () {
+                            const order = orderList[($(this).data("order"))];
+
+                            // Hiển thị thông tin chi tiết đơn hàng
+                            $("#modal-order-id").text(order.orderid);
+                            $("#modal-order-date").text(new Date(order.orderdate).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }));
+                            $("#modal-order-status").text(order.orderstatus);
+                            $("#modal-payment-method").text(order.paymentmethod);
+                            $("#modal-total-amount").text(`$${order.totalamount.toFixed(2)}`);
+
+                            // Hiển thị danh sách sản phẩm
+                            const productsList = $("#modal-products-list");
+                            productsList.empty();
+                            order.products.forEach(product => {
+                                let typeName = '[Instock] ';
+                                if (product.type === 2){
+                                    typeName = '[Group By] ';
+                                }
+                                if (!product.type){
+                                    typeName = '[Đã xóa] ';
+                                }
+                                const productHTML = `
+                                    <div class="product-item d-flex align-items-center m-2 p-2 border" style="width: calc(50% - 1rem);">
+                                        <img onclick="getItem(${product.productid}, ${product.type})" src="${product.firstimage}" alt="${product.productname}" style="cursor: pointer; width: 70px; height: 70px; object-fit: cover; margin-right: 10px;">
+                                        <div>
+                                            <div><strong>${typeName}${product.productname}</strong></div>
+                                            <div>Số lượng: ${product.quantity}</div>
+                                            <div>Giá: $${product.unitprice.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+                                `;
+                                productsList.append(productHTML);
+                            });
+
+                            // Hiển thị modal
+                            $("#order-detail-modal").modal("show");
+                        });
+                    },
+                    error: function (error) {
+                        console.error("Có lỗi khi lấy thông tin: ", error);
+                        showNotification("Có lỗi khi lấy thông tin. Vui lòng thử lại.");
                     }
                 });
             }
         });
+
         $('#logoutBtn').on('click', function () {
             $.post('/account/logout', function (data) {
                 if (data.success) {
@@ -303,13 +426,13 @@
         });
         $('#changeinfo').on('click', function () {
             const regexUsername = /^[a-zA-Z_]*$/;
-            const regexSDT = /^0[0-9]{9}$/; 
+            const regexSDT = /^0[0-9]{9}$/;
             console.log($('#username').val())
-            if (!$('#phone').val().match(regexSDT)){
+            if (!$('#phone').val().match(regexSDT)) {
                 alert('Số điện thoại không hợp lệ!');
                 return;
             }
-            if ($('#username').val() === ''){
+            if ($('#username').val() === '') {
                 alert('Tên không hợp lệ!');
                 return;
             }
@@ -365,5 +488,6 @@
             $('#notificationMessage').text(message); // Cập nhật nội dung thông báo
             $('#notificationModal').modal('show');   // Hiển thị modal
         }
+
     });
 </script>

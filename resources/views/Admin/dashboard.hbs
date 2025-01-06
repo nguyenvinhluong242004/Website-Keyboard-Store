@@ -32,10 +32,17 @@
     <!-- Biểu đồ doanh thu -->
     <div class="mt-3">
         <h4>Revenue Growth</h4>
+        <!-- Chọn năm -->
+        <div class="form-group">
+            <label for="yearSelect" style="font-weight: bold; font-size: 17px;">Select Year</label>
+            <select id="yearSelect" class="form-control">
+                <!-- Các năm sẽ được tạo động ở đây -->
+            </select>
+        </div>
         <canvas id="revenueChart"></canvas>
     </div>
 
-        
+
 
     <div class="row mt-4">
         <!-- Biểu đồ sản phẩm bán theo danh mục -->
@@ -48,9 +55,10 @@
 
 <script>
     $(document).ready(function () {
+
         // Dữ liệu từ server (được render dưới dạng JSON)
-        const revenueLabels = {{{ revenueLabels }}};
-        const revenueData = {{{ revenueData }}};
+        let revenueLabels = {{{ revenueLabels }}};
+        let revenueData = {{{ revenueData }}};
         const productLabels = {{{ productLabels }}};
         const productData = {{{ productData }}};
 
@@ -59,6 +67,54 @@
         console.log('Revenue Data:', revenueData);
         console.log('Product Labels:', productLabels);
         console.log('Product Data:', productData);
+
+
+        // Lấy năm hiện tại
+        const currentYear = new Date().getFullYear();
+
+        // Lấy năm hiện tại và 4 năm trước
+        const years = [];
+        for (let i = 0; i <= 4; i++) {
+            years.push(currentYear - i);
+        }
+
+        // Tạo các option cho select
+        const yearSelect = $('#yearSelect');
+        years.forEach(year => {
+            yearSelect.append(`<option value="${year}">${year}</option>`);
+        });
+
+        $('#yearSelect').on('change', function () {
+        const selectedYear = $(this).val();
+
+        console.log(selectedYear);
+
+        // Gửi năm đã chọn lên server (sử dụng AJAX hoặc cách khác tùy theo server của bạn)
+        $.ajax({
+            url: '/admin/dashboard/get-revenue-data', // Địa chỉ URL của API server để lấy dữ liệu
+            method: 'GET',
+            data: { year: selectedYear }, // Truyền năm đã chọn
+            success: function (response) {
+                // Giả sử server trả lại dữ liệu doanh thu mới
+                revenueLabels = response.revenueLabels;
+                revenueData = response.revenueData;
+                
+        console.log(revenueLabels);
+        
+        console.log(revenueData);
+
+                // Cập nhật lại dữ liệu cho biểu đồ doanh thu
+                revenueChart.data.labels = revenueLabels;
+                revenueChart.data.datasets[0].data = revenueData;
+                revenueChart.update(); // Cập nhật lại biểu đồ
+
+                // Bạn cũng có thể cập nhật biểu đồ sản phẩm nếu cần
+            },
+            error: function () {
+                alert('Error retrieving revenue data.');
+            }
+        });
+    });
 
         // Biểu đồ doanh thu
         const revenueCtx = document.getElementById('revenueChart').getContext('2d');
