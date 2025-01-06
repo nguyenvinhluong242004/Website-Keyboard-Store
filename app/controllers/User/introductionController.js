@@ -11,7 +11,7 @@ class IntroductionController {
             `,
             user: user,
             introductionData: {
-                introductionText: "Xin chào và chào mừng bạn đến với Tlynx shop, nơi tập trung những sản phẩm bàn phím cơ và phụ kiện dành riêng cho những người đam mê công nghệ, lập trình viên, và game thủ chuyên nghiệp.",
+                introductionText: "Xin chào và chào mừng bạn đến với Mechanical Store, nơi tập trung những sản phẩm bàn phím cơ và phụ kiện dành riêng cho những người đam mê công nghệ, lập trình viên, và game thủ chuyên nghiệp.",
                 products: [
                     { name: "Bàn phím cơ học (instock)", description: "Các mẫu bàn phím có sẵn, đa dạng từ thiết kế đến công năng, phù hợp với mọi nhu cầu và sở thích." },
                     { name: "Kit phím", description: "Cho những ai thích tự tay lắp ráp bàn phím, chúng tôi cung cấp các bộ kit hoàn chỉnh để bạn dễ dàng cá nhân hóa từ thiết kế đến tính năng." },
