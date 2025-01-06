@@ -10,14 +10,13 @@ class PuschaseHistoryModel {
             const result = await pool.query(
                 `SELECT o.OrderID, TO_CHAR(o.OrderDate, 'YYYY-MM-DD') AS OrderDate, o.TotalAmount, o.PaymentMethod
                  FROM Orders o
-                 WHERE o.OrderStatus = 'Completed'
                  LIMIT $1 OFFSET $2`,
                 [perPage, offset]
             );
 
             // Tính tổng số đơn hàng hoàn thành
             const countResult = await pool.query(
-                `SELECT COUNT(*) AS total FROM Orders WHERE OrderStatus = 'Completed'`
+                `SELECT COUNT(*) AS total FROM Orders`
             );
             const totalOrders = countResult.rows[0].total;
 

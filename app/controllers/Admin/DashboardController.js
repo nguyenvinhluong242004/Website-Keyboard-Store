@@ -2,9 +2,11 @@ const dashboardModel = require('../../models/Admin/dashboardModel');
 
 class DashboardController {
     async index(req, res) {
+        const { year = 2025 } = req.body;
+        console.log(year)
         try {
             const stats = await dashboardModel.getDashboardStats();
-            const { revenueLabels, revenueData } = await dashboardModel.getRevenueGrowth(2024);
+            const { revenueLabels, revenueData } = await dashboardModel.getRevenueGrowth(year);
             const productsSold = await dashboardModel.getProductsSold();
 
             const productLabels = productsSold && productsSold.length > 0
@@ -25,6 +27,20 @@ class DashboardController {
                 productData: JSON.stringify(productData),
                 admin: req.session.admin,
             });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Server Error');
+        }
+    }
+
+    async getRevenue(req, res) {
+        const year = req.query.year;
+        console.log(year)
+        try {
+            const { revenueLabels, revenueData } = await dashboardModel.getRevenueGrowth(year);
+
+            res.json({ revenueLabels, revenueData });
+            
         } catch (error) {
             console.error(error);
             res.status(500).send('Server Error');

@@ -6,15 +6,13 @@ class DashboardModel {
         try {
             // Tạo bảng các tháng trong năm
             const query = `
-                SELECT months.month, COALESCE(SUM(od.Quantity * p.CurrentPrice), 0) AS revenue
+                SELECT months.month, COALESCE(SUM(o.totalamount), 0) AS revenue
                 FROM (
                     -- Tạo bảng tháng từ 1 đến 12
                     SELECT generate_series(1, 12) AS month
                 ) months
                 LEFT JOIN Orders o ON EXTRACT(MONTH FROM o.OrderDate) = months.month
-                LEFT JOIN OrderDetail od ON o.OrderID = od.OrderID
-                LEFT JOIN Product p ON od.ProductID = p.ProductID
-                WHERE o.OrderStatus = 'Completed' AND EXTRACT(YEAR FROM o.OrderDate) = $1
+                WHERE EXTRACT(YEAR FROM o.OrderDate) = $1
                 GROUP BY months.month
                 ORDER BY months.month;
             `;
@@ -57,17 +55,12 @@ class DashboardModel {
                         c.CategoryName, 
                         SUM(CASE 
                                 WHEN od.ProductID IS NOT NULL THEN od.Quantity
-                                -- Trường hợp ProductID là NULL, lấy từ GroupByProduct và tính số lượng bán
-                                WHEN od.ProductID IS NULL AND gbp.ProductID IS NOT NULL THEN od.Quantity
                                 ELSE 0 -- Nếu không có thông tin, trả về 0
                             END) AS quantity_sold
                     FROM OrderDetail od
                     LEFT JOIN Product p ON od.ProductID = p.ProductID
-                    LEFT JOIN GroupByProduct gbp ON od.ProductID IS NULL AND od.GroupByID = gbp.GroupByID -- Liên kết với GroupByProduct
-                    LEFT JOIN Product p2 ON gbp.ProductID = p2.ProductID -- Liên kết với Product thông qua GroupByProduct
-                    JOIN Category c ON p2.CategoryID = c.CategoryID  OR p.CategoryID = c.CategoryID -- Liên kết với Category qua Product
+                    JOIN Category c ON p.CategoryID = c.CategoryID -- Liên kết với Category qua Product
                     JOIN Orders o ON od.OrderID = o.OrderID 
-                    WHERE o.OrderStatus = 'Completed'
                     GROUP BY c.CategoryName
                 )
                 -- Lấy tất cả danh mục và tính số lượng bán (nếu không có sản phẩm bán thì trả về 0)
@@ -94,15 +87,11 @@ class DashboardModel {
             const query = `
                 SELECT
                     (SELECT COUNT(*) FROM Users) AS total_users,
-                    (SELECT SUM(od.Quantity * p.CurrentPrice)
-                     FROM OrderDetail od
-                     JOIN Product p ON od.ProductID = p.ProductID
-                     JOIN Orders o ON od.OrderID = o.OrderID
-                     WHERE o.OrderStatus = 'Completed') AS total_revenue,
+                    (SELECT SUM(totalamount)
+                     FROM Orders) AS total_revenue,
                     (SELECT SUM(od.Quantity)
                      FROM OrderDetail od
-                     JOIN Orders o ON od.OrderID = o.OrderID
-                     WHERE o.OrderStatus = 'Completed') AS total_products_sold;
+                     JOIN Orders o ON od.OrderID = o.OrderID) AS total_products_sold;
             `;
             const result = await pool.query(query);
             return result.rows[0];

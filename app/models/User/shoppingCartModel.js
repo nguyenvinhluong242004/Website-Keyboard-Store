@@ -99,9 +99,18 @@ class shoppingCartModel {
         }
     }
 
-    // Lấy tất cả sản phẩm trong giỏ hàng của người dùng
     static async getAllProductsInCart(UserID) {
         try {
+            // Cập nhật số lượng trong giỏ hàng nếu lớn hơn số lượng hiện có
+            const updateQuery = `
+                UPDATE ShoppingCart
+                SET quantity = p.quantity
+                FROM Product p
+                WHERE ShoppingCart.productid = p.productid AND ShoppingCart.userid = $1 AND ShoppingCart.quantity > p.quantity;
+            `;
+            await pool.query(updateQuery, [UserID]);
+
+            // Lấy thông tin sản phẩm sau khi cập nhật
             const query = `
                 SELECT p.productid, p.productname, p.oldprice, p.currentprice, p.imagepath, p.categoryid, p.quantity as total, s.quantity, p.type
                 FROM ShoppingCart s
@@ -135,6 +144,7 @@ class shoppingCartModel {
             throw new Error('Lỗi khi lấy thông tin sản phẩm');
         }
     }
+
 
     // Lấy thông tin product
     static async getInfomation(productid) {

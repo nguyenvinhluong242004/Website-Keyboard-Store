@@ -114,7 +114,19 @@
         cartItems.forEach(item => {
             totalQuantity += 1;
 
-            const isUnavailable = item.quantity > item.total;
+            let isUnavailable = item.quantity > item.total;
+            if (!item.type) {
+                isUnavailable = true;
+                console.log(item.type)
+            }
+            let disabledDistract = false;
+            let disabledAdd = false;
+            if (item.quantity === 1) {
+                disabledDistract = true;
+            }
+            if (item.quantity === item.total) {
+                disabledAdd = true;
+            }
 
             let slug = '';
 
@@ -128,9 +140,9 @@
                     <input type="checkbox" class="select-item" data-product-id="${item.productid}" 
                         data-price="${item.currentprice}" data-quantity="${item.quantity}" onclick="updateTotalPrice()"
                         style="margin: auto; margin-right: 7px;" ${isUnavailable ? 'disabled' : ''}>
-                    <img onclick="getItem(${item.productid})" src="${item.firstImage}" style="cursor: pointer; width: 100px; aspect-ratio: 1 / 1; object-fit: cover;" alt="Product" class="me-3">
+                    <img onclick="getItem(${item.productid}, ${item.type})" src="${item.firstImage}" style="cursor: pointer; width: 100px; aspect-ratio: 1 / 1; object-fit: cover;" alt="Product" class="me-3">
                     <div class="w-100">
-                        <h6>${item.productname}</h6>
+                        <h6>${item.type === 1 ? '[Instock] ' : item.type === 2 ? '[GroupBy] ' : item.quantity === 0 ? '[Hết hàng] ' : '[Đã xóa] '}${item.productname}</h6>
                         <div class="d-flex">
                             <p class="text-danger fw-bold" style="margin-right: 10px;">
                                 <s style="color: black;">${item.oldprice}</s>
@@ -139,14 +151,14 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <button onclick="changeCountItem('${item.productid}', ${item.quantity - 1})" 
-                                type="button" class="quantity-btn" ${isUnavailable ? 'disabled' : ''}>-</button>
+                                type="button" class="quantity-btn" ${isUnavailable ? 'disabled' : ''} ${disabledDistract ? 'disabled' : ''}>-</button>
                             <input type="text" value="${item.quantity}" class="mx-2 quantity-input"
                                 style="display: block; width: 6ch; text-align: center; border: none;"
                                 data-original-quantity="${item.quantity}"
                                 onblur="handleQuantityChange(this, '${item.productid}')"
                                 onkeydown="if(event.key === 'Enter') handleQuantityChange(this, '${item.productid}')" ${isUnavailable ? 'disabled' : ''}>
                             <button onclick="changeCountItem('${item.productid}', ${item.quantity + 1})" 
-                                type="button" class="quantity-btn" ${isUnavailable ? 'disabled' : ''}>+</button>
+                                type="button" class="quantity-btn" ${isUnavailable ? 'disabled' : ''} ${disabledAdd ? 'disabled' : ''}>+</button>
                             <div class="ms-auto d-flex">
                                 <a href="/${slug}" class="similar-btn px-3 py-1 me-2" style="cursor: pointer; text-decoration: none;">Sản phẩm tương tự</a>
                                 <div onclick="changeCountItem('${item.productid}', 0)" 
@@ -156,6 +168,7 @@
                     </div>
                 </div>
             `;
+
             container.innerHTML += cartItemHTML;
         });
 
@@ -194,7 +207,7 @@
     function placeOrder() {
         const checkboxes = document.querySelectorAll(".select-item:checked");
 
-        const cartItemCheck =[]
+        const cartItemCheck = []
 
         checkboxes.forEach(checkbox => {
             const productId = checkbox.getAttribute("data-product-id");
@@ -213,7 +226,7 @@
         const cartItems = JSON.stringify(cartItemCheck);
         console.log(cartItems);
         console.log(cartItemCheck);
-        
+
         window.location.href = `/payment?cartItems=${encodeURIComponent(cartItems)}`;
     }
 
@@ -236,8 +249,14 @@
         }
     }
 
-    function getItem(productId){
-        window.location.href = `/detail-product/instock/${productId}`;
+    function getItem(productId, type) {
+        console.log(type)
+        if (type === 1) {
+            window.location.href = `/detail-product/instock/${productId}`;
+        }
+        else if (type === 2) {
+            window.location.href = `/detail-group-by/${productId}`;
+        }
     }
 
     // Load giỏ hàng khi trang được tải

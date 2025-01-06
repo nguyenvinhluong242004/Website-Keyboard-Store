@@ -40,7 +40,7 @@ class customerModel {
                 `SELECT u.UserID, u.Username, u.Email, u.Phone, 
                         a.Province, a.District, a.Ward, a.Street
                  FROM Users u
-                 INNER JOIN Address a ON u.UserID = a.UserID
+                 LEFT JOIN Address a ON u.UserID = a.UserID
                  WHERE u.UserID = $1`,  // Lọc theo UserID
                 [id]
             );
