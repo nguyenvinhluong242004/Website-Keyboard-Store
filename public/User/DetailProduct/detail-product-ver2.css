@@ -519,9 +519,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .review-content-images {
   display: flex;
   flex-flow: row wrap;
-
   gap: 10px;
-
   margin-bottom: 20px;
 }
 
@@ -536,19 +534,30 @@ input[type="number"]::-webkit-inner-spin-button {
   display: none; /* Ban đầu không hiển thị */
 }
 
-/* Toast ở giữa màn hình */
-.toast {
-  z-index: 1050; /* Đảm bảo Toast hiển thị trên overlay */
-  display: none; /* Ban đầu không hiển thị */
-  animation: slideDown 0.5s ease-out; /* Hiệu ứng thả xuống */
+#toast {
+  z-index: 2000;
+  animation: dropDown 4s ease-in-out, dropOut 3s ease-in-out 4s;
+  opacity: 0; /* Ẩn Toast ban đầu */
+  width: 500px;
+  height: 300px;
 }
 
-/* Animation để thả toast từ trên xuống */
-@keyframes slideDown {
-  0% {
-    transform: translate(-50%, -100%);
+@keyframes dropDown {
+  from {
+      opacity: 0;
+      transform: translateY(-150%); /* Toast bắt đầu từ trên ngoài màn hình */
   }
-  100% {
-    transform: translate(-50%, -50%);
+  to {
+      opacity: 1;
+      transform: translateY(0); /* Toast trở về vị trí gốc */
+  }
+}
+
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
   }
 }
