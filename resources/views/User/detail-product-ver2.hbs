@@ -1,6 +1,35 @@
 <div id="app" class="container mt-5">
   <div class="row">
 
+    <div
+      class="modal fade"
+      id="notificationModal"
+      tabindex="-1"
+      aria-labelledby="notificationModalLabel"
+      aria-hidden="true"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="notificationModalLabel">Thông báo</h5>
+          </div>
+          <div class="modal-body">
+            <p id="notificationMessage">Nội dung thông báo sẽ hiển thị ở đây.</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              id="closeNotificationBtn"
+              data-bs-dismiss="modal"
+            >Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="col-md-7">
       <div class="main-image">
         <img :src="mainImage" class="mainIMG" alt="Main" width="100%" />
@@ -288,7 +317,11 @@
           </div>
         </div>
 
-        <div class="review" v-for="(review, index) in reviews.slice(0,visibleReviews)" :key="index">
+        <div
+          class="review"
+          v-for="(review, index) in reviews.slice(0,visibleReviews)"
+          :key="index"
+        >
           <div
             class="d-flex justify-content-center align-items-center rounded-circle bg-primary text-white mt-2"
             style="width: 2vw; height: 2vw; overflow: hidden"

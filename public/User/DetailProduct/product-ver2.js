@@ -18,12 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
       //review
       rating: 0, // Lưu đánh giá cuối cùng
       hoverRating: 0, // Giá trị khi hover lên cái sao
-      reviews:[],
+      reviews: [],
       isToggleForm: false,
-      comment:'',
-      idproduct:0,
-      isloadingreview:false,
-      visibleReviews:5,
+      comment: "",
+      idproduct: 0,
+      isloadingreview: false,
+      visibleReviews: 5,
     },
     methods: {
       hoverStar(index) {
@@ -75,18 +75,21 @@ document.addEventListener("DOMContentLoaded", function () {
             ProductID: this.getDB.productid,
             Quantity: this.quanlity,
           }),
-          success: function (response) {
+          success: (response) => {
+            // Sử dụng arrow function
             // Xử lý khi gọi API thành công
-            console.log("Success:", response);
-            alert(response.message);
+              $("#notificationMessage").text(response.message);
+            $("#notificationModal").modal("show"); // Hiển thị modal
           },
-          error: function (xhr, status, error) {
+          error: (xhr, status, error) => {
             // Xử lý lỗi
             console.error("Error:", error);
-            alert("Có lỗi xảy ra, vui lòng thử lại.");
+            $("#notificationMessage").text('Lỗi khi thêm thêm vào giỏ hàng!');
+            $("#notificationModal").modal("show"); // Hiển thị modal
           },
         });
       },
+
       getImages() {
         this.images = this.getDB.imagepath;
         this.mainImage = this.images[0];
@@ -98,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
           // Gửi request tới API
           url = `/detail-product/instock/same-product/${category}?quantity=${this.quantity}`;
-          console.log('duongdang:',url);
+          console.log("duongdang:", url);
           const response = await fetch(url);
 
           if (!response.ok) {
@@ -120,16 +123,16 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
           // Gửi request tới API
           url = `/api/review/${id}`;
-          console.log('duongdang:',url);
+          console.log("duongdang:", url);
 
           const response = await fetch(url);
 
-          console.log('review',response);
-          
+          console.log("review", response);
+
           // Chuyển đổi dữ liệu sang JSON
           const data = await response.json();
           console.log(data);
-          if(data.success){
+          if (data.success) {
             this.isloadingreview = false;
             this.reviews = data.data || [];
           }
@@ -155,10 +158,10 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       async submitReview() {
         try {
-          const response = await fetch('/api/give-review', {
-            method: 'POST',
+          const response = await fetch("/api/give-review", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               Rating: this.rating,
@@ -166,54 +169,53 @@ document.addEventListener("DOMContentLoaded", function () {
               Review: this.comment,
             }),
           });
-    
+
           const result = await response.json();
-    
+
           if (response.ok) {
             // Cập nhật nội dung thông báo và hiển thị toast
-            document.querySelector('#toast .toast-body').textContent = 'Thankyou for review!';
             this.resetForm();
-            this.showToast();
+
+            $("#notificationMessage").text('Gửi review thành công!');
+            $("#notificationModal").modal("show"); // Hiển thị modal
             this.fetchReview(this.getDB.productid);
+
           } else {
-            // Hiển thị thông báo lỗi
-            document.querySelector('#toast .toast-body').textContent = 'Có lỗi khi gửi đánh giá. Vui lòng thử lại!';
-            this.resetForm();
-            this.showToast();
-          
+            $("#notificationMessage").text('Gửi review không thành công!');
+            $("#notificationModal").modal("show"); // Hiển thị modal
           }
         } catch (error) {
-          console.error('Lỗi:', error);
-          document.querySelector('#toast .toast-body').textContent = 'Có lỗi xảy ra khi gửi đánh giá';
+          console.error("Lỗi:", error);
+          document.querySelector("#toast .toast-body").textContent =
+            "Có lỗi xảy ra khi gửi đánh giá";
           this.showToast();
         }
       },
-      showMore(){
+      showMore() {
         this.visibleReviews += 5;
       },
-    
+
       showToast() {
         // Hiển thị overlay
-        document.querySelector('#overlay').style.display = 'block';
-    
+        document.querySelector("#overlay").style.display = "block";
+
         // Hiển thị Toast
-        const toast = new bootstrap.Toast(document.getElementById('toast'));
-        document.querySelector('#toast').style.display = 'block'; // Hiển thị Toast
+        const toast = new bootstrap.Toast(document.getElementById("toast"));
+        document.querySelector("#toast").style.display = "block"; // Hiển thị Toast
         toast.show();
-    
+
         // Ẩn Toast và overlay sau khi hiển thị
         setTimeout(() => {
-          document.querySelector('#toast').style.display = 'none';
-          document.querySelector('#overlay').style.display = 'none';
-        }, 1000); // Toast sẽ tự ẩn sau 5 giây
+          document.querySelector("#toast").style.display = "none";
+          document.querySelector("#overlay").style.display = "none";
+        }, 3000); // Toast sẽ tự ẩn sau 5 giây
       },
-      resetForm(){
+      resetForm() {
         this.rating = 0;
-        this.comment='';
-        this.hoverRatingr=0;
+        this.comment = "";
+        this.hoverRatingr = 0;
         this.isToggleForm = false;
       },
-     
     },
     computed: {
       // formattedDescription() {
@@ -233,15 +235,14 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         return (totalRating / this.reviews.length).toFixed(2); // Lấy 2 chữ số thập phân
       },
-      
     },
     mounted() {
       this.getImages();
       this.fetchRandomProductSame(this.getDB.categoryid);
       this.fetchReview(this.getDB.productid);
-      this.idproduct= this.getDB.productid;
-      if(this.reviews.lenght ===0){
-        this.isloadingreview=false;
+      this.idproduct = this.getDB.productid;
+      if (this.reviews.lenght === 0) {
+        this.isloadingreview = false;
       }
     },
   });
