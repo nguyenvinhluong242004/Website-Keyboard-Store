@@ -91,8 +91,10 @@ class AccountController {
 
     // [GET] /account/get-orders/api
     async callAPIAccountGetOrders(req, res) {
-        const data_ = await AccountModel.getAllOrdersForUser(req.session.user.userid);
-        console.log(data_)
+        const { status = '' } = req.query;
+        console.log(status);
+        const data_ = await AccountModel.getAllOrdersForUser(req.session.user.userid, status);
+        //console.log(data_)
         return res.json({ success: true, data: data_, message: 'Gửi thông tin address' });
     }
 
