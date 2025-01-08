@@ -22,19 +22,15 @@ controller.showPayment = (req, res) => {
 controller.getAddress = async (req, res) => {
     const userid = req.query.userid;
 
-    try{
+    try {
         const data = await getAddress(userid);
-        let address ='';
-        data.address.forEach(item => {
-            address += `${item.street}, ${item.ward}, ${item.district}, ${item.province}`;
-        });
+        const address = `${data.address.street}, ${data.address.ward}, ${data.address.district}, ${data.address.province}`;
 
         res.json({ address: address });
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).send('Error fetching: ' + error.message);
     }
-}
+};
 
 controller.placeOrder = async (req, res) => {
     orderData = req.body;
