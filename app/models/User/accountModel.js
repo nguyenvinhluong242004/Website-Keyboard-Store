@@ -173,31 +173,61 @@ class accountModel {
         }
     }
 
-    static async getAllOrdersForUser(userid) {
+    static async getAllOrdersForUser(userid, status) {
         try {
-            const result = await pool.query(
-                `SELECT 
-                    o.orderid,
-                    o.userid,
-                    o.userpaid,
-                    o.totalamount,
-                    o.orderdate,
-                    o.orderstatus,
-                    o.paymentmethod,
-                    od.numericalorder,
-                    p.productid,
-                    p.productname,
-                    od.quantity,
-                    od.unitprice,
-                    p.imagepath,
-                    p.description,
-                    p.type
-                FROM orders o
-                JOIN orderdetail od ON o.orderid = od.orderid
-                JOIN product p ON od.productid = p.productid
-                WHERE o.userid = $1`,
-                [userid]
-            );
+            let result = null;
+            if (status === '') {
+                result = await pool.query(
+                    `SELECT 
+                        o.orderid,
+                        o.userid,
+                        o.userpaid,
+                        o.totalamount,
+                        o.orderdate,
+                        o.orderstatus,
+                        o.paymentmethod,
+                        od.numericalorder,
+                        p.productid,
+                        p.productname,
+                        od.quantity,
+                        od.unitprice,
+                        p.imagepath,
+                        p.description,
+                        p.type
+                    FROM orders o
+                    JOIN orderdetail od ON o.orderid = od.orderid
+                    JOIN product p ON od.productid = p.productid
+                    WHERE o.userid = $1
+                    ORDER BY o.orderdate DESC`,
+                    [userid]
+                );
+            }
+            else {
+                result = await pool.query(
+                    `SELECT 
+                        o.orderid,
+                        o.userid,
+                        o.userpaid,
+                        o.totalamount,
+                        o.orderdate,
+                        o.orderstatus,
+                        o.paymentmethod,
+                        od.numericalorder,
+                        p.productid,
+                        p.productname,
+                        od.quantity,
+                        od.unitprice,
+                        p.imagepath,
+                        p.description,
+                        p.type
+                    FROM orders o
+                    JOIN orderdetail od ON o.orderid = od.orderid
+                    JOIN product p ON od.productid = p.productid
+                    WHERE o.userid = $1 AND o.OrderStatus = $2
+                    ORDER BY o.orderdate DESC`,
+                    [userid, status]
+                );
+            }
 
             if (result.rows.length > 0) {
                 const orders = [];

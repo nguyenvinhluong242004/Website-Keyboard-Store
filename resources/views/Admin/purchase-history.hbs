@@ -1,82 +1,204 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Purchase History</h4>
-        <button class="btn btn-primary">Export File</button>
+        <div class="d-flex">
+            <select id="statusFilter" class="form-select me-2">
+                <option value="">All Statuses</option>
+                <option value="Pending Approval">Pending Approval</option>
+                <option value="Refuse">Refuse</option>
+                <option value="Approved">Approved</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <button class="btn btn-primary" style="width: 120px;" disabled>Export</button>
+        </div>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="table-light">
                 <tr>
-                    <th style="background-color: #E0E0E0B0;">Order ID</th>
-                    <th style="background-color: #E0E0E0B0;">Order Date</th>
-                    <th style="background-color: #E0E0E0B0;">Total Amount</th>
-                    <th style="background-color: #E0E0E0B0;">Payment Method</th>
-                    <th style="background-color: #E0E0E0B0;">Actions</th>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Total Amount</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                {{#each orders}}
-                <tr>
-                    <td>{{this.orderid}}</td>
-                    <td>{{this.orderdate}}</td>
-                    <td>{{this.totalamount}}</td>
-                    <td>{{this.paymentmethod}}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary view-details" data-id="{{this.orderid}}">View
-                            Details</button>
-                    </td>
-                </tr>
-                {{/each}}
+            <tbody id="ordersTableBody">
+                <!-- Dữ liệu đơn hàng sẽ được render tại đây -->
             </tbody>
         </table>
 
-
         <nav>
-            <ul class="pagination justify-content-center">
-                <!-- Previous page button -->
-                <li class="page-item {{#if (eq page 1)}}disabled{{/if}}">
-                    <a class="page-link" href="javascript:void(0);" data-page="{{add page -1}}">«</a>
-                </li>
-
-                <!-- Pagination buttons -->
-                {{#each (range 1 total_pages) as |pg|}}
-                <li class="page-item {{#if (eq pg ../page)}}active{{/if}}">
-                    <a class="page-link" href="javascript:void(0);" data-page="{{pg}}">{{pg}}</a>
-                </li>
-                {{/each}}
-
-                <!-- Next page button -->
-                <li class="page-item {{#if (eq page total_pages)}}disabled{{/if}}">
-                    <a class="page-link" href="javascript:void(0);" data-page="{{add page 1}}">»</a>
-                </li>
+            <ul class="pagination justify-content-center" id="pagination">
+                <!-- Phân trang sẽ được render tại đây -->
             </ul>
         </nav>
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
-            aria-hidden="true" style="color: black;">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="orderDetailsModalLabel">Customer Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" style="color: black;">
-                        <!-- Detail -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Edit</button>
-                    </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
+        aria-hidden="true" style="color: black;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel">Order Detail</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color: black;">
+                    <!-- Detail -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-
     </div>
+
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Thông báo</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="notificationMessage">Nội dung thông báo sẽ hiển thị ở đây.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeNotificationBtn"
+                        data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 </div>
 
 <script>
+    let currentPage = 1;
+    // Tải danh sách đơn hàng
+    function loadOrders(page = 1, status = '') {
+        $.ajax({
+            url: 'purchase-history/load-orders',
+            type: 'GET',
+            data: { page: page, status: status },
+            success: function (response) {
+                currentPage = page;
+                console.log(response.orders)
+                // Render danh sách đơn hàng
+                renderOrders(response.orders);
+
+                // Render phân trang
+                renderPagination(response.totalPages, page);
+            },
+            error: function () {
+                alert('Không thể tải dữ liệu đơn hàng.');
+            }
+        });
+    }
+
+    // Render danh sách đơn hàng
+    function renderOrders(orders) {
+        const tbody = $('#ordersTableBody');
+        tbody.empty(); // Xóa nội dung cũ
+        if (orders.length === 0) {
+            tbody.append('<tr><td colspan="6" class="text-center">No orders found</td></tr>');
+            return;
+        }
+
+        orders.forEach(order => {
+            const actions = getOrderActions(order.orderid, order.orderstatus);
+            tbody.append(`
+                <tr>
+                    <td>${order.orderid}</td>
+                    <td>${order.orderdate}</td>
+                    <td>${order.totalamount}</td>
+                    <td>${order.paymentmethod}</td>
+                    <td><span class="badge bg-info">${order.orderstatus}</span></td>
+                    <td>${actions}</td>
+                </tr>
+            `);
+        });
+    }
+
+    // Lấy danh sách nút hành động theo trạng thái
+    function getOrderActions(orderId, status) {
+        switch (status) {
+            case 'Pending Approval':
+                return `
+                    <button class="btn btn-sm btn-primary view-details" data-id="${orderId}">View Details</button>
+                    <button class="btn btn-sm btn-success change-status" data-id="${orderId}" data-status="Approved">Approve</button>
+                    <button class="btn btn-sm btn-danger change-status" data-id="${orderId}" data-status="Refuse">Refuse</button>
+                `;
+            case 'Approved':
+                return `
+                    <button class="btn btn-sm btn-primary view-details" data-id="${orderId}">View Details</button>
+                    <button class="btn btn-sm btn-success change-status" data-id="${orderId}" data-status="Shipped">Shipped</button>
+                `;
+            case 'Shipped':
+                return `
+                    <button class="btn btn-sm btn-primary view-details" data-id="${orderId}">View Details</button>
+                    <button class="btn btn-sm btn-success change-status" data-id="${orderId}" data-status="Completed">Complete</button>
+                `;
+            default:
+                return `
+                    <button class="btn btn-sm btn-primary view-details" data-id="${orderId}">View Details</button>
+                `;
+        }
+    }
+
+    // Render phân trang
+    function renderPagination(totalPages, currentPage) {
+        const pagination = $('#pagination');
+        pagination.empty(); // Xóa nội dung cũ
+
+        // Nút trang trước
+        pagination.append(`
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${currentPage - 1}">«</a>
+            </li>
+        `);
+
+        // Các nút số trang
+        for (let i = 1; i <= totalPages; i++) {
+            pagination.append(`
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>
+            `);
+        }
+
+        // Nút trang sau
+        pagination.append(`
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" data-page="${currentPage + 1}">»</a>
+            </li>
+        `);
+    }
+
+    // Thay đổi trạng thái đơn hàng
+    $(document).on('click', '.change-status', function () {
+        const orderId = $(this).data('id');
+        const newStatus = $(this).data('status');
+
+        $.ajax({
+            url: 'purchase-history/change-status',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ id: orderId, status: newStatus }),
+            success: function () {
+                $('#notificationMessage').text('Trạng thái đơn hàng đã được cập nhật!'); // Cập nhật nội dung thông báo
+                $('#notificationModal').modal('show');   // Hiển thị modal
+                loadOrders(currentPage, $('#statusFilter').val());
+            },
+            error: function () {
+                alert('Không thể cập nhật trạng thái đơn hàng.');
+            }
+        });
+    });
+
     $(document).on('click', '.view-details', function () {
         const orderId = $(this).data('id'); // Lấy Order ID từ nút
         $.ajax({
@@ -86,47 +208,49 @@
             data: JSON.stringify({ id: orderId }),
             success: function (response) {
                 const order = response.order;
+                console.log(order)
                 const details = response.details;
 
                 let detailsTable = `
-            <table class="table table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>STT</th>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-            `;
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>STT</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>`
+                    ;
 
                 details.forEach((item, index) => {
-                    detailsTable += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td><strong>${item.productname}</strong></td>
-                    <td><strong>${item.quantity}</strong></td>
-                    <td><strong>${item.unitprice}</strong></td>
-                </tr>`;
+                    detailsTable +=
+                        `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td><strong>${item.productname}</strong></td>
+                                    <td><strong>${item.quantity}</strong></td>
+                                    <td><strong>${item.unitprice}</strong></td>
+                                </tr>`;
                 });
 
-                detailsTable += `
-                </tbody>
-            </table>`;
+                detailsTable +=
+                    `
+                        </tbody>
+                    </table>`;
 
                 $('#orderDetailsModal .modal-body').html(`
                 <p><strong>Order ID:</strong> ${order.id}</p>
+                <p><strong>Status:</strong> ${order.status}</p>
                 <p><strong>Order Date:</strong> ${order.date}</p>
                 <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
                 <p><strong>Customer Name:</strong> ${order.customerName}</p>
                 <h5>Product Details:</h5>
                 ${detailsTable}
 
-                <div class="text-end"><strong>Total Amount:</strong> ${order.totalAmount}</div>
-            `);
-
-
+                <div class= "text-end" > <strong>Total Amount:</strong> ${order.totalAmount}</div>`
+                );
                 $('#orderDetailsModal').modal('show');
             },
             error: function () {
@@ -135,29 +259,22 @@
         });
     });
 
-    $(document).on('click', '.pagination a', function (e) {
-        e.preventDefault(); // Ngừng hành động mặc định của thẻ a
-        const page = $(this).data('page'); // Lấy số trang từ data attribute
-        loadPage(page); // Gọi hàm load dữ liệu cho trang mới
+
+    // Lọc đơn hàng theo trạng thái
+    $('#statusFilter').on('change', function () {
+        loadOrders(1, $(this).val());
     });
 
-    function loadPage(page) {
-        $.ajax({
-            url: 'purchase-history/load-orders', // Gọi API để lấy danh sách đơn hàng
-            type: 'GET',
-            data: { page: page },
-            success: function (response) {
-                // Thay đổi nội dung bảng đơn hàng
-                $('tbody').html(response.ordersHtml); // Cập nhật bảng đơn hàng với dữ liệu mới
+    // Xử lý phân trang
+    $(document).on('click', '#pagination a', function (e) {
+        e.preventDefault();
+        const page = $(this).data('page');
+        const status = $('#statusFilter').val();
+        loadOrders(page, status);
+    });
 
-                // Cập nhật phân trang
-                $('.pagination').html(response.paginationHtml); // Cập nhật phân trang
-            },
-            error: function () {
-                alert('Không thể tải dữ liệu trang mới.');
-            }
-        });
-    }
-
-
+    // Tải dữ liệu ban đầu
+    $(document).ready(function () {
+        loadOrders();
+    });
 </script>
