@@ -357,6 +357,57 @@ class accountModel {
         }
     }
 
+    static async changeStatus(orderId, status) {
+        const client = await pool.connect(); // Kết nối cơ sở dữ liệu
+        try {
+            await client.query('BEGIN'); // Bắt đầu giao dịch
+
+            // Cập nhật trạng thái đơn hàng
+            const updateResult = await client.query(
+                `UPDATE Orders
+                 SET OrderStatus = $1
+                 WHERE OrderID = $2
+                 RETURNING OrderID, OrderStatus`,
+                [status, orderId]
+            );
+
+            if (updateResult.rows.length === 0) {
+                throw new Error('Order not found or unable to update');
+            }
+
+            // Nếu trạng thái là "Cancelled", cập nhật lại số lượng sản phẩm
+            if (status === 'Refuse') {
+                // Lấy danh sách sản phẩm trong OrderDetail
+                const orderDetails = await client.query(
+                    `SELECT ProductID, Quantity
+                     FROM OrderDetail
+                     WHERE OrderID = $1`,
+                    [orderId]
+                );
+
+                // Cập nhật lại số lượng sản phẩm trong bảng Product
+                for (const detail of orderDetails.rows) {
+                    await client.query(
+                        `UPDATE Product
+                         SET Quantity = Quantity + $1
+                         WHERE ProductID = $2`,
+                        [detail.quantity, detail.productid]
+                    );
+                }
+            }
+
+            await client.query('COMMIT'); // Kết thúc giao dịch thành công
+            return updateResult.rows[0]; // Trả về thông tin đơn hàng đã cập nhật
+        } catch (err) {
+            await client.query('ROLLBACK'); // Quay lại giao dịch nếu có lỗi
+            console.error('Lỗi truy vấn cơ sở dữ liệu!', err);
+            throw new Error('Lỗi truy vấn cơ sở dữ liệu');
+        } finally {
+            client.release(); // Đóng kết nối
+        }
+    }
+
+
 
 
 

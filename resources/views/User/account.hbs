@@ -406,8 +406,7 @@
             getListOrder($(this).val());
         });
         function getListOrder(status = '') {
-            
-            console.log(status)
+            console.log(status);
             $.ajax({
                 url: '/account/get-orders/api',
                 method: 'GET',
@@ -416,23 +415,30 @@
                     orderList = response.data; // Dữ liệu trả về từ API
                     const tableBody = $("#order-table tbody");
                     tableBody.empty(); // Xóa nội dung cũ nếu có
-                    console.log(orderList)
+                    console.log(orderList);
                     orderList.forEach((order, index) => {
+                        const cancelButton = (order.orderstatus === "Pending Approval" || order.orderstatus === "Approved") ? `
+                            <button class="btn btn-danger btn-sm cancel-order-btn" data-order-id="${order.orderid}">
+                                Hủy
+                            </button>` : '';
+
+
                         const row = `
-                                <tr>
-                                    <td>${index + 1}</td>
-                                    <td>${order.orderid}</td>
-                                    <td>${new Date(order.orderdate).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}</td>
-                                    <td>${order.orderstatus}</td>
-                                    <td>${order.paymentmethod}</td>
-                                    <td>$${order.totalamount.toFixed(2)}</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm view-detail-btn" data-order='${index}'>
-                                            Xem chi tiết
-                                        </button>
-                                    </td>
-                                </tr>
-                            `;
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${order.orderid}</td>
+                                <td>${new Date(order.orderdate).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}</td>
+                                <td>${order.orderstatus}</td>
+                                <td>${order.paymentmethod}</td>
+                                <td>$${order.totalamount.toFixed(2)}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm view-detail-btn" data-order='${index}'>
+                                        Chi tiết
+                                    </button>
+                                    ${cancelButton}
+                                </td>
+                            </tr>
+                        `;
                         tableBody.append(row);
                     });
 
@@ -459,20 +465,26 @@
                                 typeName = '[Đã xóa] ';
                             }
                             const productHTML = `
-                                    <div class="product-item d-flex align-items-center m-2 p-2 border" style="width: calc(50% - 1rem);">
-                                        <img onclick="getItem(${product.productid}, ${product.type})" src="${product.firstimage}" alt="${product.productname}" style="cursor: pointer; width: 70px; height: 70px; object-fit: cover; margin-right: 10px;">
-                                        <div>
-                                            <div><strong>${typeName}${product.productname}</strong></div>
-                                            <div>Số lượng: ${product.quantity}</div>
-                                            <div>Giá: $${product.unitprice.toFixed(2)}</div>
-                                        </div>
-                                    </div>
-                                `;
+                        <div class="product-item d-flex align-items-center m-2 p-2 border" style="width: calc(50% - 1rem);">
+                            <img onclick="getItem(${product.productid}, ${product.type})" src="${product.firstimage}" alt="${product.productname}" style="cursor: pointer; width: 70px; height: 70px; object-fit: cover; margin-right: 10px;">
+                            <div>
+                                <div><strong>${typeName}${product.productname}</strong></div>
+                                <div>Số lượng: ${product.quantity}</div>
+                                <div>Giá: $${product.unitprice.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    `;
                             productsList.append(productHTML);
                         });
 
                         // Hiển thị modal
                         $("#order-detail-modal").modal("show");
+                    });
+
+                    // Xử lý nút "Hủy đơn hàng"
+                    $(".cancel-order-btn").on("click", function () {
+                        const orderId = $(this).data("order-id");
+                        cancelOrder(orderId); // Gọi hàm hủy đơn hàng
                     });
                 },
                 error: function (error) {
@@ -481,6 +493,24 @@
                 }
             });
         }
+
+        function cancelOrder(orderId) {
+            $.ajax({
+                url: '/account/cancel-order/api',
+                method: 'POST',
+                data: { orderId: orderId },
+                success: function (response) {
+                    showNotification(response.message);
+                    getListOrder(); // Cập nhật danh sách sau khi hủy
+                },
+                error: function (error) {
+                    console.error("Có lỗi khi hủy đơn hàng: ", error);
+                    showNotification("Không thể hủy đơn hàng. Vui lòng thử lại.");
+                }
+            });
+        }
+
+
 
         function getInfor() {
             $.ajax({
