@@ -357,6 +357,29 @@ class accountModel {
         }
     }
 
+    static async changeStatus(orderId, status) {
+        try {
+            // Cập nhật trạng thái đơn hàng
+            const updateResult = await pool.query(
+                `UPDATE Orders
+                 SET OrderStatus = $1
+                 WHERE OrderID = $2
+                 RETURNING OrderID, OrderStatus`,
+                [status, orderId]
+            );
+
+            if (updateResult.rows.length === 0) {
+                throw new Error('Order not found or unable to update');
+            }
+
+            // Trả về thông tin đơn hàng đã cập nhật
+            return updateResult.rows[0];
+        } catch (err) {
+            console.error('Lỗi truy vấn cơ sở dữ liệu!', err);
+            throw new Error('Lỗi truy vấn cơ sở dữ liệu');
+        }
+    }
+
 
 
 
