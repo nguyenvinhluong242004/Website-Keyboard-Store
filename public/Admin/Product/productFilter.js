@@ -47,23 +47,149 @@ function renderProducts(products) {
                         </div>
                     </div>
                 </div>
-                <button class="share-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="share-icon">
-                        <circle cx="18" cy="5" r="3"></circle>
-                        <circle cx="6" cy="12" r="3"></circle>
-                        <circle cx="18" cy="19" r="3"></circle>
-                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                <button class="edit-button data-id="${product.productid}"">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.854a.5.5 0 0 1 .708 0l2.292 2.292a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2L2 11.207V13h1.793L14 3.793 11.207 2zm1.586-.793 1 1L13.207 2l-1-1 1.586-1.586z"/>
+                    </svg>
+                </button>
+                
+                <button class="delete-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9 3h6a1 1 0 0 1 1 1v1h5a1 1 0 1 1 0 2h-1v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7H3a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1zm1 2v1h4V5h-4zm-4 3v13a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V8H6zm3 3a1 1 0 0 1 1 1v7a1 1 0 1 1-2 0v-7a1 1 0 0 1 1-1zm6 0a1 1 0 0 1 1 1v7a1 1 0 1 1-2 0v-7a1 1 0 0 1 1-1z"/>
                     </svg>
                 </button>
             `;
             productList.appendChild(productCard);
+
+            // Add event listener for edit button
+            const editButton = productCard.querySelector('.edit-button');
+            editButton.addEventListener('click', () => {
+                const productId = product.productid;
+                const popup = document.getElementById('product-popup');
+                const saveButton = document.getElementById('save-button');
+                const cancelButton = document.getElementById('cancel-button');
+
+                console.log("edit-button clicked");
+                
+                // Show popup
+                popup.classList.remove('hidden');
+
+                // Fill the form with product data
+                document.getElementById('edit-product-name').value = product.productname;
+                document.getElementById('edit-specification').value = product.specification;
+                document.getElementById('edit-old-price').value = product.oldprice;
+                document.getElementById('edit-current-price').value = product.currentprice;
+                document.getElementById('edit-estimate-arrive').value = product.estimatearrive;
+                document.getElementById('edit-description').value = product.description;
+                document.getElementById('edit-category').value = product.categoryid;
+                document.getElementById('edit-brand').value = product.brandid;
+                document.getElementById('edit-quantity').value = product.quantity;
+                document.getElementById('edit-type').value = product.type;
+
+                saveButton.onclick = () => saveProductChanges(productId);
+                cancelButton.onclick = () => closePopup();
+            });
+
+            // Add event listener for delete button
+            const deleteButton = productCard.querySelector('.delete-button');
+            deleteButton.addEventListener('click', () => {
+                const productId = product.productid;
+                if (confirm('Are you sure you want to delete this product?')) {
+                    deleteProduct(productId);
+                }
+            });
         });
     } else {
         productList.innerHTML = '<p>No products found.</p>';
     }
+}
+
+function saveProductChanges(productId) {
+    const productName = document.getElementById('edit-product-name').value;
+    const specification = document.getElementById('edit-specification').value;
+    const oldPrice = document.getElementById('edit-old-price').value;
+    const currentPrice = document.getElementById('edit-current-price').value;
+    const estimateArrive = document.getElementById('edit-estimate-arrive').value;
+    const description = document.getElementById('edit-description').value;
+    const category = document.getElementById('edit-category').value;
+    const brand = document.getElementById('edit-brand').value;
+    const quantity = document.getElementById('edit-quantity').value;
+    const type = document.getElementById('edit-type').value;
+
+    // Đảm bảo tất cả các trường hợp không rỗng
+    if (!productName || !oldPrice || !currentPrice || !category || !brand || !quantity || !type || !estimateArrive) {
+        alert('Please fill out all required fields.');
+        return;
+    }
+
+    // Tạo đối tượng sản phẩm từ các giá trị
+    const updatedProduct = {
+        productid: productId,
+        productname: productName,
+        specification: specification,
+        oldprice: parseInt(oldPrice),
+        currentprice: parseInt(currentPrice),
+        estimateArrive: parseInt(estimateArrive) || 0,
+        description: description,
+        categoryname: parseInt(category),
+        brandname: parseInt(brand),
+        quantity: parseInt(quantity),
+        type: parseInt(type),
+    };
+
+    // Call API hoặc xử lý lưu thay đổi sản phẩm tại đây
+    // Giả sử bạn gọi hàm updateProduct để lưu thay đổi
+    fetch(`/Admin/product/update/${productId}`, {
+        method: 'PUT', // Sử dụng PUT vì đây là cập nhật thông tin
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedProduct),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Product updated successfully!');
+                closePopup();
+                fetchProducts(data.currentPage); // Reload sản phẩm
+            } else {
+                alert('Failed to update product.');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating product:', error);
+            alert('Error updating product.');
+        });
+}
+
+// Hàm đóng popup
+function closePopup() {
+    console.log("close")
+    const popup = document.getElementById('product-popup');
+    popup.classList.add('hidden');
+}
+
+function deleteProduct(productId) {
+    fetch(`/Admin/product/delete/${productId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(async response => {
+            if (response.ok) {
+                const data = await response.json(); // Đọc nội dung JSON trả về
+                alert(data.message || 'Product deleted successfully.');
+                fetchProducts(data.currentPage); // Refresh the product list
+            } else {
+                const errorData = await response.json(); // Đọc lỗi từ response
+                throw new Error(errorData.message || 'Failed to delete product.');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting product:', error);
+            alert(error.message || 'An error occurred while deleting the product.');
+        });
 }
 
 function renderPagination(totalPages, currentPage) {
@@ -136,3 +262,47 @@ document.getElementById('sort-button2').addEventListener('click', () => fetchPro
 
 // Fetch initial products on page load
 fetchProducts(1);
+
+
+// js edit popup
+// document.addEventListener('DOMContentLoaded', () => {
+//     const popup = document.getElementById('popup');
+//     const editButtons = document.querySelectorAll('.edit-button');
+//     const saveButton = document.getElementById('save-button');
+//     const cancelButton = document.getElementById('cancel-button');
+//     console.log("content loaded")
+
+//     // Hiển thị pop-up khi nhấn nút Edit
+//     editButtons.forEach(button => {
+//         button.addEventListener('click', (event) => {
+//             console.log("edit button clicked");
+//             popup.classList.remove('hidden');
+//             const productCard = event.target.closest('.product-card');
+//             const productName = productCard.querySelector('.product-name').textContent.trim();
+//             const category = productCard.querySelector('.price-row span:nth-child(2)').textContent.trim();
+//             const price = productCard.querySelector('.price-row:last-child span:nth-child(2)').textContent.trim();
+
+//             document.getElementById('edit-product-name').value = productName;
+//             document.getElementById('edit-category').value = category;
+//             document.getElementById('edit-price').value = price;
+//         });
+//     });
+
+//     // Lưu thay đổi
+//     saveButton.addEventListener('click', () => {
+//         // Thực hiện hành động lưu dữ liệu
+//         const productName = document.getElementById('edit-product-name').value;
+//         const category = document.getElementById('edit-category').value;
+//         const price = document.getElementById('edit-price').value;
+
+//         console.log('Saving:', { productName, category, price });
+
+//         // Đóng pop-up
+//         popup.classList.add('hidden');
+//     });
+
+//     // Hủy bỏ
+//     cancelButton.addEventListener('click', () => {
+//         popup.classList.add('hidden');
+//     });
+// });
