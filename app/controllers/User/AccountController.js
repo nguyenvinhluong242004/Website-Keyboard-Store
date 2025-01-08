@@ -89,6 +89,21 @@ class AccountController {
         }
     };
 
+    // [POST] /account/cancel
+    async callAPIAccountCancelOrder(req, res) { 
+        const { orderId } = req.body;
+        console.log(orderId)
+
+
+        try {
+            await AccountModel.changeStatus(orderId, 'Refuse');
+            return res.json({ success: true, message: 'Hủy đơn hàng thành công!' });
+        } catch (err) {
+            console.error('Lỗi truy vấn!', err);
+            res.status(500).json({ error: 'Có lỗi xảy ra khi đặt lại thông tin.' });
+        }
+    };
+
     // [GET] /account/get-orders/api
     async callAPIAccountGetOrders(req, res) {
         const { status = '' } = req.query;

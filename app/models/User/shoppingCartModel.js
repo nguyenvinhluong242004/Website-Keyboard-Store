@@ -116,7 +116,7 @@ class shoppingCartModel {
                 FROM ShoppingCart s
                 JOIN Product p ON s.productid = p.productid
                 WHERE s.userid = $1
-                ORDER BY p.productid;
+                ORDER BY p.productid DESC;
             `;
 
             const result = await pool.query(query, [UserID]);
