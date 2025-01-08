@@ -22,7 +22,7 @@ const getTotalRevenue = async (req, res) => {
     const client = await pool.connect();
     try {
         const result = await client.query(`
-            SELECT SUM(TotalAmount) FROM public.Orders
+            SELECT SUM(TotalAmount) FROM public.Orders WHERE OrderStatus != 'Refuse'
         `);
         return {
             totalRevenue :result.rows[0].sum
@@ -53,7 +53,7 @@ const getTopSellingProducts = async (req, res) => {
             JOIN 
                 public.Product p ON d.productid = p.productid
             WHERE 
-                o.orderdate >= CURRENT_DATE
+                o.orderdate >= CURRENT_DATE  AND o.OrderStatus != 'Refuse'
             GROUP BY 
                 p.productid, p.productname
         ),
@@ -71,7 +71,7 @@ const getTopSellingProducts = async (req, res) => {
             JOIN 
                 public.Product p ON g.productid = p.productid
             WHERE 
-                o.orderdate >= CURRENT_DATE
+                o.orderdate >= CURRENT_DATE  AND o.OrderStatus != 'Refuse'
             GROUP BY 
                 p.productid, p.productname
         ),

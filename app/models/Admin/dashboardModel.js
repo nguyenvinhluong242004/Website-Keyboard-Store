@@ -12,7 +12,7 @@ class DashboardModel {
                     SELECT generate_series(1, 12) AS month
                 ) months
                 LEFT JOIN Orders o ON EXTRACT(MONTH FROM o.OrderDate) = months.month
-                WHERE EXTRACT(YEAR FROM o.OrderDate) = $1
+                WHERE EXTRACT(YEAR FROM o.OrderDate) = $1 AND o.OrderStatus = 'Completed'
                 GROUP BY months.month
                 ORDER BY months.month;
             `;
@@ -45,9 +45,6 @@ class DashboardModel {
     async getProductsSold() {
         try {
             const query = `
-                 
-
-
                 -- Lấy số lượng sản phẩm đã bán theo danh mục
                 WITH Sold AS (
                     -- Lấy số lượng sản phẩm đã bán theo danh mục
@@ -61,6 +58,7 @@ class DashboardModel {
                     LEFT JOIN Product p ON od.ProductID = p.ProductID
                     JOIN Category c ON p.CategoryID = c.CategoryID -- Liên kết với Category qua Product
                     JOIN Orders o ON od.OrderID = o.OrderID 
+                    WHERE o.OrderStatus = 'Completed'
                     GROUP BY c.CategoryName
                 )
                 -- Lấy tất cả danh mục và tính số lượng bán (nếu không có sản phẩm bán thì trả về 0)
@@ -88,10 +86,12 @@ class DashboardModel {
                 SELECT
                     (SELECT COUNT(*) FROM Users) AS total_users,
                     (SELECT SUM(totalamount)
-                     FROM Orders) AS total_revenue,
+                     FROM Orders
+                     WHERE OrderStatus = 'Completed') AS total_revenue,
                     (SELECT SUM(od.Quantity)
                      FROM OrderDetail od
-                     JOIN Orders o ON od.OrderID = o.OrderID) AS total_products_sold;
+                     JOIN Orders o ON od.OrderID = o.OrderID 
+                     WHERE o.OrderStatus = 'Completed') AS total_products_sold;
             `;
             const result = await pool.query(query);
             return result.rows[0];
