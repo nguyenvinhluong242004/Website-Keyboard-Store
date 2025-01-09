@@ -103,7 +103,7 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
             LEFT JOIN 
                 public.brand b ON p.brandid = b.brandid
             WHERE 1=1
-            AND p.type IS NOT NULL
+            AND p.type = 1
         `;
         const queryParams = [];
 
@@ -169,6 +169,7 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
             LEFT JOIN public.category c ON p.categoryid = c.categoryid
             LEFT JOIN public.brand b ON p.brandid = b.brandid
             WHERE 1=1
+            AND p.type = 1
         `;
         const countQueryParams = [];
 
