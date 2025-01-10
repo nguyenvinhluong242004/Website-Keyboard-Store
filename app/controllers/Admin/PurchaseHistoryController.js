@@ -28,12 +28,12 @@ class PurchaseHistoryController {
 
     // [GET] /load-orders
     async loadOrders(req, res) {
-        const { page = 1 } = req.query;
+        const { page = 1, status = '' } = req.query;
         const perPage = 5;
         const offset = (page - 1) * perPage;
 
         try {
-            const { orders, totalOrders } = await puschaseHistoryModel.getListOrders(offset, perPage);
+            const { orders, totalOrders } = await puschaseHistoryModel.getListOrders(status, offset, perPage);
             const totalPages = Math.ceil(totalOrders / perPage);
 
             const ordersHtml = orders.map(order => {
@@ -66,7 +66,21 @@ class PurchaseHistoryController {
             </li>
         `;
 
-            res.json({ ordersHtml, paginationHtml });
+            res.json({ orders, totalPages, ordersHtml, paginationHtml });
+        } catch (err) {
+            console.error('Lỗi khi lấy danh sách đơn hàng:', err);
+            res.status(500).send('Không thể tải danh sách đơn hàng.');
+        }
+    }
+
+    // [GET] /load-orders
+    async changeStatus(req, res) {
+        const { id, status = 'Pending Approval' } = req.body;
+
+        try {
+            const result = await puschaseHistoryModel.changeStatus(id, status);
+
+            res.json({ result });
         } catch (err) {
             console.error('Lỗi khi lấy danh sách đơn hàng:', err);
             res.status(500).send('Không thể tải danh sách đơn hàng.');

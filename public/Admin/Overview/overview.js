@@ -6,6 +6,7 @@ new Vue({
     data:{
         totalUsers: 0,
         totalRevenue: 0,
+        years: [2020, 2021, 2022, 2023],
         chartData: 
             {
             labels: [],
@@ -44,9 +45,6 @@ new Vue({
                 let currentDate = new Date();
                 let currentYear = currentDate.getFullYear();
                 let currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-11
-        
-                //this.chartData.labels = []; // Clear existing labels
-                //this.chartData.datasets[0].data = []; // Clear existing data
         
                 let labels = [];
                 let data = [];

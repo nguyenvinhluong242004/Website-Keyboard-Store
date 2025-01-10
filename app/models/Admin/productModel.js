@@ -3,10 +3,10 @@ const fs = require('fs');
 const path = require('path');
 
 const getAllProducts = async () => {
-    const client = await pool.connect();
+    
     try {
-        const totalResult = await client.query(`SELECT COUNT(*) FROM public.product`);
-        const dataResult = await client.query(`
+        const totalResult = await pool.query(`SELECT COUNT(*) FROM public.product`);
+        const dataResult = await pool.query(`
             SELECT 
                 p.*, 
                 c.categoryname, 
@@ -52,15 +52,13 @@ const getAllProducts = async () => {
     } catch (error) {
         console.error('Lỗi truy vấn tất cả sản phẩm:', error);
         throw error; // Ném lỗi để controller xử lý
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const getBrands = async () => {
-    const client = await pool.connect();
+    
     try {
-        const result = await client.query(`
+        const result = await pool.query(`
             SELECT * 
             FROM public.brand
         `);
@@ -68,15 +66,13 @@ const getBrands = async () => {
     } catch (error) {
         console.error('Lỗi truy vấn thương hiệu:', error);
         throw error;
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const getCategories = async () => {
-    const client = await pool.connect();
+    
     try {
-        const result = await client.query(`
+        const result = await pool.query(`
             SELECT * 
             FROM public.category
         `);
@@ -84,13 +80,11 @@ const getCategories = async () => {
     } catch (error) {
         console.error('Lỗi truy vấn danh mục:', error);
         throw error;
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const getFilteredProducts = async ({ search, availability, category, brand, price, sortBy, limit, offset }) => {
-    const client = await pool.connect();
+    
     try {
         // Truy vấn để lấy sản phẩm theo các bộ lọc
         let query = `
@@ -109,6 +103,7 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
             LEFT JOIN 
                 public.brand b ON p.brandid = b.brandid
             WHERE 1=1
+            AND p.type = 1
         `;
         const queryParams = [];
 
@@ -165,7 +160,7 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
         query += ` LIMIT $${queryParams.length + 1} OFFSET $${queryParams.length + 2}`;
         queryParams.push(limit, offset);
 
-        const result = await client.query(query, queryParams);
+        const result = await pool.query(query, queryParams);
 
         // Truy vấn để tính tổng số sản phẩm với các bộ lọc
         let countQuery = `
@@ -174,6 +169,7 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
             LEFT JOIN public.category c ON p.categoryid = c.categoryid
             LEFT JOIN public.brand b ON p.brandid = b.brandid
             WHERE 1=1
+            AND p.type = 1
         `;
         const countQueryParams = [];
 
@@ -209,7 +205,7 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
             }
         }
 
-        const totalProductsResult = await client.query(countQuery, countQueryParams);
+        const totalProductsResult = await pool.query(countQuery, countQueryParams);
         const totalProducts = parseInt(totalProductsResult.rows[0].count, 10);
 
         // return {
@@ -247,14 +243,12 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
     } catch (error) {
         console.error('Lỗi truy vấn lọc sản phẩm:', error);
         throw error;
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 // Hàm thêm sản phẩm vào database
 const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, brand, specification, description}) => {
-    const client = await pool.connect();
+    
     try {
         // Random estimatearrive từ 1 đến 7
         const estimatearrive = Math.floor(Math.random() * 7) + 1;
@@ -265,7 +259,7 @@ const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, br
             FROM public.category 
             WHERE categoryname = $1
         `;
-        const categoryResult = await client.query(categoryQuery, [type]);
+        const categoryResult = await pool.query(categoryQuery, [type]);
         if (categoryResult.rows.length === 0) {
             throw new Error(`Category not found for type: ${type}`);
         }
@@ -277,7 +271,7 @@ const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, br
             FROM public.brand 
             WHERE brandname = $1
         `;
-        const brandResult = await client.query(brandQuery, [brand]);
+        const brandResult = await pool.query(brandQuery, [brand]);
         if (brandResult.rows.length === 0) {
             throw new Error(`Brand not found for brand: ${brand}`);
         }
@@ -297,7 +291,7 @@ const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, br
             name, specification, listedPrice, adjustedPrice, estimatearrive,
             description, categoryid, brandid, quantity, productType
         ];
-        const result = await client.query(insertProductQuery, productParams);
+        const result = await pool.query(insertProductQuery, productParams);
         const productId = result.rows[0].productid;
 
         // Ghi đường dẫn imagepath
@@ -307,34 +301,30 @@ const addProduct = async ({ name, listedPrice, adjustedPrice, type, quantity, br
             SET imagepath = $1 
             WHERE productid = $2
         `;
-        await client.query(updateImagePathQuery, [imagePath, productId]);
+        await pool.query(updateImagePathQuery, [imagePath, productId]);
 
         return { productId };
     } catch (error) {
         console.error('Error adding product:', error);
         throw new Error('Failed to add product');
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 // Hàm kiểm tra xem sản phẩm đã tồn tại chưa
 const isProductExist = async (name) => {
-    const client = await pool.connect();
+    
     try {
         const query = `
             SELECT COUNT(*) AS count 
             FROM public.product 
             WHERE productname = $1
         `;
-        const result = await client.query(query, [name]);
+        const result = await pool.query(query, [name]);
         return parseInt(result.rows[0].count, 10) > 0;
     } catch (error) {
         console.error('Error checking product existence:', error);
         throw new Error('Failed to check product existence');
-    } finally {
-        client.release();
-    }
+    } 
 };
 
 const saveImage = (productId, image) => {
@@ -369,6 +359,99 @@ const saveImage = (productId, image) => {
     });
 };
 
+const deleteOne = async (productId) => {
+    // Kiểm tra đầu vào
+    if (!productId || isNaN(productId)) {
+        throw new Error('Invalid productId');
+    }
+
+    
+    try {
+        const query = `
+            UPDATE public.product 
+            SET type = NULL 
+            WHERE productid = $1
+        `;
+        const result = await pool.query(query, [productId]);
+
+        // Trả về kết quả
+        return result.rowCount > 0; // true nếu có dòng bị ảnh hưởng, false nếu không
+    } catch (error) {
+        console.error('Error setting product type to NULL:', error);
+        throw new Error('Failed to delete product');
+    }
+};
+
+const findByIdAndUpdate = async (productId, updatedData) => {
+    // Kiểm tra đầu vào
+    if (!productId || isNaN(productId)) {
+        throw new Error('Invalid productId');
+    }
+
+    // Tạo query cập nhật các trường trong bảng product
+    const { 
+        productname, 
+        specification, 
+        oldprice, 
+        currentprice, 
+        estimateArrive, 
+        description, 
+        categoryname, 
+        brandname, 
+        quantity, 
+        type 
+    } = updatedData;
+
+    console.log(updatedData)
+
+    // Câu lệnh SQL để cập nhật các trường của sản phẩm
+    const query = `
+        UPDATE public.product
+        SET 
+            productname = $1,
+            specification = $2,
+            oldprice = $3,
+            currentprice = $4,
+            estimatearrive = $5,
+            description = $6,
+            categoryid = $7,
+            brandid = $8,
+            quantity = $9,
+            type = $10
+        WHERE productid = $11
+        RETURNING *;  -- Trả về sản phẩm đã được cập nhật
+    `;
+
+    const values = [
+        productname, 
+        specification, 
+        oldprice, 
+        currentprice, 
+        estimateArrive, 
+        description, 
+        categoryname, 
+        brandname, 
+        quantity, 
+        type, 
+        productId
+    ];
+
+    try {
+        // Thực hiện câu lệnh SQL
+        const result = await pool.query(query, values);
+
+        // Nếu có sản phẩm được cập nhật, trả về thông tin sản phẩm đã cập nhật
+        if (result.rowCount > 0) {
+            return result.rows[0];  // Trả về thông tin của sản phẩm sau khi cập nhật
+        } else {
+            return null;  // Nếu không có sản phẩm nào được cập nhật
+        }
+    } catch (error) {
+        console.error('Error updating product:', error);
+        throw new Error('Failed to update product');
+    } 
+};
+
 module.exports = {
     getAllProducts,
     getBrands,
@@ -377,4 +460,6 @@ module.exports = {
     addProduct,
     isProductExist,
     saveImage,
+    deleteOne,
+    findByIdAndUpdate,
 };

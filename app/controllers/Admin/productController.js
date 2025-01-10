@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { getAllProducts, getBrands, getCategories, getFilteredProducts, isProductExist, addProduct, saveImage } = require('../../models/Admin/productModel');
+const { getAllProducts, getBrands, getCategories, getFilteredProducts, isProductExist, addProduct, saveImage, deleteOne, findByIdAndUpdate } = require('../../models/Admin/productModel');
 
 const productController = {
     productList: async (req, res) => {
@@ -20,8 +20,8 @@ const productController = {
                     <script defer type="module" src="/Admin/Product/productFilter.js"></script>
                 `,
                 // allProducts,
-                // brands,
-                // categories,
+                brands,
+                categories,
             });
         } catch (error) {
             console.error("Error rendering product list page:", error);
@@ -135,6 +135,58 @@ const productController = {
             res.status(500).json(error); // Trả lỗi từ model về frontend
         }
     },
+
+    deleteProduct: async (req, res) => {
+        try {
+            // Lấy productId từ req.params
+            const { id: productId } = req.params;
+            console.log("Product ID to delete:", productId);
+    
+            // Gọi model để xóa sản phẩm
+            const isDeleted = await deleteOne(productId); // Trả về true/false từ model
+    
+            if (isDeleted) {
+                // Nếu xóa thành công, trả kết quả cho client
+                res.status(200).json({ message: 'Sản phẩm đã được xóa!' });
+            } else {
+                // Nếu không tìm thấy sản phẩm
+                res.status(404).json({ message: 'Không tìm thấy sản phẩm!' });
+            }
+        } catch (error) {
+            console.error('Lỗi khi xóa sản phẩm:', error);
+            // Trả lỗi từ model về frontend
+            res.status(500).json({ message: 'Xóa sản phẩm thất bại!', error });
+        }
+    },
+
+    updateProduct: async (req, res) => {
+        try {
+            const { productId } = req.params;
+            const updatedData = req.body;
+    
+            console.log("Product ID to update:", productId);
+            console.log("Updated data:", updatedData);
+    
+            // Gọi model để cập nhật sản phẩm
+            const updatedProduct = await findByIdAndUpdate(productId, updatedData);
+    
+            // Nếu không tìm thấy sản phẩm
+            if (!updatedProduct) {
+                return res.status(404).json({ success: false, message: 'Không tìm thấy sản phẩm!' });
+            }
+    
+            // Nếu cập nhật thành công, trả kết quả cho client
+            res.status(200).json({
+                success: true,
+                message: 'Sản phẩm đã được cập nhật thành công!',
+                product: updatedProduct,
+            });
+        } catch (error) {
+            console.error('Lỗi khi cập nhật sản phẩm:', error);
+            // Trả lỗi nếu có lỗi xảy ra khi cập nhật
+            res.status(500).json({ success: false, message: 'Cập nhật sản phẩm thất bại!', error });
+        }
+    },    
 };
 
 module.exports = productController;
