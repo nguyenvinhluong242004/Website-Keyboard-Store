@@ -58,6 +58,8 @@
                     renderCartItems(response.listCart);
                 } else {
                     console.error("Lỗi khi tải giỏ hàng:", response.message);
+                    
+                    renderCartItems([]);
                 }
             },
             error: function (xhr, status, error) {
@@ -110,6 +112,12 @@
         let totalQuantity = 0;
 
         container.innerHTML = ""; // Xóa các sản phẩm cũ
+
+            console.log(cartItems)
+        if (cartItems.length < 1){
+            console.log('null')
+            container.innerHTML = "Chưa đăng nhập";
+        }
 
         cartItems.forEach(item => {
             totalQuantity += 1;

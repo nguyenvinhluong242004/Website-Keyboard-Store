@@ -89,10 +89,27 @@ class AccountController {
         }
     };
 
+    // [POST] /account/cancel
+    async callAPIAccountCancelOrder(req, res) { 
+        const { orderId } = req.body;
+        console.log(orderId)
+
+
+        try {
+            await AccountModel.changeStatus(orderId, 'Refuse');
+            return res.json({ success: true, message: 'Hủy đơn hàng thành công!' });
+        } catch (err) {
+            console.error('Lỗi truy vấn!', err);
+            res.status(500).json({ error: 'Có lỗi xảy ra khi đặt lại thông tin.' });
+        }
+    };
+
     // [GET] /account/get-orders/api
     async callAPIAccountGetOrders(req, res) {
-        const data_ = await AccountModel.getAllOrdersForUser(req.session.user.userid);
-        console.log(data_)
+        const { status = '' } = req.query;
+        console.log(status);
+        const data_ = await AccountModel.getAllOrdersForUser(req.session.user.userid, status);
+        //console.log(data_)
         return res.json({ success: true, data: data_, message: 'Gửi thông tin address' });
     }
 

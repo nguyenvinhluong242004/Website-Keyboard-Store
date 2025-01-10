@@ -22,7 +22,7 @@ const getTotalRevenue = async (req, res) => {
     const client = await pool.connect();
     try {
         const result = await client.query(`
-            SELECT SUM(TotalAmount) FROM public.Orders
+            SELECT SUM(TotalAmount) FROM public.Orders WHERE OrderStatus != 'Refuse'
         `);
         return {
             totalRevenue :result.rows[0].sum
@@ -46,7 +46,7 @@ const getChartRevenue = async (req, res) => {
 
         const result = await client.query(`
             SELECT SUM(totalamount) AS totalRevenue FROM public.Orders
-            WHERE orderdate >= $1 AND orderdate <= $2
+            WHERE orderdate >= $1 AND orderdate <= $2 AND OrderStatus != 'Refuse'
         `, [startDate, endDate]);
         
         return {

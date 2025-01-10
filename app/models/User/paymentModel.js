@@ -9,7 +9,7 @@ const getAddress = async (userid) => {
             WHERE userid = $1
         `, [userid]);
         return {
-            address: result.rows
+            address: result.rows[0]
         };
     } catch (error) {
         console.error('Error querying!', error);
@@ -50,11 +50,18 @@ const placeOrder = async (orderData) => {
                 `, [orderId, i + 1, item.productid, item.quantity, item.currentprice, groupById.rows[0].groupbyid]);
             }
 
+
+
             await pool.query(`
                 UPDATE public.product
                 SET quantity = quantity - $1
                 WHERE productid = $2
             `, [item.quantity, item.productid]);
+
+            await pool.query(`
+                DELETE FROM public.shoppingcart
+                WHERE productid = $1 AND userid = $2
+            `, [item.productid, orderData.user.userid]);
 
         }
 

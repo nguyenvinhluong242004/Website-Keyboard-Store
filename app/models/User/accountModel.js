@@ -173,31 +173,61 @@ class accountModel {
         }
     }
 
-    static async getAllOrdersForUser(userid) {
+    static async getAllOrdersForUser(userid, status) {
         try {
-            const result = await pool.query(
-                `SELECT 
-                    o.orderid,
-                    o.userid,
-                    o.userpaid,
-                    o.totalamount,
-                    o.orderdate,
-                    o.orderstatus,
-                    o.paymentmethod,
-                    od.numericalorder,
-                    p.productid,
-                    p.productname,
-                    od.quantity,
-                    od.unitprice,
-                    p.imagepath,
-                    p.description,
-                    p.type
-                FROM orders o
-                JOIN orderdetail od ON o.orderid = od.orderid
-                JOIN product p ON od.productid = p.productid
-                WHERE o.userid = $1`,
-                [userid]
-            );
+            let result = null;
+            if (status === '') {
+                result = await pool.query(
+                    `SELECT 
+                        o.orderid,
+                        o.userid,
+                        o.userpaid,
+                        o.totalamount,
+                        o.orderdate,
+                        o.orderstatus,
+                        o.paymentmethod,
+                        od.numericalorder,
+                        p.productid,
+                        p.productname,
+                        od.quantity,
+                        od.unitprice,
+                        p.imagepath,
+                        p.description,
+                        p.type
+                    FROM orders o
+                    JOIN orderdetail od ON o.orderid = od.orderid
+                    JOIN product p ON od.productid = p.productid
+                    WHERE o.userid = $1
+                    ORDER BY o.orderdate DESC`,
+                    [userid]
+                );
+            }
+            else {
+                result = await pool.query(
+                    `SELECT 
+                        o.orderid,
+                        o.userid,
+                        o.userpaid,
+                        o.totalamount,
+                        o.orderdate,
+                        o.orderstatus,
+                        o.paymentmethod,
+                        od.numericalorder,
+                        p.productid,
+                        p.productname,
+                        od.quantity,
+                        od.unitprice,
+                        p.imagepath,
+                        p.description,
+                        p.type
+                    FROM orders o
+                    JOIN orderdetail od ON o.orderid = od.orderid
+                    JOIN product p ON od.productid = p.productid
+                    WHERE o.userid = $1 AND o.OrderStatus = $2
+                    ORDER BY o.orderdate DESC`,
+                    [userid, status]
+                );
+            }
 
             if (result.rows.length > 0) {
                 const orders = [];
@@ -326,6 +356,57 @@ class accountModel {
             client.release(); // Giải phóng kết nối
         }
     }
+
+    static async changeStatus(orderId, status) {
+        const client = await pool.connect(); // Kết nối cơ sở dữ liệu
+        try {
+            await client.query('BEGIN'); // Bắt đầu giao dịch
+
+            // Cập nhật trạng thái đơn hàng
+            const updateResult = await client.query(
+                `UPDATE Orders
+                 SET OrderStatus = $1
+                 WHERE OrderID = $2
+                 RETURNING OrderID, OrderStatus`,
+                [status, orderId]
+            );
+
+            if (updateResult.rows.length === 0) {
+                throw new Error('Order not found or unable to update');
+            }
+
+            // Nếu trạng thái là "Cancelled", cập nhật lại số lượng sản phẩm
+            if (status === 'Refuse') {
+                // Lấy danh sách sản phẩm trong OrderDetail
+                const orderDetails = await client.query(
+                    `SELECT ProductID, Quantity
+                     FROM OrderDetail
+                     WHERE OrderID = $1`,
+                    [orderId]
+                );
+
+                // Cập nhật lại số lượng sản phẩm trong bảng Product
+                for (const detail of orderDetails.rows) {
+                    await client.query(
+                        `UPDATE Product
+                         SET Quantity = Quantity + $1
+                         WHERE ProductID = $2`,
+                        [detail.quantity, detail.productid]
+                    );
+                }
+            }
+
+            await client.query('COMMIT'); // Kết thúc giao dịch thành công
+            return updateResult.rows[0]; // Trả về thông tin đơn hàng đã cập nhật
+        } catch (err) {
+            await client.query('ROLLBACK'); // Quay lại giao dịch nếu có lỗi
+            console.error('Lỗi truy vấn cơ sở dữ liệu!', err);
+            throw new Error('Lỗi truy vấn cơ sở dữ liệu');
+        } finally {
+            client.release(); // Đóng kết nối
+        }
+    }
+
 
 
 
