@@ -91,13 +91,25 @@
   border: none;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  width: 100%;
   border-radius: 5px;
 }
 .cart:hover {
   background-color: #0056b3; /* Màu nền khi hover */
   transition: background-color 0.3s ease;
 }
+/* Khi hết hàng */
+.cart.sold-out {
+  background-color: #d3d3d3; /* Màu xám cho nút khi hết hàng */
+  color: #888; /* Màu chữ xám nhạt */
+  cursor: not-allowed; /* Thay đổi con trỏ chuột khi hết hàng */
+}
+
+/* Thêm hiệu ứng cho nút */
+.cart:disabled {
+  cursor: not-allowed; /* Chỉnh con trỏ chuột */
+}
+
 .description {
   margin-top: 1%;
   display: flex;
