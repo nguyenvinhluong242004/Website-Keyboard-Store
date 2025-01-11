@@ -301,6 +301,11 @@ input[type="number"]::-webkit-inner-spin-button {
   font-size: 10px;
   padding: 5px;
 }
+.status.gb {
+
+  background-color: rgb(17, 123, 194);
+
+}
 .name-product {
   font-family: "Baloo", sans-serif;
   font-weight: bold;

@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
       
     },
     methods: {
+      checkOnSale(a,b){
+        return a < b;
+      },
       hoverStar(index) {
         this.hoverRating = index; // Cập nhật hover
       },
