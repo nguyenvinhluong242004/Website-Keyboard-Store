@@ -110,12 +110,12 @@ const getreview = async (id) => {
     return null;
   }
 };
-const sendreview = async (rating, id, comment) => {
+const sendreview = async (email, rating, id, comment) => {
   try {
     const res = await pool.query(
-      `INSERT INTO review(productid, comment, stars)
-       VALUES($1, $2, $3)`, // Sử dụng tham số thay vì chèn trực tiếp
-      [id, comment, rating]  // Truyền tham số theo đúng thứ tự
+      `INSERT INTO review(email, productid, comment, stars)
+       VALUES($1, $2, $3, $4)`, // Sử dụng tham số thay vì chèn trực tiếp
+      [email, id, comment, rating]  // Truyền tham số theo đúng thứ tự
     );
 
     if (res.rowCount > 0) { // Sử dụng rowCount để kiểm tra số lượng bản ghi bị ảnh hưởng
