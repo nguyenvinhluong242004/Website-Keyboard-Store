@@ -67,10 +67,12 @@ controller.giveReview = async (req, res) => {
     console.log('Rating:', Rating); // Số sao được chọn
     console.log('Review:', Review); // Nội dung đánh giá
     console.log('ID:', Id); // Nội dung đánh giá
+
+    console.log(req.session.user)
     
     try {
       // Gửi review và lấy kết quả (ví dụ: reviewId hoặc thông tin gì đó)
-      const result = await sendreview(Rating, Id, Review);
+      const result = await sendreview(req.session.user.email, Rating, Id, Review);
   
       if (result && result.success) {
         // Trả về thông tin chi tiết về review vừa gửi
