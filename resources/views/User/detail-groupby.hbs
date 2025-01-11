@@ -102,7 +102,7 @@
       <div class="product" v-for="item, index in sameProducts" :key="index">
         <div class="recommend-img" @click="gotoDetai(item.productid)">
           <img :src="item.imagepath[0]" alt="recommend" />
-          <div class="status" v-if=" checkOnSale(item.currentprice,item.oldprice)"> ON SALE!</div>
+          <div class="status" :class="{'gb': !checkOnSale(item.currentprice,item.oldprice)}"> [[checkOnSale(item.currentprice,item.oldprice)? "ON SALE!" :"GROUP-BY"]]</div>
         </div>
         <div class="product-infor">
           <div class="name-product">
