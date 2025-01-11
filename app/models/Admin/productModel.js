@@ -124,17 +124,31 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
             query += ` AND b.brandname = $${queryParams.length + 1}`;
             queryParams.push(brand);
         }
-
         // Xử lý lọc theo giá
         if (price) {
-            const priceRange = price.split('-');
-            if (priceRange.length === 1) {
-                query += ` AND p.price < $${queryParams.length + 1}`;
-                queryParams.push(priceRange[0]);
-            } else {
-                query += ` AND p.price BETWEEN $${queryParams.length + 1} AND $${queryParams.length + 2}`;
-                queryParams.push(priceRange[0]);
-                queryParams.push(priceRange[1]);
+            let priceValue;
+            if (price.startsWith('under-')) {
+                // Lọc giá nhỏ hơn một giá trị
+                priceValue = parseInt(price.split('-')[1], 10);
+                console.log("price", priceValue);
+                if (!isNaN(priceValue)) {
+                    query += ` AND p.currentprice < $${queryParams.length + 1}`;
+                }
+            } else if (price.startsWith('over-')) {
+                // Lọc giá lớn hơn một giá trị
+                priceValue = parseInt(price.split('-')[1], 10);
+                if (!isNaN(priceValue)) {
+                    query += ` AND p.currentprice > $${queryParams.length + 1}`;
+                    queryParams.push(priceValue);
+                }
+            } else if (price.includes('-')) {
+                // Lọc giá trong khoảng
+                const priceRange = price.split('-').map(value => parseInt(value, 10));
+                if (!isNaN(priceRange[0]) && !isNaN(priceRange[1])) {
+                    query += ` AND p.currentprice BETWEEN $${queryParams.length + 1} AND $${queryParams.length + 2}`;
+                    queryParams.push(priceRange[0]);
+                    queryParams.push(priceRange[1]);
+                }
             }
         }
 
@@ -149,9 +163,9 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
 
         // Xử lý sắp xếp
         if (sortBy === 'price-low-high') {
-            query += ` ORDER BY p.price ASC`;
+            query += ` ORDER BY p.currentprice ASC`;
         } else if (sortBy === 'price-high-low') {
-            query += ` ORDER BY p.price DESC`;
+            query += ` ORDER BY p.currentprice DESC`;
         } else {
             query += ` ORDER BY p.productname ASC`;
         }
@@ -187,14 +201,32 @@ const getFilteredProducts = async ({ search, availability, category, brand, pric
             countQueryParams.push(brand);
         }
         if (price) {
-            const priceRange = price.split('-');
-            if (priceRange.length === 1) {
-                countQuery += ` AND p.price < $${countQueryParams.length + 1}`;
-                countQueryParams.push(priceRange[0]);
-            } else {
-                countQuery += ` AND p.price BETWEEN $${countQueryParams.length + 1} AND $${countQueryParams.length + 2}`;
-                countQueryParams.push(priceRange[0]);
-                countQueryParams.push(priceRange[1]);
+            let priceValue;
+            if (price.startsWith('under-')) {
+                // Lọc giá nhỏ hơn một giá trị
+                const maxPrice = price.slice(6); // Lấy giá trị sau 'under-'
+                priceValue = parseInt(maxPrice, 10);
+                console.log(priceValue)
+                if (!isNaN(priceValue)) {
+                    countQuery += ` AND p.currentprice BETWEEN 0 AND $${countQueryParams.length + 1}`;
+                    countQueryParams.push(priceValue);
+                }
+            } else if (price.startsWith('over-')) {
+                // Lọc giá lớn hơn một giá trị
+                const minPrice = price.slice(5); // Lấy giá trị sau 'over-'
+                priceValue = parseInt(minPrice, 10);
+                if (!isNaN(priceValue)) {
+                    countQuery += ` AND p.currentprice BETWEEN $${countQueryParams.length + 1} AND 200 `;
+                    countQueryParams.push(priceValue);
+                }
+            } else if (price.includes('-')) {
+                // Lọc giá trong khoảng
+                const priceRange = price.split('-').map(value => parseInt(value, 10));
+                if (priceRange.length === 2 && !isNaN(priceRange[0]) && !isNaN(priceRange[1])) {
+                    countQuery += ` AND p.currentprice BETWEEN $${countQueryParams.length + 1} AND $${countQueryParams.length + 2}`;
+                    countQueryParams.push(priceRange[0]);
+                    countQueryParams.push(priceRange[1]);
+                }
             }
         }
         if (availability) {

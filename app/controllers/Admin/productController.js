@@ -37,6 +37,8 @@ const productController = {
             const limit = 5; // số lượng sản phẩm mỗi trang
             const offset = (page - 1) * limit; // tính offset cho phân trang
 
+            console.log('req', req.query)
+
             // Gọi hàm getFilteredProducts với các tham số tìm kiếm và phân trang
             const allProducts = await getFilteredProducts({
                 search,
