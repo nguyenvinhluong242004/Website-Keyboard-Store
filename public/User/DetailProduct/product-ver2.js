@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
       type_money: "đ",
       sameProducts: [],
       quantity: 4,
+      isSoldOut:true,
 
       //review
       rating: 0, // Lưu đánh giá cuối cùng
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
       idproduct: 0,
       isloadingreview: false,
       visibleReviews: 5,
+      
     },
     methods: {
       hoverStar(index) {
@@ -93,6 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
       getImages() {
         this.images = this.getDB.imagepath;
         this.mainImage = this.images[0];
+        this.isSoldOut = this.getDB.quantity ===0 ? true:false;
+        console.log('sanr pham het hangf',this.isSoldOut);
       },
       toggleForm() {
         this.isToggleForm = !this.isToggleForm;

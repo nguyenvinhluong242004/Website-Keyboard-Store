@@ -4,11 +4,11 @@ const insertProduct = async (description, productname, currentprice, quantity,  
   const client = await pool.connect();
   try {
     const query = `
-      INSERT INTO public.product (description, productname, currentprice, quantity,  brandid, categoryid, type)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO public.product (description, productname, currentprice,oldprice ,quantity,  brandid, categoryid, type)
+      VALUES ($1, $2, $3, $4, $5, $6, $7,$8)
       RETURNING productid 
     `;
-    const values = [description, productname, currentprice, quantity, brandid, categoryid, type];
+    const values = [description, productname, currentprice, currentprice, quantity, brandid, categoryid, type];
 
     const result = await client.query(query, values);
 

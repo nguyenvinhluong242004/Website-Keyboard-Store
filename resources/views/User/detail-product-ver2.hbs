@@ -78,9 +78,15 @@
 
       </div>
 
-      <button @click="addToCart" class="cart fw-bold mt-5 text-white">
-        Thêm vào giỏ hàng
+      <button
+        @click="addToCart"
+        class="cart fw-bold mt-5 text-white p-2"
+        :disabled="isSoldOut"
+        :class="{'sold-out': isSoldOut}"
+      >
+         [[isSoldOut ? "SOLD OUT" : "ADD TO CART"]]
       </button>
+
       <hr />
       <div class="description" @click="toggleContent">
         Description
@@ -135,7 +141,7 @@
     </div>
   </div>
   <div class="flex_back">
-    <button class="back" @click="goBack">BACK</button>
+    <button class="back" style="border:none;" @click="goBack">BACK</button>
   </div>
 
   <div id="overlay" class="overlay"></div>

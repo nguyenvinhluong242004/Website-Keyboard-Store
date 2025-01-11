@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
       isSoldOut:false,
     },
     methods: {
+      checkOnSale(a,b){
+        return a < b;
+      },
       hoverStar(index) {
         this.hoverRating = index; // Cập nhật hover
       },
@@ -97,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
       async fetchRandomProductSame(category) {
         try {
           // Gửi request tới API
-          url = `/detail-product/instock/same-product/${category}?quantity=${this.quantity}`;
+          url = `/detail-product/groupby/same-product/${category}?quantity=${this.quantity}`;
           console.log('duongdang:',url);
           const response = await fetch(url);
 
@@ -116,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       },
       gotoDetai(url) {
-        window.location.href = `/detail-product/instock/${url}`;
+        window.location.href = `/detail-group-by/${url}`;
       },
     },
     computed: {

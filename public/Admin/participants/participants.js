@@ -70,6 +70,8 @@ new Vue({
         .then(response => {
           if (response.data.success) {
             alert(`Product with ID ${this.idGroupby} delete form successfully`);
+            this.initializeData(); // F5 lại trang
+            this.selectedIndex = 0;
             // Thực hiện hành động khác nếu cần
           } else {
             console.error('Failed to delete product:', response.data.message);
@@ -84,6 +86,8 @@ new Vue({
         .then(response => {
           if (response.data.success) {
             alert(`Product with ID ${this.idGroupby} close form successfully`);
+            this.initializeData(); // F5 lại trang
+            this.selectedIndex = 0;
             // Thực hiện hành động khác nếu cần
           } else {
             console.error('Failed to delete product:', response.data.message);
@@ -204,13 +208,14 @@ new Vue({
             images: this.participants[0].imagepath,
             price: this.participants[0].currentprice,
             close: this.participants[0].enddate,
-            quanlity: this.participants[0].currentparticipants,
+            quanlity: this.participants[0].quantity,
             expected: this.participants[0].estimatearrive,
             brand: this.participants[0].brandname,
             describe: this.participants[0].description,
             type: this.participants[0].categoryname,
             groupbyid: this.participants[0].groupbyid,
           };
+          console.log('so luong sau khi close:',this.detailProduct.quanlity);
         }
         
         this.idGroupby = this.participants[0].groupbyid;
