@@ -4,6 +4,8 @@ const FacebookStrategy = require('passport-facebook').Strategy; // login fb
 
 // Tạo một danh sách người dùng mẫu
 const users = {};
+require('dotenv').config();
+
 
 passport = new Passport;
 
